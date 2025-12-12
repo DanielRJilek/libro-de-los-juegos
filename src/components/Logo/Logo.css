@@ -1,0 +1,3 @@
+.title #logo {
+    max-height: calc(max(10vw, 96px));
+}

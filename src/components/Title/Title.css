@@ -1,0 +1,22 @@
+@font-face {
+    font-family: tangerine-bold;
+    src:url(../../assets/Tangerine/Tangerine-Bold.ttf);
+}
+
+@font-face {
+    font-family: tangerine;
+    src:url(../../assets/Tangerine/Tangerine-Regular.ttf);
+}
+
+.title {
+    font-size: calc(max(10vw, 96px));
+    min-width: 500px;
+    text-align: center;
+    margin: 5vh 0;
+    color: rgb(63, 32, 9);
+    font-family: tangerine-bold;
+    display: flex;
+    align-items: center;
+    align-self: center;
+}
+
