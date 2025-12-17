@@ -1,9 +1,9 @@
 import './Logo.css'
-import '../'
+import imgPath from '../../assets/images/Logo.png'
 
 function Logo() {
     return (
-        <img id='logo' src={URL('../src/assets/images/Logo.png')} alt="Logo"/> 
+        <img id='logo' src={imgPath} alt="Logo"/> 
     );
 }
 
