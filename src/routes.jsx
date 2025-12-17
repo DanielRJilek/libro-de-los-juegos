@@ -1,12 +1,16 @@
-import { createBrowserRouter, RouterProvider } from "react-router";
+import MainMenu from "./views/MainMenu/MainMenu";
 import Home from "./views/Home/Home";
  
-const routes = createBrowserRouter([
+const routes = [
     {
         path: "/",
         element: <Home/>,
     },
-])
+    {
+        path: "/MainMenu",
+        element: <MainMenu/>,
+    }
+]
 
 
 export default routes
