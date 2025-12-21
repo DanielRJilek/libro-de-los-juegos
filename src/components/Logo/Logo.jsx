@@ -3,7 +3,7 @@ import imgPath from '../../assets/images/Logo.png'
 
 function Logo() {
     return (
-        <img id='logo' src={imgPath} alt="Logo"/> 
+        <img className='logo' src={imgPath} alt="Logo"/> 
     );
 }
 

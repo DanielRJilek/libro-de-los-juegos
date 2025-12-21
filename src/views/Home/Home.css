@@ -2,4 +2,36 @@
     background-image: url(../../assets/images/Alhambra_view.png);
     background-size: cover;
     background-repeat: no-repeat;
+    /* justify-content: center; */
+    align-items: center;
+}
+
+#main {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    flex: 1;
+}
+
+#welcome {
+    display: flex;
+    flex-direction: row;
+    /* width: 100%; */
+    flex: 1;
+    margin: 0 20px;
+    justify-content: center;
+    /* background-color: rgba(37, 34, 34, 0.4); */
+}
+
+#welcome > div {
+    padding: 0px 50px;
+}
+
+#welcome-right {
+    flex: 1;
+    font-size: large;
+    border-radius: 5px;
+    max-width: 50vw;
+    color: rgb(61, 22, 20);
 }

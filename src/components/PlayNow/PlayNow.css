@@ -1,0 +1,10 @@
+#play-now {
+    height: 75px;
+    padding: 30px;   
+}
+
+#play-now button {
+    margin: 0 20px;
+    height: 75px;
+    width: 150px;
+}
