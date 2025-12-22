@@ -9,7 +9,7 @@ function LogIn() {
         const password = e.target[1].value;
 
         try {
-            const response = await fetch('https://libro-de-los-juegos-server.onrender.com/login', {
+            const response = await fetch('https://libro-de-los-juegos-server.onrender.com/auth/login', {
                 mode: "cors",
                 method:'POST',
                 headers: { "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
