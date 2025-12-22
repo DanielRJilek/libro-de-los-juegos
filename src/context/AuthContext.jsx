@@ -1,4 +1,5 @@
 import { createContext } from "react";
+import useAuthContext from "../hooks/useAuthContext";
 
 const AuthContext = createContext({
     token: null,
@@ -10,4 +11,14 @@ const AuthContext = createContext({
     }
 });
 
-export default AuthContext
+function AuthProvider({children}) {
+    // const {user} = useAuthContext(AuthContext);
+    AuthContext;
+    return (
+        <AuthContext.Provider value={[AuthContext.token, AuthContext.setCredentials, AuthContext.logOut]}>
+            {children}
+        </AuthContext.Provider>
+    )
+}
+
+export default AuthProvider

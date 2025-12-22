@@ -10,7 +10,6 @@ function LogIn() {
 
         try {
             const response = await fetch('https://libro-de-los-juegos-server.onrender.com/auth/login', {
-                
                 method:'POST',
                 headers: { "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
                 body: JSON.stringify({username, password}),
