@@ -4,35 +4,40 @@ input {
     padding: 5px;
     margin: 5px;
     border-radius: 5px;
+    background-color: light-dark(rgb(232, 240, 254), rgba(70, 90, 126, 0.4))
 }
 
 form {
-    background-color: white;
+    background-color: rgba(255, 255, 255, 1.0);
+    box-shadow: 0 6px 20px #000c;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin: 25px;
-    padding: 10px;
+    margin: 50px 20px;
+    padding: 20px;
+    max-width: 800px;
 }
 
 input[type="submit"] {
-    text-align: center;
-    background-color: lightblue;
-    /* color: white; */
-    border-radius: 5px;
-    margin: 10px;
-    padding: 10px;
-    cursor: pointer;
-    transition: background-color 0.5s;
-    transition: color 0.5s;
-    transition: border-color 0.5s;
-    color: black;
+    border-radius: 15px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  text-align: center;
+  line-height: 1;
+  background-color: rgba(141, 49, 44, 1);
+  cursor: pointer;
+  color: white;
+  transition: 0.25s;
+  border: 2px rgba(188, 141, 51, 1) solid;
+  margin: 20px;
 }
 
 input[type="submit"]:hover {
-    background-color: rgba(0, 0, 96, 0.9);
-    color: white;
-    border-color: rgb(0, 157, 255);
+    background-color: rgba(188, 141, 51, 1);
+  border: 2px rgba(141, 49, 44, 1) solid;
 }

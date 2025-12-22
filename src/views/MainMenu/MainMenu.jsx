@@ -1,6 +1,11 @@
+import './MainMenu.css'
+import Header from '../../components/Header/Header';
+
 function MainMenu() {
   return (
-    <div>Main Menu</div>
+    <div className="page" id='main-menu-page'>
+      <Header></Header>
+    </div>
   )
 }
 

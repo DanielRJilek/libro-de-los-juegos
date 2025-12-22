@@ -1,7 +1,6 @@
-import './LogIn.css'
 import {useNavigate} from 'react-router'
 
-function LogIn() {
+function SignUp() {
     const navigate = useNavigate();
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -31,10 +30,13 @@ function LogIn() {
             <input type="text" id="username" name="username"></input>
             <label for="password">Password</label>
             <input type="password" id="password" name="password"></input>
-            <input type="submit" value="Log In" ></input>
-            <a href='/signup'>Create Account</a>
+            <label for="confirm-password">Confirm Password</label>
+            <input type="password" id="confirm-password" name="confirm-password"></input>
+            <input type="submit" value="Create an account" ></input>
+            <p>Already have an account?</p>
+            <a href='/login'>Login</a>
         </form>
     )
 }
 
-export default LogIn
+export default SignUp

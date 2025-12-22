@@ -9,9 +9,10 @@
 #main {
     width: 100%;
     display: flex;
-    justify-content: center;
+    /* justify-content: center; */
     flex-direction: column;
     flex: 1;
+    align-items: center;
 }
 
 #welcome {
