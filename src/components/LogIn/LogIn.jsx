@@ -1,7 +1,10 @@
 import './LogIn.css'
 import {useNavigate} from 'react-router'
+import { AuthContext } from '../../context/AuthContext';
+import { useContext } from 'react';
 
 function LogIn() {
+    const user = useContext(AuthContext);
     const navigate = useNavigate();
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -14,10 +17,11 @@ function LogIn() {
                 headers: { "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
                 body: JSON.stringify({username, password}),
             });
-            if (!response.ok) {
-                throw new Error("Failed");
-            }
+            // if (!response.ok) {
+            //     throw new Error("Failed");
+            // }
             // const code = await response.text();
+            user.setCredentials(response.body);
             navigate('/MainMenu');
         } 
         catch (error) {

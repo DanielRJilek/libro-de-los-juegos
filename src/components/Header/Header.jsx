@@ -1,20 +1,22 @@
 import './Header.css'
 import Logo from '../Logo/Logo';
 import { useNavigate } from 'react-router';
-import useAuthContext from '../../hooks/useAuthContext';
-import AuthProvider from '../../context/AuthContext';
-import LogIn from '../LogIn/LogIn';
+import { AuthContext } from '../../context/AuthContext';
+import { useContext } from 'react';
 
 function Header() {
-    const {user} = useAuthContext;
+    const user = useContext(AuthContext);
     const navigate = useNavigate();
     const login = () => {
         navigate('/login');
     }
+    const logout = async() => {
+        
+    }
     return (
         <div id='header'>
             <Logo></Logo>
-            {user ? <button className='profile-button'></button> : <button onClick={login}>Log In</button>}
+            {user.token ? <button onClick={logout}></button> : <button onClick={login}>Log In</button>}
         </div>
     );
 }
