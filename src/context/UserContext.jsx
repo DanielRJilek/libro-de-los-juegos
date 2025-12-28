@@ -1,0 +1,14 @@
+import { createContext, useState } from "react";
+import { CgProfile } from "react-icons/cg";
+
+export const UserContext = createContext();
+
+export const UserContextProvider = ({children}) => {
+    const [username, setUsername] = useState("");  
+    const [profilePic , setProfilePic] = useState(() => {return(CgProfile)});
+    return (
+        <UserContext value={{username,setUsername, profilePic, setProfilePic}}>
+            {children}
+        </UserContext>
+    )
+}

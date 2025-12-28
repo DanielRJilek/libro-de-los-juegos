@@ -1,0 +1,70 @@
+.icon-holder {
+    display: flex;
+    flex-direction: column;
+    height: 50%;
+    /* width: 100%; */
+    margin-left: auto;
+    padding-right: 10px;
+    position: relative;
+    /* background-color: white; */
+}
+
+.icon-holder > .icon {
+    /* display: flex; */
+    height: 100%;
+    width: 100%;
+    background-color: white;
+    color: black;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.drop-options {
+    position: absolute;
+    margin-top: 50px;
+    right: 25px;
+    min-width: 125px;
+    background-color: rgba(255, 255, 255, 1.0);
+    box-shadow: 0 6px 20px #000c;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+}
+
+.drop-options ul {
+    padding: 0;
+}
+
+.drop-options  li {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    /* justify-content: space-around; */
+}
+
+li .icon {
+    justify-self: left;
+    padding-right: 10px;
+    padding-left: 5px;
+}
+
+.drop-header {
+    display: flex;
+    align-items: center;
+    font-size: large;
+    font-weight: bold ;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    border-bottom: 2px solid gray;
+}
+
+.drop-header .icon  {
+    justify-self: left;
+    margin-right: 10px;
+    margin-left: 5px;
+    height: 25px;
+    width: 25px;
+    
+    /* padding: 0; */
+}

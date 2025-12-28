@@ -2,9 +2,12 @@ import './LogIn.css'
 import {useNavigate} from 'react-router'
 import { AuthContext } from '../../context/AuthContext';
 import { useContext } from 'react';
+import { UserContext } from '../../context/UserContext';
+import { CgProfile } from "react-icons/cg";
 
 function LogIn() {
-    const user = useContext(AuthContext);
+    const token = useContext(AuthContext);
+    const user = useContext(UserContext)
     const navigate = useNavigate();
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -17,11 +20,12 @@ function LogIn() {
                 headers: { "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
                 body: JSON.stringify({username, password}),
             });
-            // if (!response.ok) {
-            //     throw new Error("Failed");
-            // }
+            if (!response.ok) {
+                throw new Error("Failed");
+            }
             // const code = await response.text();
-            user.setCredentials(response.body);
+            user.setUsername(username);
+            token.setUser(response.body);
             navigate('/MainMenu');
         } 
         catch (error) {

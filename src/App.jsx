@@ -3,26 +3,24 @@ import useAuthContext from './hooks/useAuthContext'
 // import AuthProvider from './context/AuthContext'
 import routes from './routes'
 import { RouterProvider, createBrowserRouter } from 'react-router'
-import { AuthContext } from './context/AuthContext'
+import { AuthContext, AuthContextProvider } from './context/AuthContext'
 import { useContext, useState } from 'react'
+import { UserContext } from './context/UserContext'
+import { UserContextProvider } from './context/UserContext'
 
 function App() {
-  // const {user} = useContext(AuthContext);
-  const [token, setToken] = useState(null);
-  const setCredentials = (accessToken) => {
-    setToken(accessToken);
-  }
-  const logOut = () => {
-    setToken(null);
-  }
+  const user = useContext(AuthContext);
+  const username = useContext(UserContext)
   
   const router = createBrowserRouter(routes);
   return (
-    <AuthContext value={{token, setCredentials, logOut}}>
-      <RouterProvider router={router}>
+    <AuthContextProvider value={user}>
+      <UserContextProvider value={username}>
+        <RouterProvider router={router}>
           <App/>
       </RouterProvider>
-    </AuthContext>
+      </UserContextProvider>
+    </AuthContextProvider>
   )
 }
 
