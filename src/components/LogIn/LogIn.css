@@ -38,6 +38,7 @@ input[type="submit"] {
 }
 
 input[type="submit"]:hover {
-    background-color: rgba(188, 141, 51, 1);
-  border: 2px rgba(141, 49, 44, 1) solid;
+    /* background-color: rgba(188, 141, 51, 1); */
+  /* border: 2px rgba(141, 49, 44, 1) solid; */
+  filter: brightness(1.3); 
 }

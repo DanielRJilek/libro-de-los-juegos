@@ -1,15 +1,20 @@
 import {useNavigate} from 'react-router'
+import { AuthContext } from '../../context/AuthContext';
+import { useContext } from 'react';
+import { UserContext } from '../../context/UserContext';
 
 function SignUp() {
     const navigate = useNavigate();
+    const token = useContext(AuthContext);
+    const user = useContext(UserContext)
     const handleSubmit = async (e) => {
         e.preventDefault();
         const username = e.target[0].value;
         const password = e.target[1].value;
 
         try {
-            const response = await fetch('https://libro-de-los-juegos-server.onrender.com', {
-                mode: "cors",
+            const response = await fetch('https://libro-de-los-juegos-server.onrender.com/users', {
+                // mode: "cors",
                 method:'POST',
                 headers: { "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
                 body: JSON.stringify({username, password}),
@@ -17,7 +22,19 @@ function SignUp() {
             if (!response.ok) {
                 throw new Error("Failed");
             }
+
+
+            const response2 = await fetch('https://libro-de-los-juegos-server.onrender.com/auth/login', {
+                method:'POST',
+                headers: { "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
+                body: JSON.stringify({username, password}),
+            });
+            if (!response2.ok) {
+                throw new Error("Failed");
+            }
             // const code = await response.text();
+            user.setUsername(username);
+            token.setUser(response2.body);
             navigate('/MainMenu');
         } 
         catch (error) {

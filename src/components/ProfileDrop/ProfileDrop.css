@@ -17,6 +17,11 @@
     color: black;
     border-radius: 50%;
     cursor: pointer;
+    box-shadow: 0 4px 10px #000c;
+}
+
+.icon-holder > .icon:hover {
+    filter: brightness(1.3); 
 }
 
 .drop-options {
@@ -41,6 +46,10 @@
     display: flex;
     align-items: center;
     /* justify-content: space-around; */
+}
+
+.drop-options li:hover {
+    background-color: rgb(237, 237, 237);
 }
 
 li .icon {

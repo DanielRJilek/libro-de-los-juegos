@@ -5,3 +5,23 @@
     /* justify-content: center; */
     align-items: center;
 }
+
+#game-display {
+    display: flex;
+}
+
+#game-preview {
+    height: 400px;
+    width: 500px;
+    object-fit: contain;
+    overflow: hidden;
+}
+
+#game-about {
+    height: 400px;
+    width: 500px;
+}
+
+.gallery {
+    display: grid;
+}
