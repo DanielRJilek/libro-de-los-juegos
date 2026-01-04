@@ -1,3 +1,42 @@
+@font-face {
+    font-family: tangerine-bold;
+    src:url(../../assets/Tangerine/Tangerine-Bold.ttf);
+}
+
+@font-face {
+    font-family: tangerine;
+    src:url(../../assets/Tangerine/Tangerine-Regular.ttf);
+}
+
 .game-card {
-    
+    background-color: rgba(141, 49, 44, 1);
+    display: flex;
+    flex-direction: column;
+    font-family: tangerine-bold;
+    font-size: 2rem;
+    font-weight: bolder;
+    border: 4px rgba(188, 141, 51, 1) solid;
+    border-radius: 5px;
+    box-shadow: 0 6px 20px #000c;
+    cursor: pointer;
+    -webkit-transition-property: all;
+    -webkit-transition-duration: 0.3s;
+    -webkit-transition-timing-function: ease;
+}
+
+.game-card:hover {
+    /* filter: brightness(1.1);  */
+    border: 4px rgb(244, 188, 83) solid;
+    transform: scale(1.2);
+}
+
+.game-card img {
+    height: 200px;
+    width: 300px;
+}
+
+.game-card span {
+    /* background-color: rgba(141, 49, 44, 1); */
+    color: white;
+    border-top: 4px rgba(188, 141, 51, 1) solid;
 }

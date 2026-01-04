@@ -53,7 +53,7 @@ button {
 button:hover {
   /* background-color: rgba(188, 141, 51, 1); */
   /* border: 2px rgba(141, 49, 44, 1) solid; */
-  filter: brightness(1.3); 
+  filter: brightness(1.2); 
   /* color: rgba(141, 49, 44, 1); */
 }
 
@@ -134,4 +134,12 @@ button:active {
     display: flex;
     flex-direction: column;
     min-width: 900px;
+}
+
+.game-page {
+  background-image: url(./assets/images/seville_alcazar.jpeg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  /* justify-content: center; */
+  align-items: center;
 }

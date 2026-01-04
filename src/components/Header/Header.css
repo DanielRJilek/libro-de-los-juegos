@@ -19,3 +19,25 @@
     height: 50%;
     margin: 5px;
 }
+
+#header > div {
+    display: flex;
+    height: 100%;
+    align-items: center;
+}
+
+#header .audio-icon {
+    align-self: center;
+    padding: 0 30px;
+    cursor: pointer;
+    height: 30px;
+    width: 30px
+}
+
+#header .audio-icon:hover {
+    filter: brightness(1.3); 
+}
+
+.header-games {
+    cursor: pointer;
+}

@@ -6,6 +6,7 @@ import { CiEdit } from "react-icons/ci";
 import { GoPeople } from "react-icons/go";
 import { useState } from 'react';
 import { useContext } from 'react';
+import { useEffect, useRef } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import { UserContext } from '../../context/UserContext';
 

@@ -4,7 +4,7 @@ import {useNavigate} from 'react-router'
 function PlayNow() {
     const navigate = useNavigate();
     const login = () => {
-        navigate('/MainMenu');
+        navigate('/games');
     }
     return (
         <div id='play-now'>

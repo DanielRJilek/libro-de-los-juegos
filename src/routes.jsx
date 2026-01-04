@@ -3,6 +3,7 @@ import Home from "./views/Home/Home";
 import LogIn from "./components/LogIn/LogIn";
 import Welcome from "./components/Welcome/Welcome";
 import SignUp from "./components/Signup/Signup";
+import Doblet from "./views/Tablas/Doblet/Doblet";
  
 const routes = [
     {
@@ -12,7 +13,7 @@ const routes = [
         </Home>),
     },
     {
-        path: "/MainMenu",
+        path: "/games",
         element: <MainMenu/>,
     },
      {
@@ -26,6 +27,12 @@ const routes = [
         element: (<Home>
             <SignUp></SignUp>
         </Home>)
+     },
+     {
+        path: "/games/doblet",
+        element: (
+            <Doblet></Doblet>
+        )
      }
 ]
 

@@ -26,7 +26,7 @@ function LogIn() {
             // const code = await response.text();
             user.setUsername(username);
             token.setUser(response.body);
-            navigate('/MainMenu');
+            navigate(window.history.back(1));
         } 
         catch (error) {
             console.log(error)
@@ -38,7 +38,7 @@ function LogIn() {
             <input type="text" id="username" name="username"></input>
             <label for="password">Password</label>
             <input type="password" id="password" name="password"></input>
-            <input type="submit" value="Log In" ></input>
+            <button type="submit">Log In</button>
             <a href='/signup'>Create Account</a>
         </form>
     )

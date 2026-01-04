@@ -35,7 +35,7 @@ function SignUp() {
             // const code = await response.text();
             user.setUsername(username);
             token.setUser(response2.body);
-            navigate('/MainMenu');
+            navigate(window.history.back(1));
         } 
         catch (error) {
             console.log(error)
@@ -49,7 +49,7 @@ function SignUp() {
             <input type="password" id="password" name="password"></input>
             <label for="confirm-password">Confirm Password</label>
             <input type="password" id="confirm-password" name="confirm-password"></input>
-            <input type="submit" value="Create an account" ></input>
+            <button type="submit">Create an account</button>
             <p>Already have an account?</p>
             <a href='/login'>Login</a>
         </form>
