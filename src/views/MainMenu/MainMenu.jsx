@@ -24,7 +24,6 @@ function MainMenu() {
       }
     }
     getGames();
-    console.log(games);
   }, [])
   
     

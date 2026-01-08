@@ -3,11 +3,13 @@ import { useNavigate } from "react-router";
 import { AuthContext } from "../../context/AuthContext";
 import LogIn from "../LogIn/LogIn";
 import ProfileDrop from "../ProfileDrop/ProfileDrop";
+import { UserContext } from "../../context/UserContext";
 
 
 
 function Auth() {
-    const user = useContext(AuthContext);
+    const auth = useContext(AuthContext);
+    const user = useContext(UserContext)
     const navigate = useNavigate();
 
     const logout = async (e) => {
@@ -22,7 +24,7 @@ function Auth() {
                 throw new Error("Failed");
             }
             // const code = await response.text();
-            user.setUser(null);
+            auth.setAccessToken(null);
             // navigate('/MainMenu');
         } 
         catch (error) {
@@ -30,7 +32,7 @@ function Auth() {
         }
     }
     return (
-        user.user ? <ProfileDrop></ProfileDrop> : <button onClick={() => {navigate('/login')}}>Log In</button>
+        auth.accessToken ? <ProfileDrop></ProfileDrop> : <button onClick={() => {navigate('/login')}}>Log In</button>
     )
 }
 

@@ -6,7 +6,7 @@ import { UserContext } from '../../context/UserContext';
 import { CgProfile } from "react-icons/cg";
 
 function LogIn() {
-    const token = useContext(AuthContext);
+    const auth = useContext(AuthContext);
     const user = useContext(UserContext)
     const navigate = useNavigate();
     const handleSubmit = async (e) => {
@@ -20,14 +20,20 @@ function LogIn() {
                 headers: { "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
                 body: JSON.stringify({username, password}),
             });
+            // console.log(`response.body: ${response.body}`)
             if (!response.ok) {
                 throw new Error("Failed");
             }
             // const code = await response.text();
-            console.log(response.body)
+            const {id, token} = await response.json();
+            // console.log(id);
+            // console.log(token);
+            // console.log(response.body)
+            // console.log(id);
             user.setUsername(username);
-            user.setUserID(response.body[0])
-            token.setUser(response.body[1]);
+            user.setUserID(id.toString());
+            // console.log(user.userID);
+            auth.setAccessToken(token);
             navigate(window.history.back(1));
         } 
         catch (error) {

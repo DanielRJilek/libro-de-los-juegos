@@ -8,7 +8,7 @@ export const UserContextProvider = ({children}) => {
     const [userID, setUserID] = useState("");
     const [profilePic , setProfilePic] = useState(() => {return(CgProfile)});
     return (
-        <UserContext value={{username,setUsername, profilePic, setProfilePic}}>
+        <UserContext value={{username, userID, setUsername, profilePic, setProfilePic, setUserID}}>
             {children}
         </UserContext>
     )

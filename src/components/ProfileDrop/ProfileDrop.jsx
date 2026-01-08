@@ -17,7 +17,7 @@ function ProfileDrop() {
     }
     const options = [  ];
 
-    const token = useContext(AuthContext);
+    const auth = useContext(AuthContext);
     const user = useContext(UserContext);
     const ProfilePic = user.profilePic;
     // const navigate = useNavigate();
@@ -33,7 +33,7 @@ function ProfileDrop() {
                 throw new Error("Failed");
             }
             // const code = await response.text();
-            token.setUser(null);
+            auth.setAccessToken(null);
             // navigate('/MainMenu');
         } 
         catch (error) {
@@ -44,20 +44,25 @@ function ProfileDrop() {
     const [friends,setFriends] = useState([]);
     useEffect(() => {
         const getFriends = async () => {
-        try {
-            const response = await fetch(`https://libro-de-los-juegos-server.onrender.com/users/${user.userID}/friends`, {
-            method:'GET',
-            headers: { "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
-            });
-            const result = await response.json();
-            setFriends(result);
-        } 
-        catch (error) {
-        
-        }
+            try {
+                const userID = user.userID;
+                // console.log(userID);
+                // console.log(user.userID)
+                // console.log(auth.accessToken);
+                const response = await fetch(`https://libro-de-los-juegos-server.onrender.com/users/${userID}/friends`, {
+                    method:'GET',
+                    headers: {  'Authorization': `Bearer ${auth.accessToken}`,
+                                "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
+                });
+                const result = await response.json();
+                setFriends(result);
+            } 
+            catch (error) {
+            
+            }
         }
         getFriends();
-        console.log(friends);
+        // console.log(friends);
     }, [])
 
     // const [Icon, setIcon] = useState(CgProfile)
