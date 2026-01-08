@@ -5,6 +5,7 @@ export const UserContext = createContext();
 
 export const UserContextProvider = ({children}) => {
     const [username, setUsername] = useState("");  
+    const [userID, setUserID] = useState("");
     const [profilePic , setProfilePic] = useState(() => {return(CgProfile)});
     return (
         <UserContext value={{username,setUsername, profilePic, setProfilePic}}>

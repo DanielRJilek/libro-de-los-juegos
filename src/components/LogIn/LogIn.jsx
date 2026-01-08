@@ -24,8 +24,10 @@ function LogIn() {
                 throw new Error("Failed");
             }
             // const code = await response.text();
+            console.log(response.body)
             user.setUsername(username);
-            token.setUser(response.body);
+            user.setUserID(response.body[0])
+            token.setUser(response.body[1]);
             navigate(window.history.back(1));
         } 
         catch (error) {

@@ -2,12 +2,14 @@ import Header from "../../../components/Header/Header"
 import Board from "../Board/Board";
 
 function Doblet() {
-    const rollDice = () => {
-        const dice = [];
-        for (i=0;i<3;i++) {
-            dice.push(Math.random() * (6-1) + 1);
+    
+
+    class Player {
+        constructor() {
+            
         }
-        return dice;
+
+
     }
 
     return (

@@ -41,6 +41,25 @@ function ProfileDrop() {
         }
     }
 
+    const [friends,setFriends] = useState([]);
+    useEffect(() => {
+        const getFriends = async () => {
+        try {
+            const response = await fetch(`https://libro-de-los-juegos-server.onrender.com/users/${user.userID}/friends`, {
+            method:'GET',
+            headers: { "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
+            });
+            const result = await response.json();
+            setFriends(result);
+        } 
+        catch (error) {
+        
+        }
+        }
+        getFriends();
+        console.log(friends);
+    }, [])
+
     // const [Icon, setIcon] = useState(CgProfile)
     return (
         <IconContext.Provider value={{className:'icon'}}>
@@ -57,7 +76,11 @@ function ProfileDrop() {
                         </li>
                         <li>
                             <GoPeople></GoPeople>
-                            <span>Friends</span>
+                            <span>Friends
+                                {friends.length > 0 && friends.map((friend) => {
+                                    return <span key={friend}>{friend}</span>
+                                })}
+                            </span>
                         </li>
                         <li onClick={logout}>
                             <TbLogout2></TbLogout2>
