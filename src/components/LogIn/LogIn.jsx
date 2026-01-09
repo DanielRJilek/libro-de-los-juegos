@@ -40,7 +40,7 @@ function LogIn() {
             <label for="password">Password</label>
             <input className='login-input' type="password" id="password" name="password"></input>
             <button type="submit">Log In</button>
-            <a href='/signup'>Create Account</a>
+            <a href='https://libro-de-los-juegos.onrender.com/signup'>Create Account</a>
         </form>
     )
 }
