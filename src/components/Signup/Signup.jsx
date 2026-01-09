@@ -6,7 +6,7 @@ import '../LogIn/LogIn.css';
 
 function SignUp() {
     const navigate = useNavigate();
-    const token = useContext(AuthContext);
+    const auth = useContext(AuthContext);
     const user = useContext(UserContext)
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -35,7 +35,7 @@ function SignUp() {
             }
             // const code = await response.text();
             user.setUsername(username);
-            token.setUser(response2.body);
+            auth.setAccessToken(response2.body);
             navigate(window.history.back(1));
         } 
         catch (error) {

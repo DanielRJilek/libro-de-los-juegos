@@ -151,3 +151,15 @@ li .icon {
 li span {
     width: 100%;
 }
+
+.accept-button {
+    height: 25px;
+    width: 25px;
+    background-color: greenyellow;
+}
+
+.decline-button {
+    height: 25px;
+    width: 25px;
+    background-color: red;
+}

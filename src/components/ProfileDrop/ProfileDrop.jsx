@@ -41,6 +41,26 @@ function ProfileDrop() {
         }
     }
 
+    const [friendRequests,setFriendRequests] = useState([]);
+    useEffect(() => {
+        const getFriendRequests = async () => {
+            try {
+                const userID = user.userID;
+                const response = await fetch(`https://libro-de-los-juegos-server.onrender.com/users/${userID}/friends/requests`, {
+                    method:'GET',
+                    headers: {  'Authorization': `Bearer ${auth.accessToken}`,
+                                "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
+                });
+                const result = await response.json();
+                setFriendRequests(result);
+            } 
+            catch (error) {
+            
+            }
+        }
+        getFriendRequests();
+    }, [])
+
     const [friends,setFriends] = useState([]);
     useEffect(() => {
         const getFriends = async () => {
@@ -59,7 +79,9 @@ function ProfileDrop() {
             }
         }
         getFriends();
-    }, [])
+    }, [friendRequests])
+
+    
 
     const [addingFriend, setAddingFriend] = useState(false);
     const toggleAddingFriend = () => {
@@ -87,6 +109,24 @@ function ProfileDrop() {
     const [viewingFriends, setViewingFriends] = useState(false);
     const toggleViewingFriends = () => {
         viewingFriends ? setViewingFriends(false) : setViewingFriends(true)
+    }
+
+    const acceptFriendRequest = async (id) => {
+        const friendID = id;
+        try {
+            const response = await fetch(`https://libro-de-los-juegos-server.onrender.com/users/${user.userID}/friends/`, {
+                method:'POST',
+                headers: {  'Authorization': `Bearer ${auth.accessToken}`,
+                            "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
+                body: JSON.stringify({friendID}),
+            });
+            if (!response.ok) {
+                throw new Error("Failed");
+            }
+        } 
+        catch (error) {
+            console.log(error)
+        }
     }
 
     // const [Icon, setIcon] = useState(CgProfile)
@@ -125,6 +165,20 @@ function ProfileDrop() {
                                             <input type="text" id="username" name="username"></input>
                                             <button className='go-button'>Go</button>
                                         </form>}
+                            </span>
+                        </li>
+                        <li>
+                            <GoPeople></GoPeople>
+                            <span >
+                                <span>Friend Requests</span>
+                                <ul>
+                                    {friendRequests.length > 0 && friendRequests.map((friendRequest) => {
+                                    return <li className='friend-list-item' key={friendRequest.username}>{friendRequest.username}
+                                        <button className='accept-button' onClick={() => {acceptFriendRequest(friendRequest._id)}}></button>
+                                        <button className='decline-button'></button>
+                                    </li>
+                                })}
+                                </ul>
                             </span>
                         </li>
                         <li onClick={logout}>
