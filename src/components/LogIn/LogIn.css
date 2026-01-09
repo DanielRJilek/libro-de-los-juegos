@@ -1,4 +1,4 @@
-input {
+.login-input {
     outline: none;
     border: 1px solid black;
     padding: 5px;
@@ -7,7 +7,7 @@ input {
     background-color: light-dark(rgb(232, 240, 254), rgba(70, 90, 126, 0.4))
 }
 
-form {
+.login-form {
     background-color: rgba(255, 255, 255, 1.0);
     box-shadow: 0 6px 20px #000c;
     border-radius: 10px;

@@ -4,23 +4,24 @@ import { CgProfile } from "react-icons/cg";
 import { TbLogout2 } from "react-icons/tb";
 import { CiEdit } from "react-icons/ci";
 import { GoPeople } from "react-icons/go";
+import { IoPersonAddOutline } from "react-icons/io5";
 import { useState } from 'react';
 import { useContext } from 'react';
 import { useEffect, useRef } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import { UserContext } from '../../context/UserContext';
+import { useNavigate } from 'react-router';
 
 function ProfileDrop() {
+    const auth = useContext(AuthContext);
+    const user = useContext(UserContext);
+    const navigate = useNavigate();
     const [open, setOpen] = useState(false);
     const toggleOpen = () => {
         open ? setOpen(false) : setOpen(true)
     }
     const options = [  ];
-
-    const auth = useContext(AuthContext);
-    const user = useContext(UserContext);
     const ProfilePic = user.profilePic;
-    // const navigate = useNavigate();
     const logout = async (e) => {
         e.preventDefault();
         try {
@@ -32,9 +33,8 @@ function ProfileDrop() {
             if (!response.ok) {
                 throw new Error("Failed");
             }
-            // const code = await response.text();
             auth.setAccessToken(null);
-            // navigate('/MainMenu');
+            navigate('/');
         } 
         catch (error) {
             console.log(error);
@@ -46,9 +46,6 @@ function ProfileDrop() {
         const getFriends = async () => {
             try {
                 const userID = user.userID;
-                // console.log(userID);
-                // console.log(user.userID)
-                // console.log(auth.accessToken);
                 const response = await fetch(`https://libro-de-los-juegos-server.onrender.com/users/${userID}/friends`, {
                     method:'GET',
                     headers: {  'Authorization': `Bearer ${auth.accessToken}`,
@@ -62,8 +59,35 @@ function ProfileDrop() {
             }
         }
         getFriends();
-        // console.log(friends);
     }, [])
+
+    const [addingFriend, setAddingFriend] = useState(false);
+    const toggleAddingFriend = () => {
+        addingFriend ? setAddingFriend(false) : setAddingFriend(true)
+    }
+    const sendFriendRequest = async (e) => {
+        e.preventDefault();
+        const username = e.target[0].value;
+        try {
+            const response = await fetch(`https://libro-de-los-juegos-server.onrender.com/users/${user.userID}/friends/requests`, {
+                method:'POST',
+                headers: {  'Authorization': `Bearer ${auth.accessToken}`,
+                            "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
+                body: JSON.stringify({username}),
+            });
+            if (!response.ok) {
+                throw new Error("Failed");
+            }
+        } 
+        catch (error) {
+            console.log(error)
+        }
+    }
+
+    const [viewingFriends, setViewingFriends] = useState(false);
+    const toggleViewingFriends = () => {
+        viewingFriends ? setViewingFriends(false) : setViewingFriends(true)
+    }
 
     // const [Icon, setIcon] = useState(CgProfile)
     return (
@@ -81,10 +105,26 @@ function ProfileDrop() {
                         </li>
                         <li>
                             <GoPeople></GoPeople>
-                            <span>Friends
-                                {friends.length > 0 && friends.map((friend) => {
-                                    return <span key={friend}>{friend}</span>
+                            <span >
+                                <span onClick={toggleViewingFriends}>Friends</span>
+                                {viewingFriends 
+                                && <ul>
+                                    {friends.length > 0 && friends.map((friend) => {
+                                    return <li className='friend-list-item' key={friend.username}>{friend.username}</li>
                                 })}
+                                </ul>}
+                            </span>
+                        </li>
+                        <li>
+                            <IoPersonAddOutline></IoPersonAddOutline>
+                            <span >
+                                <span onClick={toggleAddingFriend}>Add Friend</span>
+                                {addingFriend 
+                                    &&  <form className='flex-row' onSubmit={sendFriendRequest}>
+                                            <label for="username"></label>
+                                            <input type="text" id="username" name="username"></input>
+                                            <button className='go-button'>Go</button>
+                                        </form>}
                             </span>
                         </li>
                         <li onClick={logout}>

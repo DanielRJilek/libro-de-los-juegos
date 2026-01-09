@@ -2,6 +2,7 @@ import {useNavigate} from 'react-router'
 import { AuthContext } from '../../context/AuthContext';
 import { useContext } from 'react';
 import { UserContext } from '../../context/UserContext';
+import '../LogIn/LogIn.css';
 
 function SignUp() {
     const navigate = useNavigate();
@@ -42,13 +43,13 @@ function SignUp() {
         }
     }
     return (
-        <form onSubmit={handleSubmit}>
+        <form className='login-form' onSubmit={handleSubmit}>
             <label for="username">Username</label>
-            <input type="text" id="username" name="username"></input>
+            <input className='login-input' type="text" id="username" name="username"></input>
             <label for="password">Password</label>
-            <input type="password" id="password" name="password"></input>
+            <input className='login-input' type="password" id="password" name="password"></input>
             <label for="confirm-password">Confirm Password</label>
-            <input type="password" id="confirm-password" name="confirm-password"></input>
+            <input className='login-input' type="password" id="confirm-password" name="confirm-password"></input>
             <button type="submit">Create an account</button>
             <p>Already have an account?</p>
             <a href='/login'>Login</a>

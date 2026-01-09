@@ -25,7 +25,7 @@ function Auth() {
             }
             // const code = await response.text();
             auth.setAccessToken(null);
-            // navigate('/MainMenu');
+            navigate('/');
         } 
         catch (error) {
             console.log(error);

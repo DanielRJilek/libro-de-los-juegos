@@ -28,8 +28,12 @@
     position: absolute;
     margin-top: 50px;
     right: 25px;
-    min-width: 125px;
-    background-color: rgba(255, 255, 255, 1.0);
+    min-width: 275px;
+    min-height: 275px;
+    /* background-color: rgba(255, 255, 255, 1.0); */
+    background-color: rgba(141, 49, 44, 1);
+    border: 2px rgba(188, 141, 51, 1) solid;
+    color: white;
     box-shadow: 0 6px 20px #000c;
     border-radius: 10px;
     display: flex;
@@ -41,21 +45,40 @@
     padding: 0;
 }
 
-.drop-options  li {
+.drop-options > ul > li {
     cursor: pointer;
     display: flex;
-    align-items: center;
+    /* align-items: center; */
+    text-align: left;
+    font-size: larger;
+    border-radius: 5px;
+    margin-left: 5px;
+    margin-right: 5px;
+    background-color: rgba(141, 49, 44, 1);
     /* justify-content: space-around; */
 }
 
 .drop-options li:hover {
-    background-color: rgb(237, 237, 237);
+    /* background-color: rgb(237, 237, 237); */
+    background-color: rgb(157, 55, 49); 
 }
 
 li .icon {
     justify-self: left;
+    padding-top: 5px;
     padding-right: 10px;
     padding-left: 5px;
+}
+
+/* #adding-friend {
+    display: flex;
+    flex-direction: column;
+} */
+
+.friend-list-item {
+    font-size: large;
+    font-weight: bold;
+    padding-left: 10px;    
 }
 
 .drop-header {
@@ -65,7 +88,8 @@ li .icon {
     font-weight: bold ;
     padding-bottom: 10px;
     padding-top: 10px;
-    border-bottom: 2px solid gray;
+    /* border-bottom: 2px solid gray; */
+    border-bottom: 2px solid rgba(188, 141, 51, 1);
 }
 
 .drop-header .icon  {
@@ -74,6 +98,56 @@ li .icon {
     margin-left: 5px;
     height: 25px;
     width: 25px;
+    cursor: pointer;
     
     /* padding: 0; */
+}
+
+.flex-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    /* box-shadow: 0 0px 5px #000c; */
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.flex-row .go-button {
+    font-size: small;
+    line-height: 1;
+    /* background-color: rgba(141, 49, 44, 1); */
+    background-color: rgba(188, 141, 51, 1);
+    cursor: pointer;
+    color: white;
+    transition: 0.25s;
+    /* border: 2px rgba(188, 141, 51, 1) solid; */
+    /* border: 1px solid black; */
+    border-left: none;
+    padding: 0.4em;
+    margin: 0px;
+    border-radius: 0 5px 5px 0;
+    height: 25px;
+    width: 40px;
+}
+
+.flex-row input {
+    height: 25px;
+    margin: 0px;
+    padding-left: 5px;
+    border-radius: 5px 0 0 5px;
+    border-bottom: 1px solid black;
+    border-top: 1px solid black;
+    border-left: 1px solid black;
+    border: none;
+    border-right: none;
+    box-sizing: border-box;
+    /* flex: auto; */
+}
+
+.flex-row textarea:focus, input:focus{
+    outline: none;
+}
+
+li span {
+    width: 100%;
 }

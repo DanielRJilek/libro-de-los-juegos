@@ -20,19 +20,12 @@ function LogIn() {
                 headers: { "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
                 body: JSON.stringify({username, password}),
             });
-            // console.log(`response.body: ${response.body}`)
             if (!response.ok) {
                 throw new Error("Failed");
             }
-            // const code = await response.text();
             const {id, token} = await response.json();
-            // console.log(id);
-            // console.log(token);
-            // console.log(response.body)
-            // console.log(id);
             user.setUsername(username);
             user.setUserID(id.toString());
-            // console.log(user.userID);
             auth.setAccessToken(token);
             navigate(window.history.back(1));
         } 
@@ -41,11 +34,11 @@ function LogIn() {
         }
     }
     return (
-        <form onSubmit={handleSubmit}>
+        <form className='login-form' onSubmit={handleSubmit}>
             <label for="username">Username</label>
-            <input type="text" id="username" name="username"></input>
+            <input className='login-input' type="text" id="username" name="username"></input>
             <label for="password">Password</label>
-            <input type="password" id="password" name="password"></input>
+            <input className='login-input' type="password" id="password" name="password"></input>
             <button type="submit">Log In</button>
             <a href='/signup'>Create Account</a>
         </form>
