@@ -4,6 +4,7 @@ import LogIn from "./components/LogIn/LogIn";
 import Welcome from "./components/Welcome/Welcome";
 import SignUp from "./components/Signup/Signup";
 import Doblet from "./views/Tablas/Doblet/Doblet";
+import ProtectedRoute from "./ProtectedRoute";
  
 const routes = [
     {
@@ -29,10 +30,15 @@ const routes = [
         </Home>)
      },
      {
-        path: "/games/doblet",
         element: (
-            <Doblet></Doblet>
-        )
+            <ProtectedRoute/>
+        ),
+        children: [
+            {
+                path: "/games/doblet",
+                element: (<Doblet></Doblet>)
+            }
+        ]
      }
 ]
 
