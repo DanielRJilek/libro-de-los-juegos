@@ -163,3 +163,7 @@ li span {
     width: 25px;
     background-color: red;
 }
+
+.empty-li {
+    height: 1.5rem;
+}

@@ -110,6 +110,10 @@ function ProfileDrop() {
     const toggleViewingFriends = () => {
         viewingFriends ? setViewingFriends(false) : setViewingFriends(true)
     }
+    const [viewingFriendRequests, setViewingFriendRequests] = useState(false);
+    const toggleViewingFriendRequests = () => {
+        viewingFriendRequests ? setViewingFriendRequests(false) : setViewingFriendRequests(true)
+    }
 
     const acceptFriendRequest = async (id) => {
         const friendID = id;
@@ -149,9 +153,9 @@ function ProfileDrop() {
                                 <span onClick={toggleViewingFriends}>Friends</span>
                                 {viewingFriends 
                                 && <ul>
-                                    {friends && friends.length > 0 && friends.map((friend) => {
+                                    {friends.length > 0 ? friends.map((friend) => {
                                     return <li className='friend-list-item' key={friend.username}>{friend.username}</li>
-                                })}
+                                }) : <li className='empty-li'></li  >}
                                 </ul>}
                             </span>
                         </li>
@@ -170,15 +174,15 @@ function ProfileDrop() {
                         <li>
                             <GoPeople></GoPeople>
                             <span >
-                                <span>Friend Requests</span>
-                                <ul>
-                                    {friendRequests.length > 0 && friendRequests.map((friendRequest) => {
+                                <span onClick={toggleViewingFriendRequests}>Friend Requests</span>
+                                {viewingFriendRequests && <ul>
+                                    {friendRequests.length > 0 ? friendRequests.map((friendRequest) => {
                                     return <li className='friend-list-item' key={friendRequest.username}>{friendRequest.username}
                                         <button className='accept-button' onClick={() => {acceptFriendRequest(friendRequest._id)}}></button>
                                         <button className='decline-button'></button>
                                     </li>
-                                })}
-                                </ul>
+                                }): <li className='empty-li'></li>}
+                                </ul>}
                             </span>
                         </li>
                         <li onClick={logout}>
