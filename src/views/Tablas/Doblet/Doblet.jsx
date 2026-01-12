@@ -12,6 +12,10 @@ function Doblet() {
 
     }
 
+    const addPlayer = async() => {
+        
+    }
+
     return (
         <div className="game-page page" id=''>
             <Header></Header>

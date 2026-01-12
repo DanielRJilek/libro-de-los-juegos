@@ -4,7 +4,7 @@ import { CgProfile } from "react-icons/cg";
 import { TbLogout2 } from "react-icons/tb";
 import { CiEdit } from "react-icons/ci";
 import { GoPeople } from "react-icons/go";
-import { IoPersonAddOutline } from "react-icons/io5";
+import { IoPersonAddOutline, IoPlayOutline } from "react-icons/io5";
 import { useEffect, useRef, useState, useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import { UserContext } from '../../context/UserContext';
@@ -63,7 +63,7 @@ function ProfileDrop() {
         getFriendRequests();
     }, [user])
 
-    const [friends,setFriends] = useState(null);
+    const [friends,setFriends] = useState([]);
     useEffect(() => {
         const getFriends = async () => {
             try {
@@ -114,6 +114,30 @@ function ProfileDrop() {
     const toggleViewingFriendRequests = () => {
         viewingFriendRequests ? setViewingFriendRequests(false) : setViewingFriendRequests(true)
     }
+    const [viewingInvites, setViewingInvites] = useState(false);
+    const toggleViewingInvites = () => {
+        viewingInvites ? setViewingInvites(false) : setViewingInvites(true)
+    }
+
+    const [invites,setInvites] = useState([]);
+    useEffect(() => {
+        const getInvites = async () => {
+            try {
+                const userID = user.userID;
+                const response = await fetch(`https://libro-de-los-juegos-server.onrender.com/users/${userID}/`, {
+                    method:'GET',
+                    headers: {  'Authorization': `Bearer ${auth.accessToken}`,
+                                "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
+                });
+                const result = await response.json();
+                setInvites(result.invites);
+            } 
+            catch (error) {
+            
+            }
+        }
+        getInvites();
+    }, [user])
 
     const acceptFriendRequest = async (id) => {
         const friendID = id;
@@ -127,6 +151,26 @@ function ProfileDrop() {
             if (!response.ok) {
                 throw new Error("Failed");
             }
+            
+        } 
+        catch (error) {
+            console.log(error)
+        }
+    }
+
+    const declineFriendRequest = async (id) => {
+        const friendID = id;
+        try {
+            const response = await fetch(`https://libro-de-los-juegos-server.onrender.com/users/${user.userID}/friends/requests`, {
+                method:'DELETE',
+                headers: {  'Authorization': `Bearer ${auth.accessToken}`,
+                            "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
+                body: JSON.stringify({friendID}),
+            });
+            if (!response.ok) {
+                throw new Error("Failed");
+            }
+            
         } 
         catch (error) {
             console.log(error)
@@ -143,6 +187,20 @@ function ProfileDrop() {
                         <ProfilePic></ProfilePic>
                         {`${user.username}`}</div>
                     <ul>
+                        <li>
+                            <IoPlayOutline></IoPlayOutline>
+                            <span >
+                                <span onClick={toggleViewingInvites}>Game Invites</span>
+                                {viewingFriendRequests && <ul>
+                                    {friendRequests.length > 0 ? friendRequests.map((friendRequest) => {
+                                    return <li className='friend-list-item' key={friendRequest.username}>{friendRequest.username}
+                                        <button className='accept-button' onClick={() => {acceptFriendRequest(friendRequest._id)}}></button>
+                                        <button className='decline-button'></button>
+                                    </li>
+                                }): <li className='empty-li'></li>}
+                                </ul>}
+                            </span>
+                        </li>
                         <li>
                             <CiEdit></CiEdit>
                             <span>Edit Profile</span>

@@ -5,6 +5,7 @@ import img2 from '../../assets/slides/Alfonso-todas-tablas.jpg'
 import img3 from '../../assets/slides/Alquerque_in_Libro_de_los_juegos.jpg'
 import img4 from '../../assets/slides/chess_players.png'
 import img5 from '../../assets/slides/doblet.jpg'
+import { ClipLoader } from "react-spinners";
 
 function Slideshow() {
     const images = [
@@ -35,8 +36,14 @@ function Slideshow() {
         }
     }, [index])
 
+    const [loading, setLoading] = useState(true);
+    useEffect(() => {
+        setLoading(false);
+    }, [])
+
 
     return (
+        loading ? <ClipLoader></ClipLoader> :
         <div className="slideshow">
             <ul>
                 {images.map((image) => (
