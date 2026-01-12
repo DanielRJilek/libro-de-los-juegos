@@ -45,3 +45,7 @@
 .header-games:hover {
     filter: brightness(1.2);
 }
+
+.game-page #header-menu{
+    color: white;
+}

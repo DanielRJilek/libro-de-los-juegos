@@ -10,7 +10,7 @@ function Header() {
     return (
         <div id='header'>
             <Logo></Logo>
-            <div>
+            <div id='header-menu'>
                 <span className='header-games' onClick={() => {navigate('/games')}}>Games</span>
                 <IconContext.Provider value={{className:'audio-icon'}}>
                     <HiMiniSpeakerWave></HiMiniSpeakerWave>

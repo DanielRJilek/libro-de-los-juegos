@@ -2,9 +2,10 @@ import './ProfileDrop.css'
 import { IconContext } from 'react-icons';
 import { CgProfile } from "react-icons/cg";
 import { TbLogout2 } from "react-icons/tb";
-import { CiEdit } from "react-icons/ci";
+import { CiEdit, CiCircleAlert } from "react-icons/ci";
 import { GoPeople } from "react-icons/go";
-import { IoPersonAddOutline, IoPlayOutline } from "react-icons/io5";
+import { IoPersonAddOutline, IoPlayOutline, IoAlertCircle } from "react-icons/io5";
+
 import { useEffect, useRef, useState, useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import { UserContext } from '../../context/UserContext';
@@ -182,42 +183,44 @@ function ProfileDrop() {
         <IconContext.Provider value={{className:'icon'}}>
             <div className='icon-holder'>
                 <ProfilePic onClick={toggleOpen}></ProfilePic>
+                {invites?.length || friendRequests?.length > 0 && <IoAlertCircle id='profile-alert' onClick={toggleOpen}></IoAlertCircle>}
                 {open ? <div className='drop-options'>
                     <div className='drop-header'>
                         <ProfilePic></ProfilePic>
                         {`${user.username}`}</div>
-                    <ul>
-                        <li>
+                    <ul id='profiledrop-options'>
+                        <li id='edit-profile'>
+                            <CiEdit></CiEdit>
+                            <span>Edit Profile</span>
+                        </li>
+                        <li id='view-invites'>
                             <IoPlayOutline></IoPlayOutline>
                             <span >
                                 <span onClick={toggleViewingInvites}>Game Invites</span>
-                                {viewingFriendRequests && <ul>
-                                    {friendRequests.length > 0 ? friendRequests.map((friendRequest) => {
-                                    return <li className='friend-list-item' key={friendRequest.username}>{friendRequest.username}
-                                        <button className='accept-button' onClick={() => {acceptFriendRequest(friendRequest._id)}}></button>
-                                        <button className='decline-button'></button>
+                                {invites?.length > 0 && <IoAlertCircle id='profile-alert'></IoAlertCircle>}
+                                {viewingInvites && <ul>
+                                    {invites?.length > 0 ? invites.map((invite) => {
+                                    return <li className='friend-list-item' key={invite}>{invite.game} {invite.sender}
+                                        {/* <button className='accept-button' onClick={() => {acceptFriendRequest(friendRequest._id)}}></button>
+                                        <button className='decline-button'></button> */}
                                     </li>
                                 }): <li className='empty-li'></li>}
                                 </ul>}
                             </span>
                         </li>
-                        <li>
-                            <CiEdit></CiEdit>
-                            <span>Edit Profile</span>
-                        </li>
-                        <li>
+                        <li id='view-friends'>
                             <GoPeople></GoPeople>
                             <span >
                                 <span onClick={toggleViewingFriends}>Friends</span>
                                 {viewingFriends 
                                 && <ul>
-                                    {friends.length > 0 ? friends.map((friend) => {
+                                    {friends?.length > 0 ? friends.map((friend) => {
                                     return <li className='friend-list-item' key={friend.username}>{friend.username}</li>
                                 }) : <li className='empty-li'></li  >}
                                 </ul>}
                             </span>
                         </li>
-                        <li>
+                        <li id='add-friend'>
                             <IoPersonAddOutline></IoPersonAddOutline>
                             <span >
                                 <span onClick={toggleAddingFriend}>Add Friend</span>
@@ -229,12 +232,13 @@ function ProfileDrop() {
                                         </form>}
                             </span>
                         </li>
-                        <li>
+                        <li id='view-friend-requests'>
                             <GoPeople></GoPeople>
                             <span >
                                 <span onClick={toggleViewingFriendRequests}>Friend Requests</span>
+                                {friendRequests?.length > 0 && <IoAlertCircle id='profile-alert'></IoAlertCircle>}
                                 {viewingFriendRequests && <ul>
-                                    {friendRequests.length > 0 ? friendRequests.map((friendRequest) => {
+                                    {friendRequests?.length > 0 ? friendRequests.map((friendRequest) => {
                                     return <li className='friend-list-item' key={friendRequest.username}>{friendRequest.username}
                                         <button className='accept-button' onClick={() => {acceptFriendRequest(friendRequest._id)}}></button>
                                         <button className='decline-button'></button>
@@ -250,6 +254,7 @@ function ProfileDrop() {
                     </ul>
                 </div> : []}
             </div>
+            
             
         </IconContext.Provider>
     )
