@@ -2,12 +2,13 @@ import './MainMenu.css'
 import Header from '../../components/Header/Header';
 import GameCard from '../../components/GameCard/GameCard';
 import { useEffect, useState } from 'react';
+import { ClipLoader } from "react-spinners";
 
 function MainMenu() {
   // const gameTitles = [];
   // const gameImages = [];
   // const game = [];
-
+  const [loading, setLoading] = useState(true);
   const [games,setGames] = useState([]);
   useEffect(() => {
     const getGames = async () => {
@@ -18,6 +19,7 @@ function MainMenu() {
         });
         const result = await response.json();
         setGames(result);
+        setLoading(false);
       } 
       catch (error) {
       
@@ -40,11 +42,11 @@ function MainMenu() {
 
           </div>
         </div>
-        <div className='gallery'>
+        {!loading && <div className='gallery'>
           {games.length > 0 && games.map((game) => {
             return <GameCard key={game.title} game={game}></GameCard>
           })}
-        </div>
+        </div>}
       </div>
     </div>
   )

@@ -35,8 +35,11 @@ function SignUp() {
             }
             // const code = await response.text();
             user.setUsername(username);
-            auth.setAccessToken(response2.body);
-            navigate(window.history.back(1));
+            // auth.setAccessToken(response2.body);
+            const {id, token} = await response2.json();
+            auth.setAccessToken(token);
+            // localStorage.setItem("token", JSON.stringify(token));
+            navigate('/games');
         } 
         catch (error) {
             console.log(error)

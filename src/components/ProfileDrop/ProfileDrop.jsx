@@ -5,9 +5,7 @@ import { TbLogout2 } from "react-icons/tb";
 import { CiEdit } from "react-icons/ci";
 import { GoPeople } from "react-icons/go";
 import { IoPersonAddOutline } from "react-icons/io5";
-import { useState } from 'react';
-import { useContext } from 'react';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState, useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import { UserContext } from '../../context/UserContext';
 import { useNavigate } from 'react-router';
@@ -22,6 +20,7 @@ function ProfileDrop() {
     }
     const options = [  ];
     const ProfilePic = user.profilePic;
+    
     const logout = async (e) => {
         e.preventDefault();
         try {
@@ -33,7 +32,10 @@ function ProfileDrop() {
             if (!response.ok) {
                 throw new Error("Failed");
             }
+            // localStorage.removeItem("token");
             auth.setAccessToken(null);
+            user.setUsername(null);
+            user.setUserID(null);
             navigate('/');
         } 
         catch (error) {
@@ -59,9 +61,9 @@ function ProfileDrop() {
             }
         }
         getFriendRequests();
-    }, [])
+    }, [user])
 
-    const [friends,setFriends] = useState([]);
+    const [friends,setFriends] = useState(null);
     useEffect(() => {
         const getFriends = async () => {
             try {
@@ -79,9 +81,7 @@ function ProfileDrop() {
             }
         }
         getFriends();
-    }, [friendRequests])
-
-    
+    }, [user])
 
     const [addingFriend, setAddingFriend] = useState(false);
     const toggleAddingFriend = () => {
@@ -149,7 +149,7 @@ function ProfileDrop() {
                                 <span onClick={toggleViewingFriends}>Friends</span>
                                 {viewingFriends 
                                 && <ul>
-                                    {friends.length > 0 && friends.map((friend) => {
+                                    {friends && friends.length > 0 && friends.map((friend) => {
                                     return <li className='friend-list-item' key={friend.username}>{friend.username}</li>
                                 })}
                                 </ul>}

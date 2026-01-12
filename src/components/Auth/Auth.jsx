@@ -23,8 +23,7 @@ function Auth() {
             if (!response.ok) {
                 throw new Error("Failed");
             }
-            // const code = await response.text();
-            auth.setAccessToken(null);
+            localStorage.removeItem("token");
             navigate('/');
         } 
         catch (error) {

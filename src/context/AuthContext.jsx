@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 // import useAuthContext from "../hooks/useAuthContext";
 
 
@@ -6,7 +6,16 @@ import { createContext, useState } from "react";
 export const AuthContext = createContext();
 
 export const AuthContextProvider = ({children}) => {
-    const [accessToken, setAccessToken] = useState(null);   
+    const [accessToken, setAccessToken] = useState(() => {
+        const token = localStorage.getItem("token");
+        return token;
+    });   
+    useEffect(() => {
+        if (accessToken==null) {
+            localStorage.removeItem("token");
+        }
+        localStorage.setItem("token", accessToken);
+    }, [accessToken])
     return (
         <AuthContext value={{accessToken,setAccessToken}}>
             {children}

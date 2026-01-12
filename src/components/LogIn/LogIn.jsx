@@ -1,19 +1,22 @@
 import './LogIn.css'
 import {useNavigate} from 'react-router'
 import { AuthContext } from '../../context/AuthContext';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { UserContext } from '../../context/UserContext';
 import { CgProfile } from "react-icons/cg";
+import { ClipLoader } from "react-spinners";
+
 
 function LogIn() {
+    const [loading, setLoading] = useState(false);
     const auth = useContext(AuthContext);
-    const user = useContext(UserContext)
+    const user = useContext(UserContext);
     const navigate = useNavigate();
     const handleSubmit = async (e) => {
         e.preventDefault();
         const username = e.target[0].value;
         const password = e.target[1].value;
-
+        setLoading(true);
         try {
             const response = await fetch('https://libro-de-los-juegos-server.onrender.com/auth/login', {
                 method:'POST',
@@ -27,22 +30,29 @@ function LogIn() {
             user.setUsername(username);
             user.setUserID(id.toString());
             auth.setAccessToken(token);
-            navigate(window.history.back(1));
+            // localStorage.setItem("token", token);
+            setLoading(false);
+            navigate('/games');
         } 
         catch (error) {
             console.log(error)
         }
     }
-    return (
-        <form className='login-form' onSubmit={handleSubmit}>
-            <label for="username">Username</label>
-            <input className='login-input' type="text" id="username" name="username"></input>
-            <label for="password">Password</label>
-            <input className='login-input' type="password" id="password" name="password"></input>
-            <button type="submit">Log In</button>
-            <a href='/signup'>Create Account</a>
-        </form>
-    )
+    if (loading) {
+        return (<ClipLoader></ClipLoader>)
+    }
+    else {
+        return (
+            <form className='login-form' onSubmit={handleSubmit}>
+                <label for="username">Username</label>
+                <input className='login-input' type="text" id="username" name="username"></input>
+                <label for="password">Password</label>
+                <input className='login-input' type="password" id="password" name="password"></input>
+                <button type="submit">Log In</button>
+                <a href='/signup'>Create Account</a>
+            </form>
+        )
+    }   
 }
 
 export default LogIn
