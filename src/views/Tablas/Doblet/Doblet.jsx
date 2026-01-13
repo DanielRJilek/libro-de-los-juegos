@@ -1,12 +1,13 @@
 import Header from "../../../components/Header/Header"
 import Board from "../Board/Board";
 // import Dice from "../Dice/Dice";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../../../context/AuthContext";
 import { useParams } from "react-router";
 
 function Doblet() {
     const [board,setBoard] = useState([[2,0,0,2], [2,0,0,2], [2,0,0,2], [2,0,0,2], [2,0,0,2], [2,0,0,2]]);
+    
     const params = useParams();
     const instance = params.instance
     const auth = useContext(AuthContext);
@@ -27,6 +28,24 @@ function Doblet() {
             console.log(error)
         }
     }
+
+    useEffect(() => {
+        const getGame = async () => {
+        try {
+            const response = await fetch(`https://libro-de-los-juegos-server.onrender.com/games/doblet/table/${instance}`, {
+            method:'GET',
+            headers: {  'Authorization': `Bearer ${auth.accessToken}`,
+                        "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
+            });
+            const result = await response.json();
+            setBoard(result.board);
+        } 
+        catch (error) {
+        
+        }
+        }
+        getGame();
+    }, [])
 
     // class Player {constructor() {}}
     // const addPlayer = async() => {}
