@@ -136,17 +136,6 @@ button:active {
     min-width: 900px;
 }
 
-.lobby-page {
-    min-height: 100vh;
-    margin: 0;
-    padding: 0;
-    border: 0;
-    display: flex;
-    flex-direction: column;
-    min-width: 900px;
-    background-image: url(./assets/images/Alhambra_view.png);
-}
-
 .game-page {
   background-image: url(./assets/images/seville_alcazar.jpeg);
   background-size: cover;

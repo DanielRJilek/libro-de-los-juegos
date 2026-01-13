@@ -42,11 +42,11 @@ function MainMenu() {
 
           </div>
         </div>
-        {!loading && <div className='gallery'>
+        {!loading ? <div className='gallery'>
           {games.length > 0 && games.map((game) => {
             return <GameCard key={game.title} game={game}></GameCard>
-          })}
-        </div>}
+          })} 
+        </div> : <ClipLoader></ClipLoader>}
       </div>
     </div>
   )

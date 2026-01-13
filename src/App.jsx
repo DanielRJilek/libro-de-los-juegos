@@ -1,7 +1,7 @@
 import './index.css'
 import useAuthContext from './hooks/useAuthContext'
 // import AuthProvider from './context/AuthContext'
-import routes from './routes'
+import routes from './routing/routes'
 import { RouterProvider, createBrowserRouter } from 'react-router'
 import { AuthContext, AuthContextProvider } from './context/AuthContext'
 import { useContext, useState } from 'react'

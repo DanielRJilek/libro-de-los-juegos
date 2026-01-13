@@ -1,11 +1,11 @@
-import MainMenu from "./views/MainMenu/MainMenu";
-import Home from "./views/Home/Home";
-import LogIn from "./components/LogIn/LogIn";
-import Welcome from "./components/Welcome/Welcome";
-import SignUp from "./components/Signup/Signup";
-import Doblet from "./views/Tablas/Doblet/Doblet";
+import MainMenu from "../views/MainMenu/MainMenu";
+import Home from "../views/Home/Home";
+import LogIn from "../components/LogIn/LogIn";
+import Welcome from "../components/Welcome/Welcome";
+import SignUp from "../components/Signup/Signup";
+import Doblet from "../views/Tablas/Doblet/Doblet";
 import ProtectedRoute from "./ProtectedRoute";
-import DobletLobby from "./views/Tablas/Doblet/DobletLobby";
+import DobletLobby from "../views/Tablas/Doblet/Lobby";
  
 const routes = [
     {
@@ -36,8 +36,12 @@ const routes = [
         ),
         children: [
             {
-                path: "/games/doblet",
-                element: (<DobletLobby></DobletLobby>)
+                path: "/games/:title",
+                element: (<Lobby></Lobby>)
+            },
+            {
+                path: "/games/:title/:instance",
+                element: (<Doblet></Doblet>)
             }
         ]
      }
