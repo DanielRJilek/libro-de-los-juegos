@@ -1,0 +1,17 @@
+.board-square {
+    /* outline: 1px solid black; */
+    z-index: 1;
+    position: relative;
+}
+
+.board-square > .man:nth-child(1) {
+    position: absolute;
+    top: 15%;
+    left: 25%;
+}
+
+.board-square > .man:nth-child(2) {
+    position: absolute;
+    top: 5%;
+    left: 25%;
+}

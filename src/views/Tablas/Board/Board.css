@@ -1,5 +1,28 @@
-.game-board {
-    height: 500px;
+.board-grid {
+    height: 411px;
+    width: 687px;
     display: grid;
-    grid-template-columns: 12;
+    /* grid-template-columns: repeat(6, 53px); */
+    grid-template-rows: repeat(3, 125px);
+    padding-top: 16px;
+}
+
+.board-holder  {
+    position: relative;
+    /* display: grid;
+    grid-template-rows: 1fr 1fr 1fr; */
+}
+
+.board-holder > img {
+    position: absolute;
+    left: 0;
+    max-width: 100%; 
+    height: auto;
+}
+
+.board-grid-quarter {
+    display: grid;
+    width: 46%;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(2, 1fr);
 }

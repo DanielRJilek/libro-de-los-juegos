@@ -1,6 +1,7 @@
 .man {
-    border-radius: 25px;
-    height: 50px;
-    width: 50px;
+    border-radius: 50%;
+    height: 50%;
+    width: 50%;
+    margin: auto;
     border: 3px solid black;
 }
