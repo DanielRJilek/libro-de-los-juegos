@@ -208,6 +208,7 @@ function ProfileDrop() {
                                 </ul>}
                             </span>
                         </li>
+                        <li>Active Games</li>
                         <li id='view-friends'>
                             <GoPeople></GoPeople>
                             <span >

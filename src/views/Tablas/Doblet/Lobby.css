@@ -93,3 +93,25 @@
 #game-desc {
   padding: 20px;
 }
+
+.lobby {
+  border-radius: 5px;
+  background-color: white;
+  box-shadow: 0 6px 20px #000c;
+  min-width: 400px;
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.button-holder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.button-holder button {
+  display: block;
+  max-width: 50%;
+}

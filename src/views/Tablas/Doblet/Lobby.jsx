@@ -53,6 +53,8 @@ function DobletLobby() {
             }
             const result = await response.json();
             setLobby(result.id);
+            // setPlayers(result.players);
+            setPlayers([user]);
         } 
         catch (error) {
             console.log(error)
@@ -73,34 +75,46 @@ function DobletLobby() {
             if (!response.ok) {
                 throw new Error("Failed");
             }
+            const response2 = await fetch(`https://libro-de-los-juegos-server.onrender.com/games/${title}/table/${lobby}/`, {
+                method:'GET',
+                headers: {  'Authorization': `Bearer ${auth.accessToken}`,
+                            "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
+            });
+            if (!response.ok) {
+                throw new Error("Failed");
+            }
+            const result = await response2.json();
+            setPlayers(result.players);
+            
         } 
         catch (error) {
             console.log(error)
         }
     }
 
-    const [players, setPlayers] = useState(null);
+    const [players, setPlayers] = useState([]);
     useEffect(() => {
         const getPlayers = async () => {
             try {
                 const userID = user.userID;
-                const response = await fetch(`https://libro-de-los-juegos-server.onrender.com/games/${title}/table/${lobby}/players`, {
-                    method:'GET',
+                const response = await fetch(`https://libro-de-los-juegos-server.onrender.com/games/${title}/table/${lobby}/`, {
+                    method: 'GET',
                     headers: {  'Authorization': `Bearer ${auth.accessToken}`,
                                 "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
                 });
                 const result = await response.json();
-                setPlayers(result);
+                setPlayers(result.players);
             } 
             catch (error) {
             
             }
         }
         getPlayers();
-    }, [user])
+        
+    }, [lobby])
 
     const play = () => {
-        navigate('/games/doblet/' + lobby);
+        navigate(`/games/${title}/table/` + lobby);
     }
 
     return (
@@ -115,15 +129,28 @@ function DobletLobby() {
                                 </div>
                             </div> : <ClipLoader/>}
                 <div className='lobby-bottom'>
-                    <button onClick={createGame}>Create Lobby</button>
-                    <button onClick={toggleAddingPlayer} className='drop-down'>Add Player</button>
-                    {addingPlayer
-                        &&  <form className='flex-row' onSubmit={addPlayer}>
-                                <label for="username"></label>
-                                <input type="text" id="username" name="username"></input>
-                                <button className='go-button'>Go</button>
-                            </form>}
-                    <button onClick={play}>Play!</button>
+                    
+                    {lobby? <div className="lobby">
+                                <h2>Players</h2>
+                                <ul>
+                                    {players?.length > 0 ? players.map((player) => {
+                                        return <li className='friend-list-item' key={player.id}>{player.id}</li>
+                                    }) : <li className='empty-li'>No PLayers?</li  >}
+                                </ul>
+                                <div className="button-holder">
+                                    <button onClick={toggleAddingPlayer} className='drop-down'>Add Player</button>
+                                    {addingPlayer
+                                        &&  <form className='flex-row' onSubmit={addPlayer}>
+                                                <label for="username"></label>
+                                                <input type="text" id="username" name="username"></input>
+                                                <button className='go-button'>Go</button>
+                                            </form>}
+                                    
+                                    <button onClick={play}>Play!</button>
+                                </div>
+                                
+                            </div> : <button onClick={createGame}>Create Lobby</button>}
+                    
                 </div>
                 
             </div>
