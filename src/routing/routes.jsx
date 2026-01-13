@@ -5,7 +5,7 @@ import Welcome from "../components/Welcome/Welcome";
 import SignUp from "../components/Signup/Signup";
 import Doblet from "../views/Tablas/Doblet/Doblet";
 import ProtectedRoute from "./ProtectedRoute";
-import DobletLobby from "../views/Tablas/Doblet/Lobby";
+import Lobby from "../views/Tablas/Doblet/Lobby";
  
 const routes = [
     {
