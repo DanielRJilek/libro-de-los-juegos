@@ -10,6 +10,7 @@ import { useEffect, useRef, useState, useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import { UserContext } from '../../context/UserContext';
 import { useNavigate } from 'react-router';
+const API_URL = import.meta.env.VITE_API_URL;
 
 function ProfileDrop() {
     const auth = useContext(AuthContext);
@@ -25,7 +26,7 @@ function ProfileDrop() {
     const logout = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch('https://libro-de-los-juegos-server.onrender.com/auth/logout', {
+            const response = await fetch(`${API_URL}/auth/logout`, {
                 method:'POST',
                 headers: { "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
                 
@@ -49,7 +50,7 @@ function ProfileDrop() {
         const getFriendRequests = async () => {
             try {
                 const userID = user.userID;
-                const response = await fetch(`https://libro-de-los-juegos-server.onrender.com/users/${userID}/friends/requests`, {
+                const response = await fetch(`${API_URL}/users/${userID}/friends/requests`, {
                     method:'GET',
                     headers: {  'Authorization': `Bearer ${auth.accessToken}`,
                                 "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
@@ -69,7 +70,7 @@ function ProfileDrop() {
         const getActiveGames = async () => {
             try {
                 const userID = user.userID;
-                const response = await fetch(`https://libro-de-los-juegos-server.onrender.com/users/${userID}/`, {
+                const response = await fetch(`${API_URL}/users/${userID}/`, {
                     method:'GET',
                     headers: {  'Authorization': `Bearer ${auth.accessToken}`,
                                 "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
@@ -89,7 +90,7 @@ function ProfileDrop() {
         const getFriends = async () => {
             try {
                 const userID = user.userID;
-                const response = await fetch(`https://libro-de-los-juegos-server.onrender.com/users/${userID}/friends`, {
+                const response = await fetch(`${API_URL}/users/${userID}/friends`, {
                     method:'GET',
                     headers: {  'Authorization': `Bearer ${auth.accessToken}`,
                                 "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
@@ -112,7 +113,7 @@ function ProfileDrop() {
         e.preventDefault();
         const username = e.target[0].value;
         try {
-            const response = await fetch(`https://libro-de-los-juegos-server.onrender.com/users/${user.userID}/friends/requests`, {
+            const response = await fetch(`${API_URL}/users/${user.userID}/friends/requests`, {
                 method:'POST',
                 headers: {  'Authorization': `Bearer ${auth.accessToken}`,
                             "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
@@ -149,7 +150,7 @@ function ProfileDrop() {
         const getInvites = async () => {
             try {
                 const userID = user.userID;
-                const response = await fetch(`https://libro-de-los-juegos-server.onrender.com/users/${userID}/`, {
+                const response = await fetch(`${API_URL}/users/${userID}/`, {
                     method:'GET',
                     headers: {  'Authorization': `Bearer ${auth.accessToken}`,
                                 "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
@@ -167,7 +168,7 @@ function ProfileDrop() {
     const acceptFriendRequest = async (id) => {
         const friendID = id;
         try {
-            const response = await fetch(`https://libro-de-los-juegos-server.onrender.com/users/${user.userID}/friends/`, {
+            const response = await fetch(`${API_URL}/users/${user.userID}/friends/`, {
                 method:'POST',
                 headers: {  'Authorization': `Bearer ${auth.accessToken}`,
                             "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
@@ -186,7 +187,7 @@ function ProfileDrop() {
     const declineFriendRequest = async (id) => {
         const friendID = id;
         try {
-            const response = await fetch(`https://libro-de-los-juegos-server.onrender.com/users/${user.userID}/friends/requests`, {
+            const response = await fetch(`${API_URL}/users/${user.userID}/friends/requests`, {
                 method:'DELETE',
                 headers: {  'Authorization': `Bearer ${auth.accessToken}`,
                             "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },

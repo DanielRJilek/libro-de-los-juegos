@@ -4,8 +4,7 @@ import { AuthContext } from "../../context/AuthContext";
 import LogIn from "../LogIn/LogIn";
 import ProfileDrop from "../ProfileDrop/ProfileDrop";
 import { UserContext } from "../../context/UserContext";
-
-
+const API_URL = import.meta.env.VITE_API_URL;
 
 function Auth() {
     const auth = useContext(AuthContext);
@@ -15,7 +14,7 @@ function Auth() {
     const logout = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch('https://libro-de-los-juegos-server.onrender.com/auth/logout', {
+            const response = await fetch(`${API_URL}/auth/logout`, {
                 method:'POST',
                 headers: { "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
                 

@@ -5,6 +5,7 @@ import { useContext, useState } from 'react';
 import { UserContext } from '../../context/UserContext';
 import { CgProfile } from "react-icons/cg";
 import { ClipLoader } from "react-spinners";
+const API_URL = import.meta.env.VITE_API_URL;
 
 
 function LogIn() {
@@ -18,7 +19,7 @@ function LogIn() {
         const password = e.target[1].value;
         setLoading(true);
         try {
-            const response = await fetch('https://libro-de-los-juegos-server.onrender.com/auth/login', {
+            const response = await fetch(`${API_URL}/auth/login`, {
                 method:'POST',
                 headers: { "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
                 body: JSON.stringify({username, password}),

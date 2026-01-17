@@ -7,6 +7,8 @@ import { AuthContext } from "../../../context/AuthContext";
 import { useNavigate, useParams } from "react-router";
 import './Lobby.css'
 import { ClipLoader } from "react-spinners";
+const API_URL = import.meta.env.VITE_API_URL;
+import { socket } from "../../../socket";
 
 function DobletLobby() {
     const params = useParams();
@@ -20,7 +22,7 @@ function DobletLobby() {
     useEffect(() => {
         const getGame = async () => {
         try {
-            const response = await fetch(`https://libro-de-los-juegos-server.onrender.com/games/${title}`, {
+            const response = await fetch(`${API_URL}/games/${title}`, {
             method:'GET',
             headers: { "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
             });
@@ -43,7 +45,7 @@ function DobletLobby() {
     const createGame = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch(`https://libro-de-los-juegos-server.onrender.com/games/${title}/table`, {
+            const response = await fetch(`${API_URL}/games/${title}/table`, {
                 method:'POST',
                 headers: {  'Authorization': `Bearer ${auth.accessToken}`,
                             "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
@@ -66,7 +68,7 @@ function DobletLobby() {
         e.preventDefault();
         const username = e.target[0].value;
         try {
-            const response = await fetch(`https://libro-de-los-juegos-server.onrender.com/games/${title}/table/${lobby}/players`, {
+            const response = await fetch(`${API_URL}/games/${title}/table/${lobby}/players`, {
                 method:'POST',
                 headers: {  'Authorization': `Bearer ${auth.accessToken}`,
                             "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
@@ -75,7 +77,7 @@ function DobletLobby() {
             if (!response.ok) {
                 throw new Error("Failed");
             }
-            const response2 = await fetch(`https://libro-de-los-juegos-server.onrender.com/games/${title}/table/${lobby}/`, {
+            const response2 = await fetch(`${API_URL}/games/${title}/table/${lobby}/`, {
                 method:'GET',
                 headers: {  'Authorization': `Bearer ${auth.accessToken}`,
                             "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
@@ -97,7 +99,7 @@ function DobletLobby() {
         const getPlayers = async () => {
             try {
                 const userID = user.userID;
-                const response = await fetch(`https://libro-de-los-juegos-server.onrender.com/games/${title}/table/${lobby}/`, {
+                const response = await fetch(`${API_URL}/games/${title}/table/${lobby}/`, {
                     method: 'GET',
                     headers: {  'Authorization': `Bearer ${auth.accessToken}`,
                                 "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
@@ -115,6 +117,7 @@ function DobletLobby() {
 
     const play = () => {
         if (players.length ==2) {
+            socket.connect();
             navigate(`/games/${title}/table/` + lobby);
         }
     }
@@ -135,7 +138,7 @@ function DobletLobby() {
                                 <h2>Players</h2>
                                 <ul>
                                     {players?.length > 0 ? players.map((player) => {
-                                        return <li className='friend-list-item' key={player.id}>{player.id}</li>
+                                        return <li className='friend-list-item' key={player.id}>{player.username}</li>
                                     }) : <li className='empty-li'>No PLayers?</li  >}
                                 </ul>
                                 <div className="button-holder">

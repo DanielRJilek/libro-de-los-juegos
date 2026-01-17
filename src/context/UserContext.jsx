@@ -1,6 +1,7 @@
 import { createContext, useEffect, useState, useContext } from "react";
 import { CgProfile } from "react-icons/cg";
 import { AuthContext } from '../context/AuthContext';
+const API_URL = import.meta.env.VITE_API_URL;
 
 export const UserContext = createContext();
 
@@ -12,7 +13,7 @@ export const UserContextProvider = ({children}) => {
     useEffect(() => {
         async function fetchData() {
             try {
-                const response = await fetch(`https://libro-de-los-juegos-server.onrender.com/users/`, {
+                const response = await fetch(`${API_URL}/users/`, {
                     // mode: "cors",
                     method:'GET',
                     headers: {  'Authorization': `Bearer ${localStorage.getItem("token")}`,
