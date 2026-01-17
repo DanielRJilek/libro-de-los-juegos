@@ -40,10 +40,13 @@
 
 .header-games {
     cursor: pointer;
+    border-radius: 5px;
+    padding: 5px;
 }
 
 .header-games:hover {
     filter: brightness(1.2);
+    background-color: rgba(117, 117, 117, 0.123);
 }
 
 .game-page #header-menu{

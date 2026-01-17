@@ -5,7 +5,7 @@ import { TbLogout2 } from "react-icons/tb";
 import { CiEdit, CiCircleAlert } from "react-icons/ci";
 import { GoPeople } from "react-icons/go";
 import { IoPersonAddOutline, IoPlayOutline, IoAlertCircle } from "react-icons/io5";
-
+import { PiCheckerboardFill } from "react-icons/pi";
 import { useEffect, useRef, useState, useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import { UserContext } from '../../context/UserContext';
@@ -64,6 +64,26 @@ function ProfileDrop() {
         getFriendRequests();
     }, [user])
 
+    const [activeGames,setActiveGames] = useState([]);
+    useEffect(() => {
+        const getActiveGames = async () => {
+            try {
+                const userID = user.userID;
+                const response = await fetch(`https://libro-de-los-juegos-server.onrender.com/users/${userID}/`, {
+                    method:'GET',
+                    headers: {  'Authorization': `Bearer ${auth.accessToken}`,
+                                "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
+                });
+                const result = await response.json();
+                setActiveGames(result);
+            } 
+            catch (error) {
+            
+            }
+        }
+        // getActiveGames();
+    }, [user])
+
     const [friends,setFriends] = useState([]);
     useEffect(() => {
         const getFriends = async () => {
@@ -118,6 +138,10 @@ function ProfileDrop() {
     const [viewingInvites, setViewingInvites] = useState(false);
     const toggleViewingInvites = () => {
         viewingInvites ? setViewingInvites(false) : setViewingInvites(true)
+    }
+    const [viewingActiveGames, setViewingActiveGames] = useState(false);
+    const toggleViewingActiveGames = () => {
+        viewingActiveGames ? setViewingActiveGames(false) : setViewingActiveGames(true)
     }
 
     const [invites,setInvites] = useState([]);
@@ -208,7 +232,19 @@ function ProfileDrop() {
                                 </ul>}
                             </span>
                         </li>
-                        <li>Active Games</li>
+                        <li id='view-active-games'>
+                            <PiCheckerboardFill/>
+                            <span>
+                                <span onClick={toggleViewingActiveGames}>Active Games</span>
+                                {viewingActiveGames 
+                                    && <ul>
+                                        {activeGames?.length > 0 ? activeGames.map((game) => {
+                                        return <li className='friend-list-item' key={game}>{game}</li>
+                                    }) : <li className='empty-li'></li  >}
+                                    </ul>}
+                            </span>
+                            
+                        </li>
                         <li id='view-friends'>
                             <GoPeople></GoPeople>
                             <span >

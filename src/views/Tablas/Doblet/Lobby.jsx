@@ -114,22 +114,23 @@ function DobletLobby() {
     }, [lobby])
 
     const play = () => {
-        navigate(`/games/${title}/table/` + lobby);
+        if (players.length ==2) {
+            navigate(`/games/${title}/table/` + lobby);
+        }
     }
 
     return (
         <div className="lobby-page page">
             <Header></Header>
-            <div id='main'>
-                {!loading ? <div className='lobby-top'>
+            {!loading ? <div id='main'>
+                <div className='lobby-top'>
                                 <img src={'https://libro-de-los-juegos-server.onrender.com/static' + game?.image}></img>
                                 <div className="lobby-top-right">
                                     <h1 id="game-title">{game?.title}</h1>
                                     <div id="game-desc">{game?.desc}</div>
                                 </div>
-                            </div> : <ClipLoader/>}
+                            </div> 
                 <div className='lobby-bottom'>
-                    
                     {lobby? <div className="lobby">
                                 <h2>Players</h2>
                                 <ul>
@@ -138,7 +139,7 @@ function DobletLobby() {
                                     }) : <li className='empty-li'>No PLayers?</li  >}
                                 </ul>
                                 <div className="button-holder">
-                                    <button onClick={toggleAddingPlayer} className='drop-down'>Add Player</button>
+                                    <button onClick={toggleAddingPlayer} className='drop-down'>Invite Player</button>
                                     {addingPlayer
                                         &&  <form className='flex-row' onSubmit={addPlayer}>
                                                 <label for="username"></label>
@@ -150,11 +151,9 @@ function DobletLobby() {
                                 </div>
                                 
                             </div> : <button onClick={createGame}>Create Lobby</button>}
-                    
                 </div>
-                
             </div>
-            
+            : <ClipLoader/>}
         </div>
     )
 }

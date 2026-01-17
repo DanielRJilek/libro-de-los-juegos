@@ -1,0 +1,25 @@
+.game-screen {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+}
+
+.game-side {
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    color: white;
+}
+
+.game-center {
+    padding: 0 20px
+}
+
+.button-holder {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex: 1;
+}

@@ -134,6 +134,9 @@ button:active {
     display: flex;
     flex-direction: column;
     min-width: 900px;
+    background-image: url(./assets/images/Alhambra_view.png);
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 .game-page {
@@ -142,4 +145,18 @@ button:active {
   background-repeat: no-repeat;
   /* justify-content: center; */
   align-items: center;
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+#main {
+    width: 100%;
+    display: flex;
+    /* justify-content: center; */
+    flex-direction: column;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
 }
