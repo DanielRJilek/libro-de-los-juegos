@@ -117,7 +117,8 @@ function DobletLobby() {
 
     const play = () => {
         if (players.length ==2) {
-            socket.connect();
+            // socket.connect();
+            // socket.emit('join-table', lobby)
             navigate(`/games/${title}/table/` + lobby);
         }
     }
