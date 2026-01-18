@@ -20,8 +20,58 @@ function ProfileDrop() {
     const toggleOpen = () => {
         open ? setOpen(false) : setOpen(true)
     }
+    const [addingFriend, setAddingFriend] = useState(false);
+    const toggleAddingFriend = () => {
+        addingFriend ? setAddingFriend(false) : setAddingFriend(true)
+    }
+    const [viewingFriends, setViewingFriends] = useState(false);
+    const toggleViewingFriends = () => {
+        viewingFriends ? setViewingFriends(false) : setViewingFriends(true)
+    }
+    const [viewingFriendRequests, setViewingFriendRequests] = useState(false);
+    const toggleViewingFriendRequests = () => {
+        viewingFriendRequests ? setViewingFriendRequests(false) : setViewingFriendRequests(true)
+    }
+    const [viewingInvites, setViewingInvites] = useState(false);
+    const toggleViewingInvites = () => {
+        viewingInvites ? setViewingInvites(false) : setViewingInvites(true)
+    }
+    const [viewingActiveGames, setViewingActiveGames] = useState(false);
+    const toggleViewingActiveGames = () => {
+        viewingActiveGames ? setViewingActiveGames(false) : setViewingActiveGames(true)
+    }
     const options = [  ];
     const ProfilePic = user.profilePic;
+
+    const [invites,setInvites] = useState([]);
+    const [friendRequests,setFriendRequests] = useState([]);
+    const [activeGames,setActiveGames] = useState([]);
+    const [friends,setFriends] = useState([]);
+
+    const getMyData = async () => {
+        try {
+            const userID = user.userID;
+            const response = await fetch(`${API_URL}/users/${user.userID}/private`, {
+                method:'GET',
+                headers: {  'Authorization': `Bearer ${auth.accessToken}`,
+                            "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
+            });
+            const result = await response.json();
+            setFriendRequests(result.friendRequests);
+            setActiveGames(result.activeGames);
+            setFriends(result.friends);
+            setInvites(result.invites);
+        } 
+        catch (error) {
+        
+        }
+    }
+
+    useEffect(() => {
+        if (user.userID != null) {
+            getMyData();
+        }
+    }, [user])
     
     const logout = async (e) => {
         e.preventDefault();
@@ -45,70 +95,7 @@ function ProfileDrop() {
         }
     }
 
-    const [friendRequests,setFriendRequests] = useState([]);
-    useEffect(() => {
-        const getFriendRequests = async () => {
-            try {
-                const userID = user.userID;
-                const response = await fetch(`${API_URL}/users/${userID}/friends/requests`, {
-                    method:'GET',
-                    headers: {  'Authorization': `Bearer ${auth.accessToken}`,
-                                "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
-                });
-                const result = await response.json();
-                setFriendRequests(result);
-            } 
-            catch (error) {
-            
-            }
-        }
-        getFriendRequests();
-    }, [user])
-
-    const [activeGames,setActiveGames] = useState([]);
-    useEffect(() => {
-        const getActiveGames = async () => {
-            try {
-                const userID = user.userID;
-                const response = await fetch(`${API_URL}/users/${userID}/`, {
-                    method:'GET',
-                    headers: {  'Authorization': `Bearer ${auth.accessToken}`,
-                                "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
-                });
-                const result = await response.json();
-                setActiveGames(result);
-            } 
-            catch (error) {
-            
-            }
-        }
-        // getActiveGames();
-    }, [user])
-
-    const [friends,setFriends] = useState([]);
-    useEffect(() => {
-        const getFriends = async () => {
-            try {
-                const userID = user.userID;
-                const response = await fetch(`${API_URL}/users/${userID}/friends`, {
-                    method:'GET',
-                    headers: {  'Authorization': `Bearer ${auth.accessToken}`,
-                                "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
-                });
-                const result = await response.json();
-                setFriends(result);
-            } 
-            catch (error) {
-            
-            }
-        }
-        getFriends();
-    }, [user])
-
-    const [addingFriend, setAddingFriend] = useState(false);
-    const toggleAddingFriend = () => {
-        addingFriend ? setAddingFriend(false) : setAddingFriend(true)
-    }
+    
     const sendFriendRequest = async (e) => {
         e.preventDefault();
         const username = e.target[0].value;
@@ -127,43 +114,6 @@ function ProfileDrop() {
             console.log(error)
         }
     }
-
-    const [viewingFriends, setViewingFriends] = useState(false);
-    const toggleViewingFriends = () => {
-        viewingFriends ? setViewingFriends(false) : setViewingFriends(true)
-    }
-    const [viewingFriendRequests, setViewingFriendRequests] = useState(false);
-    const toggleViewingFriendRequests = () => {
-        viewingFriendRequests ? setViewingFriendRequests(false) : setViewingFriendRequests(true)
-    }
-    const [viewingInvites, setViewingInvites] = useState(false);
-    const toggleViewingInvites = () => {
-        viewingInvites ? setViewingInvites(false) : setViewingInvites(true)
-    }
-    const [viewingActiveGames, setViewingActiveGames] = useState(false);
-    const toggleViewingActiveGames = () => {
-        viewingActiveGames ? setViewingActiveGames(false) : setViewingActiveGames(true)
-    }
-
-    const [invites,setInvites] = useState([]);
-    useEffect(() => {
-        const getInvites = async () => {
-            try {
-                const userID = user.userID;
-                const response = await fetch(`${API_URL}/users/${userID}/`, {
-                    method:'GET',
-                    headers: {  'Authorization': `Bearer ${auth.accessToken}`,
-                                "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
-                });
-                const result = await response.json();
-                setInvites(result.invites);
-            } 
-            catch (error) {
-            
-            }
-        }
-        getInvites();
-    }, [user])
 
     const acceptFriendRequest = async (id) => {
         const friendID = id;
@@ -279,7 +229,7 @@ function ProfileDrop() {
                                     {friendRequests?.length > 0 ? friendRequests.map((friendRequest) => {
                                     return <li className='friend-list-item' key={friendRequest.username}>{friendRequest.username}
                                         <button className='accept-button' onClick={() => {acceptFriendRequest(friendRequest._id)}}></button>
-                                        <button className='decline-button'></button>
+                                        <button className='decline-button' onClick={() => {declineFriendRequest(friendRequest._id)}}></button>
                                     </li>
                                 }): <li className='empty-li'></li>}
                                 </ul>}

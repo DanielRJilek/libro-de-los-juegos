@@ -1,5 +1,3 @@
-// to do: make modular lobby
-
 import { useContext, useState, useEffect } from "react";
 import { UserContext } from "../../../context/UserContext";
 import Header from "../../../components/Header/Header";
@@ -8,7 +6,6 @@ import { useNavigate, useParams } from "react-router";
 import './Lobby.css'
 import { ClipLoader } from "react-spinners";
 const API_URL = import.meta.env.VITE_API_URL;
-import { socket } from "../../../socket";
 
 function DobletLobby() {
     const params = useParams();
@@ -111,14 +108,14 @@ function DobletLobby() {
             
             }
         }
-        getPlayers();
+        if (lobby != null) {
+            getPlayers();
+        }
         
     }, [lobby])
 
     const play = () => {
         if (players.length ==2) {
-            // socket.connect();
-            // socket.emit('join-table', lobby)
             navigate(`/games/${title}/table/` + lobby);
         }
     }
@@ -152,8 +149,7 @@ function DobletLobby() {
                                             </form>}
                                     
                                     <button onClick={play}>Play!</button>
-                                </div>
-                                
+                                </div> 
                             </div> : <button onClick={createGame}>Create Lobby</button>}
                 </div>
             </div>

@@ -5,10 +5,9 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 export const UserContext = createContext();
 
-
 export const UserContextProvider = ({children}) => {
-    const [username, setUsername] = useState("");  
-    const [userID, setUserID] = useState("");
+    const [username, setUsername] = useState(null);  
+    const [userID, setUserID] = useState(null);
     const auth = useContext(AuthContext);
     useEffect(() => {
         async function fetchData() {

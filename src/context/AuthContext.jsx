@@ -1,8 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 // import useAuthContext from "../hooks/useAuthContext";
 
-
-
 export const AuthContext = createContext();
 
 export const AuthContextProvider = ({children}) => {
