@@ -7,7 +7,7 @@ import './Lobby.css'
 import { ClipLoader } from "react-spinners";
 const API_URL = import.meta.env.VITE_API_URL;
 
-function DobletLobby() {
+function Lobby() {
     const params = useParams();
     const title = params.title;
     const navigate = useNavigate();
@@ -16,7 +16,12 @@ function DobletLobby() {
     const [lobby, setLobby] = useState(null);
     const [loading, setLoading] = useState(true);
     const [game,setGame] = useState("");
+    const instance = params.instance;
+
     useEffect(() => {
+        if (instance) {
+            setLobby(instance);
+        }
         const getGame = async () => {
         try {
             const response = await fetch(`${API_URL}/games/${title}`, {
@@ -28,7 +33,7 @@ function DobletLobby() {
             setLoading(false);
         } 
         catch (error) {
-        
+            console.log(error)
         }
         }
         getGame();
@@ -42,6 +47,7 @@ function DobletLobby() {
     const createGame = async (e) => {
         e.preventDefault();
         try {
+            setLoading(true);
             const response = await fetch(`${API_URL}/games/${title}/table`, {
                 method:'POST',
                 headers: {  'Authorization': `Bearer ${auth.accessToken}`,
@@ -51,25 +57,28 @@ function DobletLobby() {
                 throw new Error("Failed");
             }
             const result = await response.json();
+            setLoading(false);
             setLobby(result.id);
             // setPlayers(result.players);
             setPlayers([user]);
+            navigate(`${API_URL}/games/${title}/table/${result.id}`)
         } 
         catch (error) {
             console.log(error)
         }
     }
 
-
-    const addPlayer = async (e) => {
+    const invitePlayer = async (e) => {
         e.preventDefault();
         const username = e.target[0].value;
+        console.log(username);
+        console.log(lobby);
         try {
-            const response = await fetch(`${API_URL}/games/${title}/table/${lobby}/players`, {
+            const response = await fetch(`${API_URL}/users/${user.userID}/friends/invites`, {
                 method:'POST',
                 headers: {  'Authorization': `Bearer ${auth.accessToken}`,
                             "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
-                body: JSON.stringify({username}),
+                body: JSON.stringify({username, instance: lobby}),
             });
             if (!response.ok) {
                 throw new Error("Failed");
@@ -105,7 +114,7 @@ function DobletLobby() {
                 setPlayers(result.players);
             } 
             catch (error) {
-            
+                console.log(error)
             }
         }
         if (lobby != null) {
@@ -114,9 +123,11 @@ function DobletLobby() {
         
     }, [lobby])
 
+    // should add a field in db for number of players per game in case there are games that allow more than 2 players
+    // also add single player mode to play against computer
     const play = () => {
-        if (players.length ==2) {
-            navigate(`/games/${title}/table/` + lobby);
+        if (players.length == 2) {
+            navigate(`/games/${title}/table/` + lobby + '/play');
         }
     }
 
@@ -140,9 +151,10 @@ function DobletLobby() {
                                     }) : <li className='empty-li'>No PLayers?</li  >}
                                 </ul>
                                 <div className="button-holder">
-                                    <button onClick={toggleAddingPlayer} className='drop-down'>Invite Player</button>
+                                    {players?.length < 2 &&
+                                    <button onClick={toggleAddingPlayer} className='drop-down'>Invite Player</button>}
                                     {addingPlayer
-                                        &&  <form className='flex-row' onSubmit={addPlayer}>
+                                        &&  <form className='flex-row' onSubmit={invitePlayer}>
                                                 <label for="username"></label>
                                                 <input type="text" id="username" name="username"></input>
                                                 <button className='go-button'>Go</button>
@@ -158,4 +170,4 @@ function DobletLobby() {
     )
 }
 
-export default DobletLobby
+export default Lobby

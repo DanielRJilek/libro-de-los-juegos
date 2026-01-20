@@ -63,7 +63,7 @@ function ProfileDrop() {
             setInvites(result.invites);
         } 
         catch (error) {
-        
+            console.log(error)
         }
     }
 
@@ -153,12 +153,36 @@ function ProfileDrop() {
         }
     }
 
+    const acceptInvite = async (invite) => {
+        try {
+            console.log(invite);
+            const response = await fetch(`${API_URL}/games/${invite.title}/table/${invite.game_id}/players`, {
+                method:'POST',
+                headers: {  'Authorization': `Bearer ${auth.accessToken}`,
+                            "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
+                body: JSON.stringify({username: user.username}),
+            });
+            if (!response.ok) {
+                throw new Error("Failed");
+            }
+            console.log(`navigating to ${API_URL}/games/${invite.title}/table/${invite.game_id}`)
+            navigate(`${API_URL}/games/${invite.title}/table/${invite.game_id}`)
+        } 
+        catch (error) {
+            console.log(error)
+        }
+    }
+
+    const declineInvite = async (id) => {
+
+    }
+
     // const [Icon, setIcon] = useState(CgProfile)
     return (
         <IconContext.Provider value={{className:'icon'}}>
             <div className='icon-holder'>
                 <ProfilePic onClick={toggleOpen}></ProfilePic>
-                {invites?.length || friendRequests?.length > 0 && <IoAlertCircle id='profile-alert' onClick={toggleOpen}></IoAlertCircle>}
+                {(invites?.length || friendRequests?.length > 0) && <IoAlertCircle id='profile-alert' onClick={toggleOpen}></IoAlertCircle>}
                 {open ? <div className='drop-options'>
                     <div className='drop-header'>
                         <ProfilePic></ProfilePic>
@@ -170,14 +194,15 @@ function ProfileDrop() {
                         </li>
                         <li id='view-invites'>
                             <IoPlayOutline></IoPlayOutline>
-                            <span >
+                            <span>
                                 <span onClick={toggleViewingInvites}>Game Invites</span>
                                 {invites?.length > 0 && <IoAlertCircle id='profile-alert'></IoAlertCircle>}
                                 {viewingInvites && <ul>
                                     {invites?.length > 0 ? invites.map((invite) => {
-                                    return <li className='friend-list-item' key={invite}>{invite.game} {invite.sender}
-                                        {/* <button className='accept-button' onClick={() => {acceptFriendRequest(friendRequest._id)}}></button>
-                                        <button className='decline-button'></button> */}
+                                    return <li className='friend-list-item' key={invite.id}> 
+                                        {invite.sender.username} invites you to play {invite.title}
+                                        <button className='accept-button' onClick={() => {acceptInvite(invite)}}></button>
+                                        <button className='decline-button'></button>
                                     </li>
                                 }): <li className='empty-li'></li>}
                                 </ul>}
@@ -190,7 +215,7 @@ function ProfileDrop() {
                                 {viewingActiveGames 
                                     && <ul>
                                         {activeGames?.length > 0 ? activeGames.map((game) => {
-                                        return <li className='friend-list-item' key={game}>{game}</li>
+                                        return <li onClick={() => {navigate(`${API_URL}/games/${game.title}/table/${game._id}/play`)}} className='friend-list-item' key={game._id}>{game.title} with {game.owner.username}</li>
                                     }) : <li className='empty-li'></li  >}
                                     </ul>}
                             </span>

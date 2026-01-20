@@ -39,8 +39,6 @@
   filter: brightness(1.2);
 }
 
-
-
 .lobby-top {
   min-width: 100vw;
   display: flex;
@@ -110,4 +108,8 @@
 .button-holder button {
   display: block;
   max-width: 50%;
+}
+
+.lobby form{
+  border: 2px solid black;
 }

@@ -41,6 +41,10 @@ const routes = [
             },
             {
                 path: "/games/:title/table/:instance",
+                element: (<Lobby></Lobby>)
+            },
+            {
+                path: "/games/:title/table/:instance/play",
                 element: (<Doblet></Doblet>)
             }
         ]

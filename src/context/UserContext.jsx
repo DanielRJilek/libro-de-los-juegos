@@ -30,7 +30,7 @@ export const UserContextProvider = ({children}) => {
             catch (error) {
                 console.log(error)
                 setUserID("");
-                setUsername("")
+                setUsername("");
             }
         }
         fetchData();
