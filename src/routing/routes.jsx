@@ -37,12 +37,14 @@ const routes = [
         children: [
             {
                 path: "/games/:title",
-                element: (<Lobby></Lobby>)
+                element: (<Lobby></Lobby>),
+                children: [
+                    {
+                        path: "/games/:title/table/:instance",
+                    },
+                ]
             },
-            {
-                path: "/games/:title/table/:instance",
-                element: (<Lobby></Lobby>)
-            },
+            
             {
                 path: "/games/:title/table/:instance/play",
                 element: (<Doblet></Doblet>)

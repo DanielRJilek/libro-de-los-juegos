@@ -89,9 +89,11 @@
 }
 
 .lobby {
+  background-color: rgba(141, 49, 44, 1);
+  border: 4px rgba(188, 141, 51, 1) solid;
   border-radius: 5px;
-  background-color: white;
   box-shadow: 0 6px 20px #000c;
+  color: white;
   min-width: 400px;
   min-height: 300px;
   display: flex;
@@ -110,6 +112,12 @@
   max-width: 50%;
 }
 
-.lobby form{
+/* .lobby form{
   border: 2px solid black;
+} */
+
+.lobby-page .loader {
+  position: fixed;
+  left: 50vw;
+  top: 50vh;
 }

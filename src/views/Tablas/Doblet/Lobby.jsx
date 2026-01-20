@@ -151,21 +151,22 @@ function Lobby() {
                                     }) : <li className='empty-li'>No PLayers?</li  >}
                                 </ul>
                                 <div className="button-holder">
-                                    {players?.length < 2 &&
-                                    <button onClick={toggleAddingPlayer} className='drop-down'>Invite Player</button>}
                                     {addingPlayer
                                         &&  <form className='flex-row' onSubmit={invitePlayer}>
                                                 <label for="username"></label>
                                                 <input type="text" id="username" name="username"></input>
                                                 <button className='go-button'>Go</button>
                                             </form>}
+                                    {players?.length < 2 &&
+                                    <button onClick={toggleAddingPlayer} className='drop-down'>Invite Player</button>}
+                                    
                                     
                                     <button onClick={play}>Play!</button>
                                 </div> 
                             </div> : <button onClick={createGame}>Create Lobby</button>}
                 </div>
             </div>
-            : <ClipLoader/>}
+            : <ClipLoader className="loader"/>}
         </div>
     )
 }

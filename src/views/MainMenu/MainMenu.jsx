@@ -34,14 +34,16 @@ function MainMenu() {
     <div className="page" id='main-menu-page'>
       <Header></Header>
       <div id='main'>
+        <span className='games-title'>Games</span>
         <div id='game-display'>
-          <div id='game-preview'>
+          {/* <div id='game-preview'>
             <img src="null" alt="" />
           </div>
           <div id='game-about'>
 
-          </div>
+          </div> */}
         </div>
+        
         {!loading ? <div className='gallery'>
           {games.length > 0 && games.map((game) => {
             return <GameCard key={game.title} game={game}></GameCard>
