@@ -5,11 +5,14 @@ import { useContext, useState } from 'react';
 import { UserContext } from '../../context/UserContext';
 import { CgProfile } from "react-icons/cg";
 import { ClipLoader } from "react-spinners";
+import { IconContext } from 'react-icons';
+import { IoAlertCircle } from "react-icons/io5";
 const API_URL = import.meta.env.VITE_API_URL;
 
 
 function LogIn() {
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState();
     const auth = useContext(AuthContext);
     const user = useContext(UserContext);
     const navigate = useNavigate();
@@ -24,16 +27,22 @@ function LogIn() {
                 headers: { "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
                 body: JSON.stringify({username, password}),
             });
-            if (!response.ok) {
-                throw new Error("Failed");
-            }
-            const {id, token} = await response.json();
-            user.setUsername(username);
-            user.setUserID(id.toString());
-            auth.setAccessToken(token);
-            // localStorage.setItem("token", token);
             setLoading(false);
-            navigate('/games');
+            if (!response.ok) {
+                // throw new Error("Failed");
+                const message = await response.json();
+                setError(message.message);
+            }
+            else {
+                const {id, token} = await response.json();
+                user.setUsername(username);
+                user.setUserID(id.toString());
+                auth.setAccessToken(token);
+                // localStorage.setItem("token", token);
+                
+                navigate('/games');
+            }
+            
         } 
         catch (error) {
             console.log(error)
@@ -51,6 +60,15 @@ function LogIn() {
                 <input className='login-input' type="password" id="password" name="password"></input>
                 <button type="submit">Log In</button>
                 <a href='/signup'>Create Account</a>
+                <div className='error'>
+                    {(error && error != null) ? 
+                        <IconContext.Provider value={{className:'icon'}}>
+                            <IoAlertCircle ></IoAlertCircle>
+                            {error}
+                        </IconContext.Provider>
+                        : ''}  
+                </div>
+                    
             </form>
         )
     }   

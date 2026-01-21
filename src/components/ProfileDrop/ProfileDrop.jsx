@@ -15,10 +15,12 @@ const API_URL = import.meta.env.VITE_API_URL;
 function ProfileDrop() {
     const auth = useContext(AuthContext);
     const user = useContext(UserContext);
+    const [error, setError] = useState();
     const navigate = useNavigate();
     const [open, setOpen] = useState(false);
     const toggleOpen = () => {
         open ? setOpen(false) : setOpen(true)
+        setError();
     }
     const [addingFriend, setAddingFriend] = useState(false);
     const toggleAddingFriend = () => {
@@ -56,6 +58,11 @@ function ProfileDrop() {
                 headers: {  'Authorization': `Bearer ${auth.accessToken}`,
                             "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
             });
+            if (!response.ok) {
+                const message = await response.json();
+                setError(message.message);
+                return;
+            }
             const result = await response.json();
             setFriendRequests(result.friendRequests);
             setActiveGames(result.activeGames);
@@ -82,7 +89,9 @@ function ProfileDrop() {
                 
             });
             if (!response.ok) {
-                throw new Error("Failed");
+                const message = await response.json();
+                setError(message.message);
+                return;
             }
             // localStorage.removeItem("token");
             auth.setAccessToken(null);
@@ -107,7 +116,9 @@ function ProfileDrop() {
                 body: JSON.stringify({username}),
             });
             if (!response.ok) {
-                throw new Error("Failed");
+                const message = await response.json();
+                setError(message.message);
+                return;
             }
         } 
         catch (error) {
@@ -125,7 +136,9 @@ function ProfileDrop() {
                 body: JSON.stringify({friendID}),
             });
             if (!response.ok) {
-                throw new Error("Failed");
+                const message = await response.json();
+                setError(message.message);
+                return;
             }
             
         } 
@@ -144,7 +157,9 @@ function ProfileDrop() {
                 body: JSON.stringify({friendID}),
             });
             if (!response.ok) {
-                throw new Error("Failed");
+                const message = await response.json();
+                setError(message.message);
+                return;
             }
             
         } 
@@ -163,7 +178,9 @@ function ProfileDrop() {
                 body: JSON.stringify({username: user.username}),
             });
             if (!response.ok) {
-                throw new Error("Failed");
+                const message = await response.json();
+                setError(message.message);
+                return;
             }
             console.log(`navigating to ${API_URL}/games/${invite.title}/table/${invite.game_id}`)
             navigate(`${API_URL}/games/${invite.title}/table/${invite.game_id}`)
@@ -182,12 +199,21 @@ function ProfileDrop() {
         <IconContext.Provider value={{className:'icon'}}>
             <div className='icon-holder'>
                 <ProfilePic onClick={toggleOpen}></ProfilePic>
+                
                 {(invites?.length || friendRequests?.length > 0) && <IoAlertCircle id='profile-alert' onClick={toggleOpen}></IoAlertCircle>}
                 {open ? <div className='drop-options'>
                     <div className='drop-header'>
                         <ProfilePic></ProfilePic>
                         {`${user.username}`}</div>
                     <ul id='profiledrop-options'>
+                        <div className='error'>
+                            {(error && error != null) ? 
+                                <IconContext.Provider value={{className:'icon'}}>
+                                    <IoAlertCircle ></IoAlertCircle>
+                                    {error}
+                                </IconContext.Provider>
+                                : ''}  
+                        </div>
                         <li id='edit-profile'>
                             <CiEdit></CiEdit>
                             <span>Edit Profile</span>
@@ -265,6 +291,7 @@ function ProfileDrop() {
                             <span>Log Out</span>
                         </li>
                     </ul>
+                    
                 </div> : []}
             </div>
             
