@@ -93,7 +93,6 @@ function ProfileDrop() {
                 setError(message.message);
                 return;
             }
-            // localStorage.removeItem("token");
             auth.setAccessToken(null);
             user.setUsername(null);
             user.setUserID(null);
@@ -104,7 +103,6 @@ function ProfileDrop() {
         }
     }
 
-    
     const sendFriendRequest = async (e) => {
         e.preventDefault();
         const username = e.target[0].value;
@@ -291,7 +289,6 @@ function ProfileDrop() {
                             <span>Log Out</span>
                         </li>
                     </ul>
-                    
                 </div> : []}
             </div>
             

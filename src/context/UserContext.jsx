@@ -8,6 +8,7 @@ export const UserContext = createContext();
 export const UserContextProvider = ({children}) => {
     const [username, setUsername] = useState(null);  
     const [userID, setUserID] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
     const auth = useContext(AuthContext);
     useEffect(() => {
         async function fetchData() {
@@ -32,12 +33,15 @@ export const UserContextProvider = ({children}) => {
                 setUserID("");
                 setUsername("");
             }
+            finally {
+                setIsLoading(false);
+            }
         }
         fetchData();
     }, [])
     const [profilePic , setProfilePic] = useState(() => {return(CgProfile)});
     return (
-        <UserContext value={{username, userID, setUsername, profilePic, setProfilePic, setUserID}}>
+        <UserContext value={{username, userID, setUsername, profilePic, setProfilePic, setUserID, isLoading}}>
             {children}
         </UserContext>
     )

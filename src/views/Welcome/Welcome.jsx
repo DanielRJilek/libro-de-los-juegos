@@ -1,5 +1,5 @@
 import Slideshow from '../../components/Slideshow/Slideshow';
-import PlayNow from '../../components/PlayNow/PlayNow';
+import WelcomeButtons from '../../components/WelcomeButtons/WelcomeButtons';
 
 function Welcome() {
     const welcome_header = "Welcome to Libro de los Juegos, the Book of Games";
@@ -14,7 +14,7 @@ function Welcome() {
                     <h1>{welcome_header}</h1>
                     <p>{welcome_text}</p>
                 </div>
-                <PlayNow></PlayNow>
+                <WelcomeButtons></WelcomeButtons>
             </div>
         </div>
     )

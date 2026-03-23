@@ -1,7 +1,7 @@
 import { useContext, useState, useEffect } from "react";
-import { UserContext } from "../../../context/UserContext";
-import Header from "../../../components/Header/Header";
-import { AuthContext } from "../../../context/AuthContext";
+import { UserContext } from "../../context/UserContext";
+import Header from "../../components/Header/Header";
+import { AuthContext } from "../../context/AuthContext";
 import { useNavigate, useParams } from "react-router";
 import './Lobby.css'
 import { ClipLoader } from "react-spinners";

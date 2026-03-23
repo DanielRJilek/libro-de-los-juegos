@@ -1,4 +1,4 @@
-import './Doblet.css'
+import "../tablas.css";
 import Header from "../../../components/Header/Header"
 import Board from "../Board/Board";
 // import Dice from "../Dice/Dice";
@@ -6,8 +6,9 @@ import { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../../../context/AuthContext";
 import { useNavigate, useParams } from "react-router";
 import { UserContext } from "../../../context/UserContext";
-const API_URL = import.meta.env.VITE_API_URL;
 import { socket } from "../../../socket";
+
+const API_URL = import.meta.env.VITE_API_URL;
 
 function Doblet() {
     const [board,setBoard] = useState([[2,0,0,2], [2,0,0,2], [2,0,0,2], [2,0,0,2], [2,0,0,2], [2,0,0,2]]);
@@ -18,6 +19,7 @@ function Doblet() {
     const auth = useContext(AuthContext);
     const user = useContext(UserContext);
     const [isConnected, setIsConnected] = useState(socket.connected);
+    const [winner, setWinner] = useState();
 
     useEffect(() => {
         function onGameUpdate(value) {
@@ -61,7 +63,11 @@ function Doblet() {
                 throw new Error("Failed");
             }
             const result = await response.json();
-            if (result?.board && result?.currentPlayer?.username) {
+            if (result.winner) {
+                setBoard(result.board);
+                setWinner(result.winner);
+            }
+            else if (result?.board && result?.currentPlayer?.username) {
                 setBoard(result.board);
                 setCurrentPlayer(result.currentPlayer);
             }
@@ -69,6 +75,12 @@ function Doblet() {
         catch (error) {
             console.log(error)
         }
+    }
+
+    const gameOver = () => {
+    }
+
+    const showRoll = () => {
     }
 
     useEffect(() => {
@@ -100,10 +112,11 @@ function Doblet() {
                 <div className="game-screen">
                     <div className="game-side">
                         <div className="game-text">
-                            <h2>Current Player: {currentPlayer.username}</h2>
+                            {!winner && <h2>Current Player: {currentPlayer.username}</h2>}
+                            {winner && <h2>{winner} wins!</h2>}
                         </div>
                         <div className="button-holder">
-                            <button onClick={roll}>Roll!</button>
+                            {!winner && <button onClick={roll}>Roll!</button>}
                             <button onClick={quit}>Quit</button>
                         </div>
                     </div>

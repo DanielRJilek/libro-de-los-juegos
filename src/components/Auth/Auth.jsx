@@ -30,7 +30,8 @@ function Auth() {
         }
     }
     return (
-        (auth.accessToken && auth.accessToken != null && user.userID && user.userID != null) ? <ProfileDrop></ProfileDrop> : <button onClick={() => {navigate('/login')}}>Log In</button>
+        (auth.accessToken && auth.accessToken != null && user.userID && user.userID != null) ? 
+            <ProfileDrop></ProfileDrop> : <button onClick={() => {navigate('/login')}}>Log In</button>
     )
 }
 

@@ -35,20 +35,20 @@ function SignUp() {
             }
 
 
-            const response2 = await fetch('https://libro-de-los-juegos-server.onrender.com/auth/login', {
+            const response2 = await fetch(`${API_URL}/auth/login`, {
                 method:'POST',
                 headers: { "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
-                body: JSON.stringify({username, password1}),
+                body: JSON.stringify({username, password: password1}),
             });
             if (!response2.ok) {
-                throw new Error("Failed");
+                const message = await response2.json();
+                setError(message.message)
             }
-            // const code = await response.text();
-            user.setUsername(username);
-            // auth.setAccessToken(response2.body);
             const {id, token} = await response2.json();
+            user.setUsername(username);
+            user.setUserID(id.toString());
             auth.setAccessToken(token);
-            // localStorage.setItem("token", JSON.stringify(token));
+            // localStorage.setItem("token", token);               
             navigate('/games');
         } 
         catch (error) {

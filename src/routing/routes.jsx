@@ -1,11 +1,12 @@
 import MainMenu from "../views/MainMenu/MainMenu";
 import Home from "../views/Home/Home";
 import LogIn from "../components/LogIn/LogIn";
-import Welcome from "../components/Welcome/Welcome";
+import Welcome from "../views/Welcome/Welcome";
 import SignUp from "../components/Signup/Signup";
 import Doblet from "../views/Tablas/Doblet/Doblet";
 import ProtectedRoute from "./ProtectedRoute";
-import Lobby from "../views/Tablas/Doblet/Lobby";
+import Lobby from "../views/Lobby/Lobby";
+import About from "../views/About/About";
  
 const routes = [
     {
@@ -29,6 +30,10 @@ const routes = [
         element: (<Home>
             <SignUp></SignUp>
         </Home>)
+     },
+     {
+        path: "/about",
+        element: (<About></About>)
      },
      {
         element: (
