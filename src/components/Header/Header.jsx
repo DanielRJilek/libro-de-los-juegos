@@ -16,8 +16,7 @@ function Header() {
                     <HiMiniSpeakerWave></HiMiniSpeakerWave>
                 </IconContext.Provider>
                 <Auth></Auth>
-            </div>
-            
+            </div>    
         </div>
     );
 }

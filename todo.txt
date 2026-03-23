@@ -1,10 +1,14 @@
-Give each lobby an owner, only the owner should be able to start the game
-Add messaging system
-Add profile pics for preset options
-Fix the design of game lobbies
-Add dice rolling animation or similar
-Add success message when friend request or game invite is sent. Remove search bar as well.
-Disallow self invites or friend requests
-rematches
-keep titles (Games, etc) in constant position
-general error components
+- [x]Give each lobby an owner, only the owner should be able to start the game
+- []Add messaging system
+- []Add profile pics for preset options
+- []Fix the design of game lobbies
+- []Add dice rolling animation or similar
+- []Add success message when friend request or game invite is sent. Remove search bar as well.
+- []Disallow self invites or friend requests
+- []rematches
+- []keep titles (Games, etc) in constant position
+- []general error components
+- []success messages related to error components?
+- []add music
+- [x]invites not working?
+- [] make welcome slideshow fade out slides too

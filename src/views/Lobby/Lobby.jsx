@@ -16,6 +16,7 @@ function Lobby() {
     const [lobby, setLobby] = useState(null);
     const [loading, setLoading] = useState(true);
     const [game,setGame] = useState("");
+    const [owner,setOwner] = useState("");
     const instance = params.instance;
 
     useEffect(() => {
@@ -30,6 +31,7 @@ function Lobby() {
             });
             const result = await response.json();
             setGame(result);
+            setOwner(result.owner);
             setLoading(false);
         } 
         catch (error) {
@@ -61,6 +63,7 @@ function Lobby() {
             setLobby(result.id);
             // setPlayers(result.players);
             setPlayers([user]);
+            setOwner(user);
             navigate(`${API_URL}/games/${title}/table/${result.id}`)
         } 
         catch (error) {
@@ -126,7 +129,7 @@ function Lobby() {
     // should add a field in db for number of players per game in case there are games that allow more than 2 players
     // also add single player mode to play against computer
     const play = () => {
-        if (players.length == 2) {
+        if (players.length == 2 && owner.userID == user.userID) {
             navigate(`/games/${title}/table/` + lobby + '/play');
         }
     }

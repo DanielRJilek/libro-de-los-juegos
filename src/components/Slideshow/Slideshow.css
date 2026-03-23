@@ -9,8 +9,6 @@
 .slideshow img {
     object-fit: contain;
     width: 500px;
-    /* height: 400px; */
-    /* display: none; */
     position: absolute;
     display: block;
     border: 4px solid rgba(141, 49, 44, 1);
@@ -18,27 +16,20 @@
     border-radius: 5px;
 }
 
-/* .fade {
-  animation-name: fade;
-  animation-duration: 1.0;
-  animation-timing-function: ease-in;
-}
-
-@keyframes fade {
-  from {opacity: .4}
-  to {opacity: 1}
-} */
-
 .visible {
-    /* display: block; */
     opacity: 1;
-    transition: opacity ease-in 1.0s;
+    transition: opacity 1.0s ease-in-out;
     transition-delay: 0.5s;
 } 
 
+.fading-out {
+    opacity: 0;
+    transition: opacity 1.0s ease-in-out;
+}
+
 .hidden {
     opacity: 0;
-    transition: opacity ease-in 1.0s;
+    transition: none;
 }
 
 ul {

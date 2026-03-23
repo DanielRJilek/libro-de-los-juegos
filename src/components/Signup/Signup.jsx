@@ -13,7 +13,8 @@ function SignUp() {
     const [error, setError] = useState();
     const [loading, setLoading] = useState(false);
     const auth = useContext(AuthContext);
-    const user = useContext(UserContext)
+    const user = useContext(UserContext);
+    
     const handleSubmit = async (e) => {
         e.preventDefault();
         const username = e.target[0].value;
@@ -34,7 +35,6 @@ function SignUp() {
                 return;
             }
 
-
             const response2 = await fetch(`${API_URL}/auth/login`, {
                 method:'POST',
                 headers: { "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
@@ -47,8 +47,7 @@ function SignUp() {
             const {id, token} = await response2.json();
             user.setUsername(username);
             user.setUserID(id.toString());
-            auth.setAccessToken(token);
-            // localStorage.setItem("token", token);               
+            auth.setAccessToken(token);             
             navigate('/games');
         } 
         catch (error) {

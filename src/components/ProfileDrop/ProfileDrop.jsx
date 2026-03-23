@@ -10,13 +10,18 @@ import { useEffect, useRef, useState, useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import { UserContext } from '../../context/UserContext';
 import { useNavigate } from 'react-router';
+
 const API_URL = import.meta.env.VITE_API_URL;
 
 function ProfileDrop() {
+    const navigate = useNavigate();
     const auth = useContext(AuthContext);
     const user = useContext(UserContext);
     const [error, setError] = useState();
-    const navigate = useNavigate();
+    const [invites,setInvites] = useState([]);
+    const [friendRequests,setFriendRequests] = useState([]);
+    const [activeGames,setActiveGames] = useState([]);
+    const [friends,setFriends] = useState([]);
     const [open, setOpen] = useState(false);
     const toggleOpen = () => {
         open ? setOpen(false) : setOpen(true)
@@ -44,11 +49,6 @@ function ProfileDrop() {
     }
     const options = [  ];
     const ProfilePic = user.profilePic;
-
-    const [invites,setInvites] = useState([]);
-    const [friendRequests,setFriendRequests] = useState([]);
-    const [activeGames,setActiveGames] = useState([]);
-    const [friends,setFriends] = useState([]);
 
     const getMyData = async () => {
         try {
@@ -118,6 +118,7 @@ function ProfileDrop() {
                 setError(message.message);
                 return;
             }
+            toggleAddingFriend();
         } 
         catch (error) {
             console.log(error)
@@ -137,8 +138,7 @@ function ProfileDrop() {
                 const message = await response.json();
                 setError(message.message);
                 return;
-            }
-            
+            }            
         } 
         catch (error) {
             console.log(error)
@@ -159,7 +159,6 @@ function ProfileDrop() {
                 setError(message.message);
                 return;
             }
-            
         } 
         catch (error) {
             console.log(error)
@@ -168,7 +167,6 @@ function ProfileDrop() {
 
     const acceptInvite = async (invite) => {
         try {
-            console.log(invite);
             const response = await fetch(`${API_URL}/games/${invite.title}/table/${invite.game_id}/players`, {
                 method:'POST',
                 headers: {  'Authorization': `Bearer ${auth.accessToken}`,
@@ -198,7 +196,8 @@ function ProfileDrop() {
             <div className='icon-holder'>
                 <ProfilePic onClick={toggleOpen}></ProfilePic>
                 
-                {(invites?.length || friendRequests?.length > 0) && <IoAlertCircle id='profile-alert' onClick={toggleOpen}></IoAlertCircle>}
+                {(invites?.length || friendRequests?.length > 0) && 
+                    <IoAlertCircle id='profile-alert' onClick={toggleOpen}></IoAlertCircle>}
                 {open ? <div className='drop-options'>
                     <div className='drop-header'>
                         <ProfilePic></ProfilePic>
@@ -225,7 +224,9 @@ function ProfileDrop() {
                                     {invites?.length > 0 ? invites.map((invite) => {
                                     return <li className='friend-list-item' key={invite.id}> 
                                         {invite.sender.username} invites you to play {invite.title}
-                                        <button className='accept-button' onClick={() => {acceptInvite(invite)}}></button>
+                                        <button className='accept-button' onClick={() => 
+                                            {acceptInvite(invite)}}>
+                                        </button>
                                         <button className='decline-button'></button>
                                     </li>
                                 }): <li className='empty-li'></li>}
@@ -239,8 +240,11 @@ function ProfileDrop() {
                                 {viewingActiveGames 
                                     && <ul>
                                         {activeGames?.length > 0 ? activeGames.map((game) => {
-                                        return <li onClick={() => {navigate(`${API_URL}/games/${game.title}/table/${game._id}/play`)}} className='friend-list-item' key={game._id}>{game.title} with {game.owner.username}</li>
-                                    }) : <li className='empty-li'></li  >}
+                                        return <li onClick={() => 
+                                            {navigate(`${API_URL}/games/${game.title}/table/${game._id}/play`)}} 
+                                            className='friend-list-item' key={game._id}>{game.title} with 
+                                            {game.owner.username}</li>
+                                        }) : <li className='empty-li'></li  >}
                                     </ul>}
                             </span>
                             
@@ -277,8 +281,10 @@ function ProfileDrop() {
                                 {viewingFriendRequests && <ul>
                                     {friendRequests?.length > 0 ? friendRequests.map((friendRequest) => {
                                     return <li className='friend-list-item' key={friendRequest.username}>{friendRequest.username}
-                                        <button className='accept-button' onClick={() => {acceptFriendRequest(friendRequest._id)}}></button>
-                                        <button className='decline-button' onClick={() => {declineFriendRequest(friendRequest._id)}}></button>
+                                        <button className='accept-button' onClick={() => 
+                                            {acceptFriendRequest(friendRequest._id)}}></button>
+                                        <button className='decline-button' onClick={() => 
+                                            {declineFriendRequest(friendRequest._id)}}></button>
                                     </li>
                                 }): <li className='empty-li'></li>}
                                 </ul>}
@@ -291,8 +297,6 @@ function ProfileDrop() {
                     </ul>
                 </div> : []}
             </div>
-            
-            
         </IconContext.Provider>
     )
 }

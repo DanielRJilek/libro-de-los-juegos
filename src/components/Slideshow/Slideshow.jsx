@@ -16,8 +16,10 @@ function Slideshow() {
         {id: '4', src: img5, class: 'hidden'},
     ];
     const [index, setIndex] = useState(0);
+    const [prevIndex, setPrevIndex] = useState(0);
 
     const nextImage = (oldIndex) => {
+        setPrevIndex(oldIndex);
         if (oldIndex >= images.length - 1) {
             setIndex(0);
         }
@@ -41,18 +43,16 @@ function Slideshow() {
         setLoading(false);
     }, [])
 
-
     return (
         loading ? <ClipLoader></ClipLoader> :
         <div className="slideshow">
             <ul>
                 {images.map((image) => (
                     <li key={image.id}>
-                        <img src={image.src} className={`fade ${index==image.id ? `visible` : `hidden`}` }/>
+                        <img src={image.src} className={`fade ${index==image.id ? `visible` : prevIndex==image.id ? `fading-out` : `hidden`}` }/>
                     </li>
                 ))};
             </ul>
-            
         </div>
     );
 }

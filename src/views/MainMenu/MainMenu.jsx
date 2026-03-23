@@ -5,9 +5,6 @@ import { useEffect, useState } from 'react';
 import { ClipLoader } from "react-spinners";
 
 function MainMenu() {
-  // const gameTitles = [];
-  // const gameImages = [];
-  // const game = [];
   const [loading, setLoading] = useState(true);
   const [games,setGames] = useState([]);
   useEffect(() => {
@@ -28,8 +25,6 @@ function MainMenu() {
     getGames();
   }, [])
   
-    
-
   return (
     <div className="page" id='main-menu-page'>
       <Header></Header>

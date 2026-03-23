@@ -2,15 +2,12 @@
     height: 411px;
     width: 687px;
     display: grid;
-    /* grid-template-columns: repeat(6, 53px); */
     grid-template-rows: repeat(3, 125px);
     padding-top: 16px;
 }
 
 .board-holder  {
     position: relative;
-    /* display: grid;
-    grid-template-rows: 1fr 1fr 1fr; */
 }
 
 .board-holder > img {

@@ -22,9 +22,7 @@ export const UserContextProvider = ({children}) => {
                 if (!response.ok) {
                     throw new Error("Failed");
                 }
-                // auth.setAccessToken(response2.body);
                 const {_id, username} = await response.json();
-                // setUserID(user.id); 
                 setUsername(username);
                 setUserID(_id);
             } 
@@ -39,6 +37,7 @@ export const UserContextProvider = ({children}) => {
         }
         fetchData();
     }, [])
+    
     const [profilePic , setProfilePic] = useState(() => {return(CgProfile)});
     return (
         <UserContext value={{username, userID, setUsername, profilePic, setProfilePic, setUserID, isLoading}}>
