@@ -92,6 +92,9 @@ function Doblet() {
                             "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
                 });
                 const result = await response.json();
+                if (result.started == false) {
+                    navigate('../games/doblet/table/' + tableID);
+                }
                 if (result?.board && result?.currentPlayer?.username) {
                     setBoard(result.board);
                     setCurrentPlayer(result.currentPlayer);
@@ -111,21 +114,23 @@ function Doblet() {
             <div id='main'>
                 <div className="game-screen">
                     <div className="game-side">
-                        <div className="game-text">
-                            {!winner && <h2>Current Player: {currentPlayer.username}</h2>}
-                            {winner && <h2>{winner} wins!</h2>}
-                        </div>
-                        <div className="button-holder">
-                            {!winner && <button onClick={roll}>Roll!</button>}
-                            <button onClick={quit}>Quit</button>
-                        </div>
+                        
                     </div>
                     <div className="game-center">
                         <div className="player-holder"></div>
                         <Board board={board}></Board>
                         <div className="player-holder"></div>
                     </div>
-                    <div className="game-side"></div>
+                    <div className="game-side">
+                        <div className="game-text">
+                            {!winner && <h2>Current Player: {currentPlayer.username}</h2>}
+                            {winner && <h2>{winner.username} wins!</h2>}
+                        </div>
+                        <div className="button-holder">
+                            {!winner && currentPlayer._id == user.userID && <button onClick={roll}>Roll!</button>}
+                            <button onClick={quit}>Quit</button>
+                        </div>
+                    </div>
                 </div>
                 
                 

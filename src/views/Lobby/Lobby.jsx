@@ -16,12 +16,33 @@ function Lobby() {
     const [lobby, setLobby] = useState(null);
     const [loading, setLoading] = useState(true);
     const [game,setGame] = useState("");
-    const [owner,setOwner] = useState("");
+    const [owner,setOwner] = useState(null);
     const instance = params.instance;
+
+    const getTable = async () => {
+        try {
+            const response = await fetch(`${API_URL}/games/${title}/table/${instance}/`, {
+                method:'GET',
+                headers: {  'Authorization': `Bearer ${auth.accessToken}`,
+                            "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
+            });
+            if (!response.ok) {
+                throw new Error("Failed");
+            }
+            const result = await response.json();
+            setLobby(result._id);
+            setPlayers(result.players);
+            setOwner(result.owner);
+        }
+        catch (error) {
+            console.log(error)
+        }
+    }
+
 
     useEffect(() => {
         if (instance) {
-            setLobby(instance);
+            getTable();
         }
         const getGame = async () => {
         try {
@@ -31,7 +52,6 @@ function Lobby() {
             });
             const result = await response.json();
             setGame(result);
-            setOwner(result.owner);
             setLoading(false);
         } 
         catch (error) {
@@ -60,11 +80,10 @@ function Lobby() {
             }
             const result = await response.json();
             setLoading(false);
-            setLobby(result.id);
-            // setPlayers(result.players);
+            setLobby(result._id);
             setPlayers([user]);
             setOwner(user);
-            navigate(`${API_URL}/games/${title}/table/${result.id}`)
+            navigate(`${API_URL}/games/${title}/table/${result._id}`)
         } 
         catch (error) {
             console.log(error)
@@ -128,9 +147,20 @@ function Lobby() {
 
     // should add a field in db for number of players per game in case there are games that allow more than 2 players
     // also add single player mode to play against computer
-    const play = () => {
-        if (players.length == 2 && owner.userID == user.userID) {
-            navigate(`/games/${title}/table/` + lobby + '/play');
+    const play = async () => {
+        if (players.length == 2 && owner._id == user.userID) {
+            try {
+                const response = await fetch(`${API_URL}/games/${title}/table/${lobby}/start`, {
+                    method: 'POST',
+                    headers: {  'Authorization': `Bearer ${auth.accessToken}`,
+                                "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
+                });
+                navigate(`/games/${title}/table/` + lobby + '/play');
+            }
+            catch (error) {
+                console.log(error)
+            }
+           
         }
     }
 
@@ -162,9 +192,7 @@ function Lobby() {
                                             </form>}
                                     {players?.length < 2 &&
                                     <button onClick={toggleAddingPlayer} className='drop-down'>Invite Player</button>}
-                                    
-                                    
-                                    <button onClick={play}>Play!</button>
+                                    {owner._id == user.userID && <button onClick={play}>Play!</button>}
                                 </div> 
                             </div> : <button onClick={createGame}>Create Lobby</button>}
                 </div>

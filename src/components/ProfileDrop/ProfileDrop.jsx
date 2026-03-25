@@ -190,6 +190,23 @@ function ProfileDrop() {
 
     }
 
+    const displayActiveGame = (game) => {
+        if (game.started) {
+            const otherPlayers = game.players.filter((player) => player.username != user.username);
+            return <li onClick={() => 
+                {navigate(`${API_URL}/games/${game.title}/table/${game._id}/play`)}} 
+                className='friend-list-item' key={game._id}>{game.title} with 
+                {otherPlayers.map((player) => player.username).join(', ')}</li>
+        }
+        else {
+            const otherPlayers = game.players.filter((player) => player.username != user.username);
+            return <li onClick={() => 
+                {navigate(`${API_URL}/games/${game.title}/table/${game._id}/`)}}
+                className='friend-list-item' key={game._id}>{game.title} {' lobby with '}   
+                {otherPlayers.map((player) => player.username).join(', ')}</li>
+        }
+    }
+
     // const [Icon, setIcon] = useState(CgProfile)
     return (
         <IconContext.Provider value={{className:'icon'}}>
@@ -240,10 +257,7 @@ function ProfileDrop() {
                                 {viewingActiveGames 
                                     && <ul>
                                         {activeGames?.length > 0 ? activeGames.map((game) => {
-                                        return <li onClick={() => 
-                                            {navigate(`${API_URL}/games/${game.title}/table/${game._id}/play`)}} 
-                                            className='friend-list-item' key={game._id}>{game.title} with 
-                                            {game.owner.username}</li>
+                                            return displayActiveGame(game);
                                         }) : <li className='empty-li'></li  >}
                                     </ul>}
                             </span>
