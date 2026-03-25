@@ -1,0 +1,26 @@
+#welcome {
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+    margin: 0 20px;
+    justify-content: center;
+}
+
+#welcome > div {
+    padding: 0px 50px;
+}
+
+#welcome-right {
+    flex: 1;
+    font-size: large;
+    border-radius: 5px;
+    width: 500px;
+    color: rgb(61, 22, 20);
+}
+
+@media (max-width: 1200px) {
+    #welcome-right {
+        width: 100%;
+        max-width: 90vw;
+    }
+}

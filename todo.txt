@@ -3,12 +3,12 @@
 - [] Add profile pics for preset options
 - [] Fix the design of game lobbies
 - [] Add dice rolling animation or similar
-- [] Add success message when friend request or game invite is sent. Remove search bar as well.
+- [x] Add success message when friend request or game invite is sent. Remove search bar as well.
 - [x] Disallow self invites or friend requests
 - [] rematches
 - [] keep titles (Games, About, etc) in constant position
-- [] general error components
-- [] success messages related to error components?
+- [x] general error components
+- [x] success messages related to error components?
 - [] add music
 - [x] invites not working?
 - [x] make welcome slideshow fade out slides too
@@ -17,3 +17,8 @@
 - [] navigating between lobbies when already in one
 - [] add online status to users
 - [] add connected status to players in games
+- [] there are currently emissions and responses from the controller. should there just be emits?
+- [] fix winning and game end
+- [] bug causing one player to play the whole game?
+- [] add invited players list to gameInstances
+- [] fix inconsistencies in errors. try catch or !response.ok

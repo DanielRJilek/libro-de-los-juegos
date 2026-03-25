@@ -25,8 +25,9 @@
     position: absolute;
     margin-top: 50px;
     right: 25px;
-    min-width: 275px;
+    min-width: 300px;
     min-height: 275px;
+    max-height: 60vh;
     background-color: rgba(141, 49, 44, 1);
     border: 2px rgba(188, 141, 51, 1) solid;
     color: white;
@@ -165,4 +166,10 @@ li span {
 span > #profile-alert {
     margin-top: auto;
     margin-bottom: auto;
+}
+
+.game-list-item:hover{
+    font-size: large;
+    font-weight: bold;
+    padding-left: 10px;    
 }

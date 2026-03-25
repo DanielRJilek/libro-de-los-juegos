@@ -5,7 +5,8 @@ function Title() {
     return (
         <div className='title'>
             <Logo></Logo>
-            Libro de los Juegos</div>
+            Libro de los Juegos
+        </div>
     );
 }
 

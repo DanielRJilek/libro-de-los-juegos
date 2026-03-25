@@ -1,10 +1,12 @@
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState, useEffect, use } from "react";
 import { UserContext } from "../../context/UserContext";
 import Header from "../../components/Header/Header";
 import { AuthContext } from "../../context/AuthContext";
 import { useNavigate, useParams } from "react-router";
 import './Lobby.css'
 import { ClipLoader } from "react-spinners";
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 const API_URL = import.meta.env.VITE_API_URL;
 
 function Lobby() {
@@ -17,28 +19,9 @@ function Lobby() {
     const [loading, setLoading] = useState(true);
     const [game,setGame] = useState("");
     const [owner,setOwner] = useState(null);
+    const [error, setError] = useState(null);
+    const [addingPlayer, setAddingPlayer] = useState(false);
     const instance = params.instance;
-
-    const getTable = async () => {
-        try {
-            const response = await fetch(`${API_URL}/games/${title}/table/${instance}/`, {
-                method:'GET',
-                headers: {  'Authorization': `Bearer ${auth.accessToken}`,
-                            "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
-            });
-            if (!response.ok) {
-                throw new Error("Failed");
-            }
-            const result = await response.json();
-            setLobby(result._id);
-            setPlayers(result.players);
-            setOwner(result.owner);
-        }
-        catch (error) {
-            console.log(error)
-        }
-    }
-
 
     useEffect(() => {
         if (instance) {
@@ -61,9 +44,61 @@ function Lobby() {
         getGame();
     }, [])
 
-    const [addingPlayer, setAddingPlayer] = useState(false);
+    useEffect(() => {
+        if (error) {
+            const timer = setTimeout(() => {
+                setError(null);
+            }, 3000);
+            return () => clearTimeout(timer);
+        }
+    }, [error])
+
+    const [players, setPlayers] = useState([]);
+    useEffect(() => {
+        const getPlayers = async () => {
+            try {
+                const userID = user.userID;
+                const response = await fetch(`${API_URL}/games/${title}/table/${lobby}/`, {
+                    method: 'GET',
+                    headers: {  'Authorization': `Bearer ${auth.accessToken}`,
+                                "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
+                });
+                const result = await response.json();
+                setPlayers(result.players);
+            } 
+            catch (error) {
+                setError("Error loading players. Try refreshing the page.");
+            }
+        }
+        if (lobby != null) {
+            getPlayers();
+        }
+        
+    }, [lobby])
+
     const toggleAddingPlayer = () => {
         addingPlayer ? setAddingPlayer(false) : setAddingPlayer(true)
+    }
+
+    const getTable = async () => {
+        try {
+            const response = await fetch(`${API_URL}/games/${title}/table/${instance}/`, {
+                method:'GET',
+                headers: {  'Authorization': `Bearer ${auth.accessToken}`,
+                            "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
+            });
+            if (!response.ok) {
+                throw new Error("Failed");
+            }
+            const result = await response.json();
+            setLobby(result._id);
+            setPlayers(result.players);
+            setOwner(result.owner);
+        }
+        catch (error) {
+            console.log(error)
+            setError(error.message);
+        }
     }
 
     const createGame = async (e) => {
@@ -86,15 +121,34 @@ function Lobby() {
             navigate(`${API_URL}/games/${title}/table/${result._id}`)
         } 
         catch (error) {
+            setError(error.message);
             console.log(error)
+        }
+    }
+
+    const deleteLobby = async () => {
+        try {
+            const response = await fetch(`${API_URL}/games/${title}/table/${lobby}/`, {
+                method:'DELETE',
+                headers: {  'Authorization': `Bearer ${auth.accessToken}`,
+                            "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
+            });
+            if (!response.ok) {
+                setError("Failed to delete lobby. Try refreshing the page.");
+                return;
+            }
+            setLobby(null);
+            setPlayers([]);
+            navigate(`/games/${title}`);
+        }
+        catch (error) {
+            setError(error.message);
         }
     }
 
     const invitePlayer = async (e) => {
         e.preventDefault();
         const username = e.target[0].value;
-        console.log(username);
-        console.log(lobby);
         try {
             const response = await fetch(`${API_URL}/users/${user.userID}/friends/invites`, {
                 method:'POST',
@@ -103,47 +157,30 @@ function Lobby() {
                 body: JSON.stringify({username, instance: lobby}),
             });
             if (!response.ok) {
-                throw new Error("Failed");
+                const errorData = await response.json();
+                setError(errorData.message);
+                return;
             }
             const response2 = await fetch(`${API_URL}/games/${title}/table/${lobby}/`, {
                 method:'GET',
                 headers: {  'Authorization': `Bearer ${auth.accessToken}`,
                             "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
             });
-            if (!response.ok) {
-                throw new Error("Failed");
+            if (!response2.ok) {
+                const errorData = await response2.json();
+                setError(errorData.message);
+                return;
             }
             const result = await response2.json();
             setPlayers(result.players);
-            
+            toggleAddingPlayer();
+            toast.success("Invite Sent!", {
+            });
         } 
         catch (error) {
-            console.log(error)
+            setError(error.message);
         }
     }
-
-    const [players, setPlayers] = useState([]);
-    useEffect(() => {
-        const getPlayers = async () => {
-            try {
-                const userID = user.userID;
-                const response = await fetch(`${API_URL}/games/${title}/table/${lobby}/`, {
-                    method: 'GET',
-                    headers: {  'Authorization': `Bearer ${auth.accessToken}`,
-                                "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
-                });
-                const result = await response.json();
-                setPlayers(result.players);
-            } 
-            catch (error) {
-                console.log(error)
-            }
-        }
-        if (lobby != null) {
-            getPlayers();
-        }
-        
-    }, [lobby])
 
     // should add a field in db for number of players per game in case there are games that allow more than 2 players
     // also add single player mode to play against computer
@@ -158,7 +195,7 @@ function Lobby() {
                 navigate(`/games/${title}/table/` + lobby + '/play');
             }
             catch (error) {
-                console.log(error)
+                setError(error.message);
             }
            
         }
@@ -178,6 +215,9 @@ function Lobby() {
                 <div className='lobby-bottom'>
                     {lobby? <div className="lobby">
                                 <h2>Players</h2>
+                                <div className="error">
+                                    {error && <p>{error}</p>}
+                                </div>
                                 <ul>
                                     {players?.length > 0 ? players.map((player) => {
                                         return <li className='friend-list-item' key={player.id}>{player.username}</li>
@@ -192,7 +232,10 @@ function Lobby() {
                                             </form>}
                                     {players?.length < 2 &&
                                     <button onClick={toggleAddingPlayer} className='drop-down'>Invite Player</button>}
-                                    {owner._id == user.userID && <button onClick={play}>Play!</button>}
+                                    {owner._id == user.userID && <div>
+                                        <button onClick={deleteLobby}>Delete Lobby</button>
+                                        {players?.length == 2 && <button onClick={play}>Play</button>}
+                                        </div>}
                                 </div> 
                             </div> : <button onClick={createGame}>Create Lobby</button>}
                 </div>

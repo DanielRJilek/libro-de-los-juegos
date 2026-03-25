@@ -1,12 +1,11 @@
 import './index.css'
-import useAuthContext from './hooks/useAuthContext'
-// import AuthProvider from './context/AuthContext'
 import routes from './routing/routes'
 import { RouterProvider, createBrowserRouter } from 'react-router'
 import { AuthContext, AuthContextProvider } from './context/AuthContext'
 import { useContext, useState } from 'react'
-import { UserContext } from './context/UserContext'
-import { UserContextProvider } from './context/UserContext'
+import { UserContext, UserContextProvider } from './context/UserContext'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 function App() {
   const user = useContext(AuthContext);
@@ -17,8 +16,9 @@ function App() {
     <AuthContextProvider value={user}>
       <UserContextProvider value={username}>
         <RouterProvider router={router}>
-          <App/>
-      </RouterProvider>
+          
+        </RouterProvider>
+        <ToastContainer/>
       </UserContextProvider>
     </AuthContextProvider>
   )

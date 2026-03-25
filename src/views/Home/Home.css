@@ -13,22 +13,3 @@
     align-items: center;
 }
 
-#welcome {
-    display: flex;
-    flex-direction: row;
-    flex: 1;
-    margin: 0 20px;
-    justify-content: center;
-}
-
-#welcome > div {
-    padding: 0px 50px;
-}
-
-#welcome-right {
-    flex: 1;
-    font-size: large;
-    border-radius: 5px;
-    max-width: 50vw;
-    color: rgb(61, 22, 20);
-}

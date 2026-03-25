@@ -1,5 +1,6 @@
 import Slideshow from '../../components/Slideshow/Slideshow';
 import WelcomeButtons from '../../components/WelcomeButtons/WelcomeButtons';
+import './Welcome.css';
 
 function Welcome() {
     const welcome_header = "Welcome to Libro de los Juegos, the Book of Games";

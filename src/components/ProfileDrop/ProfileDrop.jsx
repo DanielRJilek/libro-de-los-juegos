@@ -10,6 +10,7 @@ import { useEffect, useRef, useState, useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import { UserContext } from '../../context/UserContext';
 import { useNavigate } from 'react-router';
+import { toast } from 'react-toastify';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -23,32 +24,53 @@ function ProfileDrop() {
     const [activeGames,setActiveGames] = useState([]);
     const [friends,setFriends] = useState([]);
     const [open, setOpen] = useState(false);
+    const [addingFriend, setAddingFriend] = useState(false);
+    const [viewingFriends, setViewingFriends] = useState(false);
+    const [viewingFriendRequests, setViewingFriendRequests] = useState(false);
+    const [viewingInvites, setViewingInvites] = useState(false);
+    const [viewingActiveGames, setViewingActiveGames] = useState(false);
+    const options = [  ];
+    const ProfilePic = user.profilePic;
+
     const toggleOpen = () => {
         open ? setOpen(false) : setOpen(true)
         setError();
     }
-    const [addingFriend, setAddingFriend] = useState(false);
+    
     const toggleAddingFriend = () => {
         addingFriend ? setAddingFriend(false) : setAddingFriend(true)
     }
-    const [viewingFriends, setViewingFriends] = useState(false);
+    
     const toggleViewingFriends = () => {
         viewingFriends ? setViewingFriends(false) : setViewingFriends(true)
     }
-    const [viewingFriendRequests, setViewingFriendRequests] = useState(false);
+    
     const toggleViewingFriendRequests = () => {
         viewingFriendRequests ? setViewingFriendRequests(false) : setViewingFriendRequests(true)
     }
-    const [viewingInvites, setViewingInvites] = useState(false);
+    
     const toggleViewingInvites = () => {
         viewingInvites ? setViewingInvites(false) : setViewingInvites(true)
     }
-    const [viewingActiveGames, setViewingActiveGames] = useState(false);
+    
     const toggleViewingActiveGames = () => {
         viewingActiveGames ? setViewingActiveGames(false) : setViewingActiveGames(true)
     }
-    const options = [  ];
-    const ProfilePic = user.profilePic;
+    
+    useEffect(() => {
+        if (error) {
+            const timer = setTimeout(() => {
+                setError(null);
+            }, 3000);
+            return () => clearTimeout(timer);
+        }
+    }, [error])
+
+    useEffect(() => {
+        if (user.userID != null) {
+            getMyData();
+        }
+    }, [user])
 
     const getMyData = async () => {
         try {
@@ -74,12 +96,6 @@ function ProfileDrop() {
         }
     }
 
-    useEffect(() => {
-        if (user.userID != null) {
-            getMyData();
-        }
-    }, [user])
-    
     const logout = async (e) => {
         e.preventDefault();
         try {
@@ -119,6 +135,8 @@ function ProfileDrop() {
                 return;
             }
             toggleAddingFriend();
+            toast.success("Friend Request Sent!", {
+            });
         } 
         catch (error) {
             console.log(error)
@@ -182,12 +200,28 @@ function ProfileDrop() {
             navigate(`${API_URL}/games/${invite.title}/table/${invite.game_id}`)
         } 
         catch (error) {
-            console.log(error)
+            setError(error.message);
         }
     }
 
     const declineInvite = async (id) => {
-
+        try {
+            const response = await fetch(`${API_URL}/users/${user.userID}/invites`, {
+                method:'DELETE',
+                headers: {  'Authorization': `Bearer ${auth.accessToken}`,
+                            "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
+                body: JSON.stringify({inviteID: id}),
+            });
+            if (!response.ok) {
+                const message = await response.json();
+                setError(message.message);
+                return;
+            }
+            getMyData();
+        }
+        catch (error) {
+            console.log(error)
+        }
     }
 
     const displayActiveGame = (game) => {
@@ -195,14 +229,20 @@ function ProfileDrop() {
             const otherPlayers = game.players.filter((player) => player.username != user.username);
             return <li onClick={() => 
                 {navigate(`${API_URL}/games/${game.title}/table/${game._id}/play`)}} 
-                className='friend-list-item' key={game._id}>{game.title} with 
+                className='game-list-item' key={game._id}>{game.title} {' with '} 
                 {otherPlayers.map((player) => player.username).join(', ')}</li>
         }
         else {
             const otherPlayers = game.players.filter((player) => player.username != user.username);
+            if (otherPlayers.length == 0) {
+                return <li onClick={() => 
+                    {navigate(`${API_URL}/games/${game.title}/table/${game._id}/`)}}
+                    className='game-list-item' key={game._id}>{game.title} {' lobby (waiting for players)'}</li>
+            }
+
             return <li onClick={() => 
                 {navigate(`${API_URL}/games/${game.title}/table/${game._id}/`)}}
-                className='friend-list-item' key={game._id}>{game.title} {' lobby with '}   
+                className='game-list-item' key={game._id}>{game.title} {' lobby with '}   
                 {otherPlayers.map((player) => player.username).join(', ')}</li>
         }
     }
@@ -244,7 +284,9 @@ function ProfileDrop() {
                                         <button className='accept-button' onClick={() => 
                                             {acceptInvite(invite)}}>
                                         </button>
-                                        <button className='decline-button'></button>
+                                        <button className='decline-button' onClick={() => 
+                                            {declineInvite(invite)}}>
+                                        </button>
                                     </li>
                                 }): <li className='empty-li'></li>}
                                 </ul>}
