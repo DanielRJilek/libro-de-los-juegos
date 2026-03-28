@@ -2,7 +2,10 @@
     background-image: url(../../assets/images/Alhambra_view.png);
     background-size: cover;
     background-repeat: no-repeat;
-    align-items: center;
+    background-attachment: fixed;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 #main {

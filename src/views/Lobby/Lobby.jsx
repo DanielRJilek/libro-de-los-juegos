@@ -18,28 +18,13 @@ function Lobby() {
     const [lobby, setLobby] = useState(null);
     const [loading, setLoading] = useState(true);
     const [game,setGame] = useState("");
-    const [owner,setOwner] = useState(null);
     const [error, setError] = useState(null);
     const [addingPlayer, setAddingPlayer] = useState(false);
-    const instance = params.instance;
+    let instance = params.instance;
 
     useEffect(() => {
         if (instance) {
             getTable();
-        }
-        const getGame = async () => {
-        try {
-            const response = await fetch(`${API_URL}/games/${title}`, {
-            method:'GET',
-            headers: { "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
-            });
-            const result = await response.json();
-            setGame(result);
-            setLoading(false);
-        } 
-        catch (error) {
-            console.log(error)
-        }
         }
         getGame();
     }, [])
@@ -53,34 +38,37 @@ function Lobby() {
         }
     }, [error])
 
-    const [players, setPlayers] = useState([]);
-    useEffect(() => {
-        const getPlayers = async () => {
-            try {
-                const userID = user.userID;
-                const response = await fetch(`${API_URL}/games/${title}/table/${lobby}/`, {
-                    method: 'GET',
-                    headers: {  'Authorization': `Bearer ${auth.accessToken}`,
-                                "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
-                });
-                const result = await response.json();
-                setPlayers(result.players);
-            } 
-            catch (error) {
-                setError("Error loading players. Try refreshing the page.");
-            }
-        }
-        if (lobby != null) {
-            getPlayers();
-        }
-        
-    }, [lobby])
+
+    // useEffect(() => {
+    //     if (lobby != null) {
+    //         getTable();
+    //     }
+    // }, [lobby])
 
     const toggleAddingPlayer = () => {
         addingPlayer ? setAddingPlayer(false) : setAddingPlayer(true)
     }
 
+    const getGame = async () => {
+        try {
+            const response = await fetch(`${API_URL}/games/${title}`, {
+            method:'GET',
+            headers: { "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
+            });
+            const result = await response.json();
+            setGame(result);
+            setLoading(false);
+        } 
+        catch (error) {
+            console.log(error)
+        }
+    }
+
     const getTable = async () => {
+        if (!instance) {
+            setLoading(false);
+            return;
+        }
         try {
             const response = await fetch(`${API_URL}/games/${title}/table/${instance}/`, {
                 method:'GET',
@@ -91,9 +79,7 @@ function Lobby() {
                 throw new Error("Failed");
             }
             const result = await response.json();
-            setLobby(result._id);
-            setPlayers(result.players);
-            setOwner(result.owner);
+            setLobby(result);
         }
         catch (error) {
             console.log(error)
@@ -114,11 +100,11 @@ function Lobby() {
                 throw new Error("Failed");
             }
             const result = await response.json();
-            setLoading(false);
-            setLobby(result._id);
-            setPlayers([user]);
-            setOwner(user);
+            
             navigate(`${API_URL}/games/${title}/table/${result._id}`)
+            instance = result._id;
+            await getTable();
+            setLoading(false);
         } 
         catch (error) {
             setError(error.message);
@@ -128,7 +114,7 @@ function Lobby() {
 
     const deleteLobby = async () => {
         try {
-            const response = await fetch(`${API_URL}/games/${title}/table/${lobby}/`, {
+            const response = await fetch(`${API_URL}/games/${title}/table/${instance}/`, {
                 method:'DELETE',
                 headers: {  'Authorization': `Bearer ${auth.accessToken}`,
                             "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
@@ -138,7 +124,6 @@ function Lobby() {
                 return;
             }
             setLobby(null);
-            setPlayers([]);
             navigate(`/games/${title}`);
         }
         catch (error) {
@@ -161,21 +146,9 @@ function Lobby() {
                 setError(errorData.message);
                 return;
             }
-            const response2 = await fetch(`${API_URL}/games/${title}/table/${lobby}/`, {
-                method:'GET',
-                headers: {  'Authorization': `Bearer ${auth.accessToken}`,
-                            "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
-            });
-            if (!response2.ok) {
-                const errorData = await response2.json();
-                setError(errorData.message);
-                return;
-            }
-            const result = await response2.json();
-            setPlayers(result.players);
+            getTable();
             toggleAddingPlayer();
-            toast.success("Invite Sent!", {
-            });
+            toast.success("Invite Sent!", {});
         } 
         catch (error) {
             setError(error.message);
@@ -185,7 +158,7 @@ function Lobby() {
     // should add a field in db for number of players per game in case there are games that allow more than 2 players
     // also add single player mode to play against computer
     const play = async () => {
-        if (players.length == 2 && owner._id == user.userID) {
+        if (lobby?.players?.length == 2 && lobby?.owner._id == user.userID) {
             try {
                 const response = await fetch(`${API_URL}/games/${title}/table/${lobby}/start`, {
                     method: 'POST',
@@ -197,7 +170,6 @@ function Lobby() {
             catch (error) {
                 setError(error.message);
             }
-           
         }
     }
 
@@ -219,9 +191,14 @@ function Lobby() {
                                     {error && <p>{error}</p>}
                                 </div>
                                 <ul>
-                                    {players?.length > 0 ? players.map((player) => {
+                                    {lobby?.players?.length > 0 ? lobby.players.map((player) => {
                                         return <li className='friend-list-item' key={player.id}>{player.username}</li>
                                     }) : <li className='empty-li'>No PLayers?</li  >}
+                                </ul>
+                                <ul>
+                                    {lobby?.invites?.length > 0 ? lobby.invites.map((invite) => {
+                                        return <li className='friend-list-item invite-list-item' key={invite.id}>{invite.username} (invited)</li>
+                                    }) : null}
                                 </ul>
                                 <div className="button-holder">
                                     {addingPlayer
@@ -230,12 +207,12 @@ function Lobby() {
                                                 <input type="text" id="username" name="username"></input>
                                                 <button className='go-button'>Go</button>
                                             </form>}
-                                    {players?.length < 2 &&
+                                    {lobby?.players?.length < 2 &&
                                     <button onClick={toggleAddingPlayer} className='drop-down'>Invite Player</button>}
-                                    {owner._id == user.userID && <div>
+                                    {lobby?.owner?._id == user.userID && <>
                                         <button onClick={deleteLobby}>Delete Lobby</button>
-                                        {players?.length == 2 && <button onClick={play}>Play</button>}
-                                        </div>}
+                                        {lobby?.players?.length == 2 && <button onClick={play}>Play</button>}
+                                        </>}
                                 </div> 
                             </div> : <button onClick={createGame}>Create Lobby</button>}
                 </div>

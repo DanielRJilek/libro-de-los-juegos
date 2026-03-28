@@ -131,3 +131,7 @@
   left: 50vw;
   top: 50vh;
 }
+
+.invite-list-item {
+  color: rgb(113, 113, 113);
+}

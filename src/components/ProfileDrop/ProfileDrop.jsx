@@ -237,7 +237,7 @@ function ProfileDrop() {
             if (otherPlayers.length == 0) {
                 return <li onClick={() => 
                     {navigate(`${API_URL}/games/${game.title}/table/${game._id}/`)}}
-                    className='game-list-item' key={game._id}>{game.title} {' lobby (waiting for players)'}</li>
+                    className='game-list-item' key={game._id}>{game.title} {' lobby (empty)'}</li>
             }
 
             return <li onClick={() => 
