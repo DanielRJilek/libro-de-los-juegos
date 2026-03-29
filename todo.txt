@@ -1,12 +1,14 @@
 MAJOR/ MOST IMPORTANT
 - [] add laquet 
 - [] add medio emperador
-- [] navigating between lobbies when already in one
+- [x] navigating between lobbies when already in one
 - [] fix winning and game end
 - [] Add dice rolling animation or similar
 - [x] Welcome page background doesn't cover bottom when screen is thin
 - [] there are currently emissions and responses from the controller. should there just be emits?
-- [] delete lobby doesn't appear after creating lobby. have to refresh
+- [x] delete lobby doesn't appear after creating lobby. have to refresh
+- [] reject invites and friend requests
+- [] fix style of accept and decline
 
 
 MINOR
@@ -27,7 +29,7 @@ MINOR
 - [x] fix lobby game pic shrinking but frame staying same size
 - [] add online status to users
 - [] add connected status to players in games
-- [] bug causing one player to be able to play the whole game?
+- [x] bug causing one player to be able to play the whole game?
 - [x] add invited players list to gameInstances
 - [] fix inconsistencies in errors. try catch or !response.ok
 - [] delete lobby style
@@ -35,3 +37,4 @@ MINOR
 - [] about game texts should focus on how to play?
 - [] could the lobby page be redone so it doesn't have to navigate and re-render when creating lobby?
 - [] edit profile functionality and view profile page
+- [] there may be an error when token expires and user is in protected route

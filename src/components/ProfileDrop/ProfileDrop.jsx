@@ -10,7 +10,8 @@ import { useEffect, useRef, useState, useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import { UserContext } from '../../context/UserContext';
 import { useNavigate } from 'react-router';
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -18,11 +19,8 @@ function ProfileDrop() {
     const navigate = useNavigate();
     const auth = useContext(AuthContext);
     const user = useContext(UserContext);
+    const [userData, setUserData] = useState();
     const [error, setError] = useState();
-    const [invites,setInvites] = useState([]);
-    const [friendRequests,setFriendRequests] = useState([]);
-    const [activeGames,setActiveGames] = useState([]);
-    const [friends,setFriends] = useState([]);
     const [open, setOpen] = useState(false);
     const [addingFriend, setAddingFriend] = useState(false);
     const [viewingFriends, setViewingFriends] = useState(false);
@@ -36,23 +34,18 @@ function ProfileDrop() {
         open ? setOpen(false) : setOpen(true)
         setError();
     }
-    
     const toggleAddingFriend = () => {
         addingFriend ? setAddingFriend(false) : setAddingFriend(true)
     }
-    
     const toggleViewingFriends = () => {
         viewingFriends ? setViewingFriends(false) : setViewingFriends(true)
     }
-    
     const toggleViewingFriendRequests = () => {
         viewingFriendRequests ? setViewingFriendRequests(false) : setViewingFriendRequests(true)
     }
-    
     const toggleViewingInvites = () => {
         viewingInvites ? setViewingInvites(false) : setViewingInvites(true)
     }
-    
     const toggleViewingActiveGames = () => {
         viewingActiveGames ? setViewingActiveGames(false) : setViewingActiveGames(true)
     }
@@ -74,7 +67,6 @@ function ProfileDrop() {
 
     const getMyData = async () => {
         try {
-            const userID = user.userID;
             const response = await fetch(`${API_URL}/users/${user.userID}/private`, {
                 method:'GET',
                 headers: {  'Authorization': `Bearer ${auth.accessToken}`,
@@ -86,10 +78,7 @@ function ProfileDrop() {
                 return;
             }
             const result = await response.json();
-            setFriendRequests(result.friendRequests);
-            setActiveGames(result.activeGames);
-            setFriends(result.friends);
-            setInvites(result.invites);
+            setUserData(result);
         } 
         catch (error) {
             console.log(error)
@@ -156,7 +145,10 @@ function ProfileDrop() {
                 const message = await response.json();
                 setError(message.message);
                 return;
-            }            
+            }
+            getMyData();
+            toast.success("Friend Request Accepted!", {
+            });            
         } 
         catch (error) {
             console.log(error)
@@ -253,7 +245,7 @@ function ProfileDrop() {
             <div className='icon-holder'>
                 <ProfilePic onClick={toggleOpen}></ProfilePic>
                 
-                {(invites?.length || friendRequests?.length > 0) && 
+                {(userData?.invites?.length || userData?.friendRequests?.length > 0) && 
                     <IoAlertCircle id='profile-alert' onClick={toggleOpen}></IoAlertCircle>}
                 {open ? <div className='drop-options'>
                     <div className='drop-header'>
@@ -276,9 +268,9 @@ function ProfileDrop() {
                             <IoPlayOutline></IoPlayOutline>
                             <span>
                                 <span onClick={toggleViewingInvites}>Game Invites</span>
-                                {invites?.length > 0 && <IoAlertCircle id='profile-alert'></IoAlertCircle>}
+                                {userData?.invites?.length > 0 && <IoAlertCircle id='profile-alert'></IoAlertCircle>}
                                 {viewingInvites && <ul>
-                                    {invites?.length > 0 ? invites.map((invite) => {
+                                    {userData?.invites?.length > 0 ? userData.invites.map((invite) => {
                                     return <li className='friend-list-item' key={invite.id}> 
                                         {invite.sender.username} invites you to play {invite.title}
                                         <button className='accept-button' onClick={() => 
@@ -298,7 +290,7 @@ function ProfileDrop() {
                                 <span onClick={toggleViewingActiveGames}>Active Games</span>
                                 {viewingActiveGames 
                                     && <ul>
-                                        {activeGames?.length > 0 ? activeGames.map((game) => {
+                                        {userData?.activeGames?.length > 0 ? userData.activeGames.map((game) => {
                                             return displayActiveGame(game);
                                         }) : <li className='empty-li'></li  >}
                                     </ul>}
@@ -311,7 +303,7 @@ function ProfileDrop() {
                                 <span onClick={toggleViewingFriends}>Friends</span>
                                 {viewingFriends 
                                 && <ul>
-                                    {friends?.length > 0 ? friends.map((friend) => {
+                                    {userData?.friends?.length > 0 ? userData.friends.map((friend) => {
                                     return <li className='friend-list-item' key={friend.username}>{friend.username}</li>
                                 }) : <li className='empty-li'></li  >}
                                 </ul>}
@@ -333,9 +325,9 @@ function ProfileDrop() {
                             <GoPeople></GoPeople>
                             <span >
                                 <span onClick={toggleViewingFriendRequests}>Friend Requests</span>
-                                {friendRequests?.length > 0 && <IoAlertCircle id='profile-alert'></IoAlertCircle>}
+                                {userData?.friendRequests?.length > 0 && <IoAlertCircle id='profile-alert'></IoAlertCircle>}
                                 {viewingFriendRequests && <ul>
-                                    {friendRequests?.length > 0 ? friendRequests.map((friendRequest) => {
+                                    {userData?.friendRequests?.length > 0 ? userData.friendRequests.map((friendRequest) => {
                                     return <li className='friend-list-item' key={friendRequest.username}>{friendRequest.username}
                                         <button className='accept-button' onClick={() => 
                                             {acceptFriendRequest(friendRequest._id)}}></button>

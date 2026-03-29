@@ -1,6 +1,7 @@
 import Slideshow from '../../components/Slideshow/Slideshow';
 import WelcomeButtons from '../../components/WelcomeButtons/WelcomeButtons';
 import './Welcome.css';
+import Dice from '../Tablas/Dice/Dice';
 
 function Welcome() {
     const welcome_header = "Welcome to Libro de los Juegos, the Book of Games";
@@ -17,6 +18,7 @@ function Welcome() {
                 </div>
                 <WelcomeButtons></WelcomeButtons>
             </div>
+            <Dice></Dice>
         </div>
     )
 }

@@ -1,7 +1,7 @@
 import "../tablas.css";
 import Header from "../../../components/Header/Header"
 import Board from "../Board/Board";
-// import Dice from "../Dice/Dice";
+import Dice from "../Dice/Dice";
 import { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../../../context/AuthContext";
 import { useNavigate, useParams } from "react-router";
@@ -119,6 +119,8 @@ function Doblet() {
                     <div className="game-center">
                         <div className="player-holder"></div>
                         <Board board={board}></Board>
+                        <Dice></Dice>
+                        <Dice></Dice>
                         <div className="player-holder"></div>
                     </div>
                     <div className="game-side">

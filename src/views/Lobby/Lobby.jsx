@@ -7,6 +7,7 @@ import './Lobby.css'
 import { ClipLoader } from "react-spinners";
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+
 const API_URL = import.meta.env.VITE_API_URL;
 
 function Lobby() {
@@ -21,13 +22,16 @@ function Lobby() {
     const [error, setError] = useState(null);
     const [addingPlayer, setAddingPlayer] = useState(false);
     let instance = params.instance;
+    
 
     useEffect(() => {
+        setLoading(true);
+        setLobby(null);
         if (instance) {
             getTable();
         }
         getGame();
-    }, [])
+    }, [instance, title])
 
     useEffect(() => {
         if (error) {
@@ -37,13 +41,6 @@ function Lobby() {
             return () => clearTimeout(timer);
         }
     }, [error])
-
-
-    // useEffect(() => {
-    //     if (lobby != null) {
-    //         getTable();
-    //     }
-    // }, [lobby])
 
     const toggleAddingPlayer = () => {
         addingPlayer ? setAddingPlayer(false) : setAddingPlayer(true)
