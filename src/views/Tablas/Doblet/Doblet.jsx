@@ -1,4 +1,4 @@
-import "../tablas.css";
+import '../Tablas.css'
 import Header from "../../../components/Header/Header"
 import Board from "../Board/Board";
 import Dice from "../Dice/Dice";
