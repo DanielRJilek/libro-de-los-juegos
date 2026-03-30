@@ -33,8 +33,9 @@ MINOR
 - [x] add invited players list to gameInstances
 - [] fix inconsistencies in errors. try catch or !response.ok
 - [] delete lobby style
-- [] capitalize game titles?
+- [x] capitalize game titles?
 - [] about game texts should focus on how to play?
 - [] could the lobby page be redone so it doesn't have to navigate and re-render when creating lobby?
+- [] fix rerender when creating lobby
 - [] edit profile functionality and view profile page
 - [] there may be an error when token expires and user is in protected route

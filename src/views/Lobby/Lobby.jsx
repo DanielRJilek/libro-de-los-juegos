@@ -22,7 +22,6 @@ function Lobby() {
     const [error, setError] = useState(null);
     const [addingPlayer, setAddingPlayer] = useState(false);
     let instance = params.instance;
-    
 
     useEffect(() => {
         setLoading(true);
@@ -35,6 +34,7 @@ function Lobby() {
 
     useEffect(() => {
         if (error) {
+            toast.error(error, {});
             const timer = setTimeout(() => {
                 setError(null);
             }, 3000);
@@ -73,7 +73,10 @@ function Lobby() {
                             "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
             });
             if (!response.ok) {
-                throw new Error("Failed");
+                setError("Failed to fetch lobby. Redirecting to game page.");
+                setLoading(false);
+                navigate(`/games/${title}`);
+                return;
             }
             const result = await response.json();
             setLobby(result);
@@ -136,7 +139,7 @@ function Lobby() {
                 method:'POST',
                 headers: {  'Authorization': `Bearer ${auth.accessToken}`,
                             "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
-                body: JSON.stringify({username, instance: lobby}),
+                body: JSON.stringify({username, instance: lobby._id}),
             });
             if (!response.ok) {
                 const errorData = await response.json();
@@ -177,7 +180,7 @@ function Lobby() {
                 <div className='lobby-top'>
                                 <img src={'https://libro-de-los-juegos-server.onrender.com/static' + game?.image}></img>
                                 <div className="lobby-top-right">
-                                    <h1 id="game-title">{game?.title}</h1>
+                                    <h1 id="game-title">{game?.title.charAt(0).toUpperCase() + game?.title.slice(1)}</h1>
                                     <div id="game-desc">{game?.desc}</div>
                                 </div>
                             </div> 

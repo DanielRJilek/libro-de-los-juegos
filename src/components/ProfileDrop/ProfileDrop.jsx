@@ -177,7 +177,8 @@ function ProfileDrop() {
 
     const acceptInvite = async (invite) => {
         try {
-            const response = await fetch(`${API_URL}/games/${invite.title}/table/${invite.game_id}/players`, {
+            console.log(invite);
+            const response = await fetch(`${API_URL}/games/${invite.table.title}/table/${invite.table._id}/players`, {
                 method:'POST',
                 headers: {  'Authorization': `Bearer ${auth.accessToken}`,
                             "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
@@ -188,8 +189,8 @@ function ProfileDrop() {
                 setError(message.message);
                 return;
             }
-            console.log(`navigating to ${API_URL}/games/${invite.title}/table/${invite.game_id}`)
-            navigate(`${API_URL}/games/${invite.title}/table/${invite.game_id}`)
+            console.log(`navigating to ${API_URL}/games/${invite.table.title}/table/${invite.table._id}`)
+            navigate(`${API_URL}/games/${invite.table.title}/table/${invite.table._id}`)
         } 
         catch (error) {
             setError(error.message);
@@ -221,7 +222,7 @@ function ProfileDrop() {
             const otherPlayers = game.players.filter((player) => player.username != user.username);
             return <li onClick={() => 
                 {navigate(`${API_URL}/games/${game.title}/table/${game._id}/play`)}} 
-                className='game-list-item' key={game._id}>{game.title} {' with '} 
+                className='game-list-item' key={game._id}>{game.title.charAt(0).toUpperCase() + game.title.slice(1)} {' with '} 
                 {otherPlayers.map((player) => player.username).join(', ')}</li>
         }
         else {
@@ -229,12 +230,12 @@ function ProfileDrop() {
             if (otherPlayers.length == 0) {
                 return <li onClick={() => 
                     {navigate(`${API_URL}/games/${game.title}/table/${game._id}/`)}}
-                    className='game-list-item' key={game._id}>{game.title} {' lobby (empty)'}</li>
+                    className='game-list-item' key={game._id}>{game.title.charAt(0).toUpperCase() + game.title.slice(1)} {' lobby (empty)'}</li>
             }
 
             return <li onClick={() => 
                 {navigate(`${API_URL}/games/${game.title}/table/${game._id}/`)}}
-                className='game-list-item' key={game._id}>{game.title} {' lobby with '}   
+                className='game-list-item' key={game._id}>{game.title.charAt(0).toUpperCase() + game.title.slice(1)} {' lobby with '}   
                 {otherPlayers.map((player) => player.username).join(', ')}</li>
         }
     }
@@ -271,8 +272,9 @@ function ProfileDrop() {
                                 {userData?.invites?.length > 0 && <IoAlertCircle id='profile-alert'></IoAlertCircle>}
                                 {viewingInvites && <ul>
                                     {userData?.invites?.length > 0 ? userData.invites.map((invite) => {
+                                        console.log(invite);
                                     return <li className='friend-list-item' key={invite.id}> 
-                                        {invite.sender.username} invites you to play {invite.title}
+                                        {invite.sender.username} invites you to play {invite.table.title.charAt(0).toUpperCase() + invite.table.title.slice(1)}
                                         <button className='accept-button' onClick={() => 
                                             {acceptInvite(invite)}}>
                                         </button>
