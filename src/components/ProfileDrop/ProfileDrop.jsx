@@ -199,7 +199,7 @@ function ProfileDrop() {
 
     const declineInvite = async (id) => {
         try {
-            const response = await fetch(`${API_URL}/users/${user.userID}/invites`, {
+            const response = await fetch(`${API_URL}/users/${user.userID}/friends/invites`, {
                 method:'DELETE',
                 headers: {  'Authorization': `Bearer ${auth.accessToken}`,
                             "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },

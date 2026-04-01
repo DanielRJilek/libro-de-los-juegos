@@ -3,13 +3,13 @@ MAJOR/ MOST IMPORTANT
 - [] add medio emperador
 - [x] navigating between lobbies when already in one
 - [] fix winning and game end
-- [] Add dice rolling animation or similar
+- [x] Add dice rolling animation or similar
 - [x] Welcome page background doesn't cover bottom when screen is thin
 - [] there are currently emissions and responses from the controller. should there just be emits?
 - [x] delete lobby doesn't appear after creating lobby. have to refresh
 - [] reject invites and friend requests
 - [] fix style of accept and decline
-- [] emit socket when owner starts lobby?
+- [x] emit socket when owner starts lobby?
 
 
 MINOR
@@ -41,7 +41,8 @@ MINOR
 - [] edit profile functionality and view profile page
 - [] there may be an error when token expires and user is in protected route
 - [] consider when the owner deletes a lobby before someone accepts an invite
-- [] lobbies and games page have old issue where background doesn't take up full width
+- [x] lobbies and games page have old issue where background doesn't take up full width
 - [] should there be one giant socket lobby for instant user communication?
 - [] add stats to users
 - [] delete game when finished
+- [] make pieces move gradually

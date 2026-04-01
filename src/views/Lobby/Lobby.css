@@ -8,7 +8,7 @@
     src:url(../../assets/Tangerine/Tangerine-Regular.ttf);
 }
 
-.lobby-page {
+/* .lobby-page {
     min-height: 100vh;
     margin: 0;
     padding: 0;
@@ -16,8 +16,7 @@
     display: flex;
     flex-direction: column;
     min-width: 900px;
-    
-}
+} */
 
 .lobby-page .drop-down {
   border-radius: 10px;

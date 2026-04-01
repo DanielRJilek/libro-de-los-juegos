@@ -7,17 +7,26 @@ import Doblet from "../views/Tablas/Doblet/Doblet";
 import ProtectedRoute from "./ProtectedRoute";
 import Lobby from "../views/Lobby/Lobby";
 import About from "../views/About/About";
+import Title from "../components/Title/Title";
+import Game from "../views/Tablas/Game";
  
 const routes = [
     {
         path: "/",
         element: (<Home>
+            
+            <Title></Title>
             <Welcome></Welcome>
+            
         </Home>),
     },
     {
         path: "/games",
-        element: <MainMenu/>,
+        element: (<Home>
+            
+            <MainMenu></MainMenu>
+            
+        </Home>)
     },
      {
         path: "/login",
@@ -42,15 +51,21 @@ const routes = [
         children: [
             {
                 path: "/games/:title",
-                element: (<Lobby></Lobby>),
+                element: (  <Home>
+                                <Lobby></Lobby>
+                            </Home>),
             },
             {
                 path: "/games/:title/table/:instance",
-                element: (<Lobby></Lobby>),
+                element: (  <Home>
+                                <Lobby></Lobby>
+                            </Home>),
             },
             {
                 path: "/games/:title/table/:instance/play",
-                element: (<Doblet></Doblet>)
+                element: (<Game>
+                    <Doblet></Doblet>
+                </Game>)
             }
         ]
      }

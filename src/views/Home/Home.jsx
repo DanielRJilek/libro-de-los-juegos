@@ -7,7 +7,7 @@ const Home = ({children}) => {
         <div className="page" id='home-page'>
             <Header></Header>
             <div id='main'>
-                <Title></Title>
+                
                 {children} 
             </div>
         </div>

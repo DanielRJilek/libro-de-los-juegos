@@ -1,4 +1,4 @@
-import '../Tablas.css'
+import '../Game.css'
 import Header from "../../../components/Header/Header"
 import Board from "../Board/Board";
 import Dice from "../Dice/Dice";
@@ -11,16 +11,17 @@ import { socket } from "../../../socket";
 const API_URL = import.meta.env.VITE_API_URL;
 
 function Doblet() {
-    const [board,setBoard] = useState([[2,0,0,2], [2,0,0,2], [2,0,0,2], [2,0,0,2], [2,0,0,2], [2,0,0,2]]);
-    const [currentPlayer, setCurrentPlayer] = useState({id: "", username: ""});
-    const navigate = useNavigate();
-    const params = useParams();
-    const tableID = params.instance;
     const auth = useContext(AuthContext);
     const user = useContext(UserContext);
+    const [board,setBoard] = useState([[2,0,0,2], [2,0,0,2], [2,0,0,2], [2,0,0,2], [2,0,0,2], [2,0,0,2]]);
+    const [currentPlayer, setCurrentPlayer] = useState({id: "", username: ""});
+    const [loading, setLoading] = useState(true);
     const [isConnected, setIsConnected] = useState(socket.connected);
     const [winner, setWinner] = useState();
     const [dice, setDice] = useState([1,1,1]);
+    const navigate = useNavigate();
+    const params = useParams();
+    const tableID = params.instance;
 
     useEffect(() => {
         if (!user.userID) return;
@@ -124,12 +125,11 @@ function Doblet() {
             }
         }
         getGame();
+        setLoading(false);
     }, [])
 
     return (
-        <div className="game-page page" id=''>
-            <Header></Header>
-            <div id='main'>
+            <>
                 <div className="game-screen">
                     <div className="game-side">
                         
@@ -161,8 +161,7 @@ function Doblet() {
                 
                 
                 
-            </div>
-        </div>
+            </>
     )
 }
 

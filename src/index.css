@@ -24,10 +24,14 @@ a:hover {
 
 body {
   margin: 0;
+  padding: 0;
   display: flex;
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
 }
 
 h1 {
@@ -79,8 +83,6 @@ button:active {
     flex-direction: column;
     min-height: 100vh;
     box-sizing: border-box;
-    width: 100%;
-    height: 100%;
     margin: 0;
     padding: 0;
     border: 0;
@@ -127,17 +129,8 @@ button:active {
     border: 0;
     display: flex;
     flex-direction: column;
-    min-width: 900px;
-    background-image: url(./assets/images/Alhambra_view.png);
-    background-repeat: no-repeat;
-    background-size: cover;
-}
-
-.game-page {
-  background-image: url(./assets/images/seville_alcazar.jpeg);
-  background-size: cover;
-  background-repeat: no-repeat;
-  align-items: center;
+    width: 100%;
+    overflow:auto
 }
 
 .hidden {
@@ -145,7 +138,7 @@ button:active {
 }
 
 #main {
-    width: 100%;
+    min-width: 100vw;
     display: flex;
     flex-direction: column;
     flex: 1;

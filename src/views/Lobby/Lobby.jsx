@@ -202,9 +202,8 @@ function Lobby() {
     }
 
     return (
-        <div className="lobby-page page">
-            <Header></Header>
-            {!loading ? <div id='main'>
+        <>
+            {!loading ? <>
                 <div className='lobby-top'>
                                 <img src={'https://libro-de-los-juegos-server.onrender.com/static' + game?.image}></img>
                                 <div className="lobby-top-right">
@@ -244,9 +243,9 @@ function Lobby() {
                                 </div> 
                             </div> : <button onClick={createGame}>Create Lobby</button>}
                 </div>
-            </div>
+            </>
             : <ClipLoader className="loader"/>}
-        </div>
+        </>
     )
 }
 

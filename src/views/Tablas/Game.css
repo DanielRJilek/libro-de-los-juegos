@@ -1,3 +1,10 @@
+.game-page {
+  background-image: url(../../assets/images/seville_alcazar.jpeg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  align-items: center;
+}
+
 .game-screen {
     display: flex;
     flex-direction: column;
