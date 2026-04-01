@@ -42,3 +42,4 @@ MINOR
 - [] there may be an error when token expires and user is in protected route
 - [] consider when the owner deletes a lobby before someone accepts an invite
 - [] lobbies have old issue where background doesn't take up full width
+- [] should there be one giant socket lobby for instant user communication?

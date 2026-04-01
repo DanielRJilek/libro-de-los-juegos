@@ -38,6 +38,7 @@ function Lobby() {
             getTable();
             socket.on('game-start', onGameStart);
             socket.on('connect', onConnect);
+            socket.on('player-joined', getTable);
             if (socket.connected) {
                 socket.emit('join-table', instance, user.userID);
             } else {
@@ -46,6 +47,7 @@ function Lobby() {
             return () => {
                 socket.off('connect', onConnect);
                 socket.off('game-start', onGameStart);
+                socket.off('player-joined', getTable);
             };
         }
     }, [instance, title])
