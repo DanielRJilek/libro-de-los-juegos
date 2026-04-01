@@ -41,5 +41,7 @@ MINOR
 - [] edit profile functionality and view profile page
 - [] there may be an error when token expires and user is in protected route
 - [] consider when the owner deletes a lobby before someone accepts an invite
-- [] lobbies have old issue where background doesn't take up full width
+- [] lobbies and games page have old issue where background doesn't take up full width
 - [] should there be one giant socket lobby for instant user communication?
+- [] add stats to users
+- [] delete game when finished

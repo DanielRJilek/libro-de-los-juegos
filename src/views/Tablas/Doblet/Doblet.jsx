@@ -23,9 +23,21 @@ function Doblet() {
     const [dice, setDice] = useState([1,1,1]);
 
     useEffect(() => {
-        function onGameUpdate(value) {
+        if (!user.userID) return;
+        if (socket.connected) {
+            socket.emit('join-table', tableID, user.userID);
+        }
+    }, [user.userID]);
+
+    useEffect(() => {
+        async function onGameUpdate(value) {
+            setDice(value.dice);
+            await new Promise(resolve => setTimeout(resolve, 2000));
             setBoard(value.board);
             setCurrentPlayer(value.currentPlayer);
+            if (value.winner) {
+                setWinner(value.winner);
+            }
         }
         function onConnect() {
             socket.emit('join-table', tableID, user.userID);
