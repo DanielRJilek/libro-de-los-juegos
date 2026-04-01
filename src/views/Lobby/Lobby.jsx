@@ -105,6 +105,7 @@ function Lobby() {
             instance = result._id;
             await getTable();
             setLoading(false);
+            user.fetchPrivateData();
         } 
         catch (error) {
             setError(error.message);
@@ -124,6 +125,7 @@ function Lobby() {
                 return;
             }
             setLobby(null);
+            user.fetchPrivateData();
             navigate(`/games/${title}`);
         }
         catch (error) {
@@ -160,12 +162,13 @@ function Lobby() {
     const play = async () => {
         if (lobby?.players?.length == 2 && lobby?.owner._id == user.userID) {
             try {
-                const response = await fetch(`${API_URL}/games/${title}/table/${lobby}/start`, {
+                const response = await fetch(`${API_URL}/games/${title}/table/${lobby._id}/start`, {
                     method: 'POST',
                     headers: {  'Authorization': `Bearer ${auth.accessToken}`,
                                 "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
                 });
-                navigate(`/games/${title}/table/` + lobby + '/play');
+                user.fetchPrivateData();
+                navigate(`/games/${title}/table/` + lobby._id + '/play');
             }
             catch (error) {
                 setError(error.message);

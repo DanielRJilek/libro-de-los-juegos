@@ -19,7 +19,6 @@ function ProfileDrop() {
     const navigate = useNavigate();
     const auth = useContext(AuthContext);
     const user = useContext(UserContext);
-    const [userData, setUserData] = useState();
     const [error, setError] = useState();
     const [open, setOpen] = useState(false);
     const [addingFriend, setAddingFriend] = useState(false);
@@ -59,31 +58,31 @@ function ProfileDrop() {
         }
     }, [error])
 
-    useEffect(() => {
-        if (user.userID != null) {
-            getMyData();
-        }
-    }, [user])
+    // useEffect(() => {
+    //     if (user.userID != null) {
+    //         getMyData();
+    //     }
+    // }, [user])
 
-    const getMyData = async () => {
-        try {
-            const response = await fetch(`${API_URL}/users/${user.userID}/private`, {
-                method:'GET',
-                headers: {  'Authorization': `Bearer ${auth.accessToken}`,
-                            "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
-            });
-            if (!response.ok) {
-                const message = await response.json();
-                setError(message.message);
-                return;
-            }
-            const result = await response.json();
-            setUserData(result);
-        } 
-        catch (error) {
-            console.log(error)
-        }
-    }
+    // const getMyData = async () => {
+    //     try {
+    //         const response = await fetch(`${API_URL}/users/${user.userID}/private`, {
+    //             method:'GET',
+    //             headers: {  'Authorization': `Bearer ${auth.accessToken}`,
+    //                         "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
+    //         });
+    //         if (!response.ok) {
+    //             const message = await response.json();
+    //             setError(message.message);
+    //             return;
+    //         }
+    //         const result = await response.json();
+    //         setUserData(result);
+    //     } 
+    //     catch (error) {
+    //         console.log(error)
+    //     }
+    // }
 
     const logout = async (e) => {
         e.preventDefault();
@@ -146,7 +145,7 @@ function ProfileDrop() {
                 setError(message.message);
                 return;
             }
-            getMyData();
+            user.fetchPrivateData();
             toast.success("Friend Request Accepted!", {
             });            
         } 
@@ -182,14 +181,15 @@ function ProfileDrop() {
                 method:'POST',
                 headers: {  'Authorization': `Bearer ${auth.accessToken}`,
                             "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
-                body: JSON.stringify({username: user.username}),
+                body: JSON.stringify({username: user.userData.username}),
             });
             if (!response.ok) {
                 const message = await response.json();
                 setError(message.message);
                 return;
             }
-            console.log(`navigating to ${API_URL}/games/${invite.table.title}/table/${invite.table._id}`)
+            console.log(`navigating to ${API_URL}/games/${invite.table.title}/table/${invite.table._id}`);
+            user.fetchPrivateData();
             navigate(`${API_URL}/games/${invite.table.title}/table/${invite.table._id}`)
         } 
         catch (error) {
@@ -210,7 +210,7 @@ function ProfileDrop() {
                 setError(message.message);
                 return;
             }
-            getMyData();
+            user.fetchPrivateData();
         }
         catch (error) {
             console.log(error)
@@ -246,7 +246,7 @@ function ProfileDrop() {
             <div className='icon-holder'>
                 <ProfilePic onClick={toggleOpen}></ProfilePic>
                 
-                {(userData?.invites?.length || userData?.friendRequests?.length > 0) && 
+                {(user?.userData?.invites?.length || user?.userData?.friendRequests?.length > 0) && 
                     <IoAlertCircle id='profile-alert' onClick={toggleOpen}></IoAlertCircle>}
                 {open ? <div className='drop-options'>
                     <div className='drop-header'>
@@ -269,9 +269,9 @@ function ProfileDrop() {
                             <IoPlayOutline></IoPlayOutline>
                             <span>
                                 <span onClick={toggleViewingInvites}>Game Invites</span>
-                                {userData?.invites?.length > 0 && <IoAlertCircle id='profile-alert'></IoAlertCircle>}
+                                {user?.userData?.invites?.length > 0 && <IoAlertCircle id='profile-alert'></IoAlertCircle>}
                                 {viewingInvites && <ul>
-                                    {userData?.invites?.length > 0 ? userData.invites.map((invite) => {
+                                    {user?.userData?.invites?.length > 0 ? user?.userData.invites.map((invite) => {
                                         console.log(invite);
                                     return <li className='friend-list-item' key={invite.id}> 
                                         {invite.sender.username} invites you to play {invite.table.title.charAt(0).toUpperCase() + invite.table.title.slice(1)}
@@ -292,7 +292,7 @@ function ProfileDrop() {
                                 <span onClick={toggleViewingActiveGames}>Active Games</span>
                                 {viewingActiveGames 
                                     && <ul>
-                                        {userData?.activeGames?.length > 0 ? userData.activeGames.map((game) => {
+                                        {user?.userData?.activeGames?.length > 0 ? user?.userData.activeGames.map((game) => {
                                             return displayActiveGame(game);
                                         }) : <li className='empty-li'></li  >}
                                     </ul>}
@@ -305,7 +305,7 @@ function ProfileDrop() {
                                 <span onClick={toggleViewingFriends}>Friends</span>
                                 {viewingFriends 
                                 && <ul>
-                                    {userData?.friends?.length > 0 ? userData.friends.map((friend) => {
+                                    {user?.userData?.friends?.length > 0 ? user?.userData.friends.map((friend) => {
                                     return <li className='friend-list-item' key={friend.username}>{friend.username}</li>
                                 }) : <li className='empty-li'></li  >}
                                 </ul>}
@@ -327,9 +327,9 @@ function ProfileDrop() {
                             <GoPeople></GoPeople>
                             <span >
                                 <span onClick={toggleViewingFriendRequests}>Friend Requests</span>
-                                {userData?.friendRequests?.length > 0 && <IoAlertCircle id='profile-alert'></IoAlertCircle>}
+                                {user?.userData?.friendRequests?.length > 0 && <IoAlertCircle id='profile-alert'></IoAlertCircle>}
                                 {viewingFriendRequests && <ul>
-                                    {userData?.friendRequests?.length > 0 ? userData.friendRequests.map((friendRequest) => {
+                                    {user?.userData?.friendRequests?.length > 0 ? user?.userData.friendRequests.map((friendRequest) => {
                                     return <li className='friend-list-item' key={friendRequest.username}>{friendRequest.username}
                                         <button className='accept-button' onClick={() => 
                                             {acceptFriendRequest(friendRequest._id)}}></button>
