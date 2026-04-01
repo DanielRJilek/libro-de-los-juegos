@@ -4,7 +4,7 @@ import { ClipLoader } from "react-spinners";
 import { useEffect, useState } from "react";
 import Square from "../Square/Square";
 
-function Board({board}) {
+function Board({board, children}) {
     const [loading, setLoading] = useState(true);
     useEffect(() => {
         setLoading(false);
@@ -34,9 +34,19 @@ function Board({board}) {
             <img className="game-board" src="https://libro-de-los-juegos-server.onrender.com/static/images/board.png"></img>
             <div className="board-grid">
                 <div className="board-grid-quarter">{squares.slice(0,2)}</div>
-                <div className="board-midline-filler"></div>
+                <div className="board-grid-quarter"></div>
+                <div className="board-grid-quarter"></div>
+                <div className="board-midline-filler">
+                    <div className="dice-holder">
+                        {children}
+                    </div>
+                    
+                </div>
                 <div className="board-grid-quarter">{squares.slice(2,4)}</div>
-            </div>            
+                <div className="board-grid-quarter"></div>
+                
+            </div>
+            
         </div>
         
     )

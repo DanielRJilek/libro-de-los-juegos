@@ -3,6 +3,7 @@ import { UserContext } from "../../context/UserContext";
 import Header from "../../components/Header/Header";
 import { AuthContext } from "../../context/AuthContext";
 import { useNavigate, useParams } from "react-router";
+import { socket } from "../../socket";
 import './Lobby.css'
 import { ClipLoader } from "react-spinners";
 import { toast } from "react-toastify";
@@ -24,12 +25,29 @@ function Lobby() {
     let instance = params.instance;
 
     useEffect(() => {
+        function onGameStart() {
+            navigate(`/games/${title}/table/${instance}/play`);
+        }
+        function onConnect() {
+            socket.emit('join-table', instance, user.userID);
+        }
         setLoading(true);
         setLobby(null);
+        getGame();
         if (instance) {
             getTable();
+            socket.on('game-start', onGameStart);
+            socket.on('connect', onConnect);
+            if (socket.connected) {
+                socket.emit('join-table', instance, user.userID);
+            } else {
+                socket.connect();
+            }
+            return () => {
+                socket.off('connect', onConnect);
+                socket.off('game-start', onGameStart);
+            };
         }
-        getGame();
     }, [instance, title])
 
     useEffect(() => {
@@ -167,7 +185,12 @@ function Lobby() {
                     headers: {  'Authorization': `Bearer ${auth.accessToken}`,
                                 "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
                 });
+                if (!response.ok) {
+                    setError("Failed to start game.");
+                    return;
+                }
                 user.fetchPrivateData();
+                socket.emit('start-game', lobby._id);
                 navigate(`/games/${title}/table/` + lobby._id + '/play');
             }
             catch (error) {

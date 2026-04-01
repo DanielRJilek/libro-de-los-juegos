@@ -18,7 +18,6 @@ function Welcome() {
                 </div>
                 <WelcomeButtons></WelcomeButtons>
             </div>
-            <Dice></Dice>
         </div>
     )
 }

@@ -20,6 +20,7 @@ function Doblet() {
     const user = useContext(UserContext);
     const [isConnected, setIsConnected] = useState(socket.connected);
     const [winner, setWinner] = useState();
+    const [dice, setDice] = useState([1,1,1]);
 
     useEffect(() => {
         function onGameUpdate(value) {
@@ -38,7 +39,11 @@ function Doblet() {
         socket.on('connect', onConnect);
         socket.on('disconnect', onDisconnect);
         socket.on('game-update', onGameUpdate);
-        socket.connect();
+        if (!socket.connected) {
+            socket.connect();
+        } else {
+            socket.emit('join-table', tableID, user.userID);
+        }
 
         return () => {
             socket.off('connect', onConnect);
@@ -63,6 +68,7 @@ function Doblet() {
                 throw new Error("Failed");
             }
             const result = await response.json();
+            setDice(result.dice);
             if (result.winner) {
                 setBoard(result.board);
                 setWinner(result.winner);
@@ -118,9 +124,15 @@ function Doblet() {
                     </div>
                     <div className="game-center">
                         <div className="player-holder"></div>
-                        <Board board={board}></Board>
-                        <Dice></Dice>
-                        <Dice></Dice>
+                        <Board board={board} children={
+                            <>
+                                <Dice value={dice[0]}></Dice>
+                                <Dice value={dice[1]}></Dice>
+                                <Dice value={dice[2]}></Dice>
+                            </>
+                        }>
+                        </Board>
+                        
                         <div className="player-holder"></div>
                     </div>
                     <div className="game-side">

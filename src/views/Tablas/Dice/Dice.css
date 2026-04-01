@@ -1,0 +1,11 @@
+
+.dice svg {
+    display: block;
+    background-color: black;
+    fill: white;
+    border-radius: 2.5px;
+    position: relative;
+    z-index: 1;
+    height: 25px;
+    width: 25px;
+}

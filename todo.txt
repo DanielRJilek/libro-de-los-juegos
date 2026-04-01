@@ -9,6 +9,7 @@ MAJOR/ MOST IMPORTANT
 - [x] delete lobby doesn't appear after creating lobby. have to refresh
 - [] reject invites and friend requests
 - [] fix style of accept and decline
+- [] emit socket when owner starts lobby?
 
 
 MINOR
@@ -25,7 +26,7 @@ MINOR
 - [] add music
 - [x] invites not working?
 - [x] make welcome slideshow fade out slides too
-- [] handle game being deleted, should be deleted from every player's activeGames list
+- [x] handle game being deleted, should be deleted from every player's activeGames list
 - [x] fix lobby game pic shrinking but frame staying same size
 - [] add online status to users
 - [] add connected status to players in games
@@ -39,3 +40,5 @@ MINOR
 - [] fix rerender when creating lobby
 - [] edit profile functionality and view profile page
 - [] there may be an error when token expires and user is in protected route
+- [] consider when the owner deletes a lobby before someone accepts an invite
+- [] lobbies have old issue where background doesn't take up full width

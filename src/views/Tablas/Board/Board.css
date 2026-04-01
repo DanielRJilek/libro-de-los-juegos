@@ -3,6 +3,7 @@
     width: 687px;
     display: grid;
     grid-template-rows: repeat(3, 125px);
+    grid-template-columns: 1fr 1fr;
     padding-top: 16px;
 }
 
@@ -19,7 +20,20 @@
 
 .board-grid-quarter {
     display: grid;
-    width: 46%;
+    width: 92%;
     grid-template-columns: repeat(6, 1fr);
     grid-template-rows: repeat(2, 1fr);
 }
+
+.board-midline-filler {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.dice-holder {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 50%;
+}  
