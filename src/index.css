@@ -149,3 +149,7 @@ button:active {
   color: red;
   background-color: white;
 }
+
+.capitalize {
+  text-transform: capitalize;
+}

@@ -222,7 +222,8 @@ function ProfileDrop() {
             const otherPlayers = game.players.filter((player) => player.username != user.username);
             return <li onClick={() => 
                 {navigate(`${API_URL}/games/${game.title}/table/${game._id}/play`)}} 
-                className='game-list-item' key={game._id}>{game.title.charAt(0).toUpperCase() + game.title.slice(1)} {' with '} 
+                className='game-list-item capitalize' key={game._id}>
+                    <span className='capitalize'>{game.title}</span> {' with '} 
                 {otherPlayers.map((player) => player.username).join(', ')}</li>
         }
         else {
@@ -230,13 +231,17 @@ function ProfileDrop() {
             if (otherPlayers.length == 0) {
                 return <li onClick={() => 
                     {navigate(`${API_URL}/games/${game.title}/table/${game._id}/`)}}
-                    className='game-list-item' key={game._id}>{game.title.charAt(0).toUpperCase() + game.title.slice(1)} {' lobby (empty)'}</li>
+                    className='game-list-item' key={game._id}>
+                        <span className='capitalize'>{game.title}</span> {' lobby (empty)'}</li>
             }
 
             return <li onClick={() => 
                 {navigate(`${API_URL}/games/${game.title}/table/${game._id}/`)}}
-                className='game-list-item' key={game._id}>{game.title.charAt(0).toUpperCase() + game.title.slice(1)} {' lobby with '}   
-                {otherPlayers.map((player) => player.username).join(', ')}</li>
+                
+                className='game-list-item' key={game._id}>
+                    <span className='capitalize'>{game.title}</span> {' lobby with '}   
+                {otherPlayers.map((player) => player.username).join(', ')}
+                </li>
         }
     }
 
@@ -274,7 +279,8 @@ function ProfileDrop() {
                                     {user?.userData?.invites?.length > 0 ? user?.userData.invites.map((invite) => {
                                         console.log(invite);
                                     return <li className='friend-list-item' key={invite.id}> 
-                                        {invite.sender.username} invites you to play {invite.table.title.charAt(0).toUpperCase() + invite.table.title.slice(1)}
+                                        <span className='capitalize'>{invite.sender.username} invites you to play {invite.table.title}</span>
+                                        
                                         <button className='accept-button' onClick={() => 
                                             {acceptInvite(invite)}}>
                                         </button>

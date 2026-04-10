@@ -1,6 +1,5 @@
 import { useContext, useState, useEffect, use } from "react";
 import { UserContext } from "../../context/UserContext";
-import Header from "../../components/Header/Header";
 import { AuthContext } from "../../context/AuthContext";
 import { useNavigate, useParams } from "react-router";
 import { socket } from "../../socket";
@@ -207,7 +206,7 @@ function Lobby() {
                 <div className='lobby-top'>
                                 <img src={'https://libro-de-los-juegos-server.onrender.com/static' + game?.image}></img>
                                 <div className="lobby-top-right">
-                                    <h1 id="game-title">{game?.title.charAt(0).toUpperCase() + game?.title.slice(1)}</h1>
+                                    <h1 id="game-title" className="capitalize">{game?.title}</h1>
                                     <div id="game-desc">{game?.desc}</div>
                                 </div>
                             </div> 
