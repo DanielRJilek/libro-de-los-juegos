@@ -222,7 +222,7 @@ function ProfileDrop() {
             const otherPlayers = game.players.filter((player) => player.username != user.username);
             return <li onClick={() => 
                 {navigate(`${API_URL}/games/${game.title}/table/${game._id}/play`)}} 
-                className='game-list-item capitalize' key={game._id}>
+                className='game-list-item' key={game._id}>
                     <span className='capitalize'>{game.title}</span> {' with '} 
                 {otherPlayers.map((player) => player.username).join(', ')}</li>
         }
