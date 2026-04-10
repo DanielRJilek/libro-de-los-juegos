@@ -6,7 +6,7 @@ import { CiEdit, CiCircleAlert } from "react-icons/ci";
 import { GoPeople } from "react-icons/go";
 import { IoPersonAddOutline, IoPlayOutline, IoAlertCircle } from "react-icons/io5";
 import { PiCheckerboardFill } from "react-icons/pi";
-import { useEffect, useRef, useState, useContext } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import { UserContext } from '../../context/UserContext';
 import { useNavigate } from 'react-router';
@@ -57,32 +57,6 @@ function ProfileDrop() {
             return () => clearTimeout(timer);
         }
     }, [error])
-
-    // useEffect(() => {
-    //     if (user.userID != null) {
-    //         getMyData();
-    //     }
-    // }, [user])
-
-    // const getMyData = async () => {
-    //     try {
-    //         const response = await fetch(`${API_URL}/users/${user.userID}/private`, {
-    //             method:'GET',
-    //             headers: {  'Authorization': `Bearer ${auth.accessToken}`,
-    //                         "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
-    //         });
-    //         if (!response.ok) {
-    //             const message = await response.json();
-    //             setError(message.message);
-    //             return;
-    //         }
-    //         const result = await response.json();
-    //         setUserData(result);
-    //     } 
-    //     catch (error) {
-    //         console.log(error)
-    //     }
-    // }
 
     const logout = async (e) => {
         e.preventDefault();
@@ -245,6 +219,106 @@ function ProfileDrop() {
         }
     }
 
+    const viewInvites = () => {
+        return (
+        <>
+            <IoPlayOutline></IoPlayOutline>
+            <span>
+                <span onClick={toggleViewingInvites}>Game Invites</span>
+                {user?.userData?.invites?.length > 0 && <IoAlertCircle id='profile-alert'></IoAlertCircle>}
+                {viewingInvites && <ul>
+                    {user?.userData?.invites?.length > 0 ? user?.userData.invites.map((invite) => {
+                        console.log(invite);
+                    return <li className='friend-list-item' key={invite.id}> 
+                        <span className='capitalize'>{invite.sender.username} invites you to play {invite.table.title}</span>
+                        
+                        <button className='accept-button' onClick={() => 
+                            {acceptInvite(invite)}}>
+                        </button>
+                        <button className='decline-button' onClick={() => 
+                            {declineInvite(invite)}}>
+                        </button>
+                    </li>
+                }): <li className='empty-li'></li>}
+                </ul>}
+            </span>
+        </>
+        )
+    }
+    
+    const viewActiveGames = () => {
+        return (
+            <>
+                <PiCheckerboardFill/>
+                <span>
+                    <span onClick={toggleViewingActiveGames}>Active Games</span>
+                    {viewingActiveGames 
+                        && <ul>
+                            {user?.userData?.activeGames?.length > 0 ? user?.userData.activeGames.map((game) => {
+                                return displayActiveGame(game);
+                            }) : <li className='empty-li'></li  >}
+                        </ul>}
+                </span>
+            </>
+        )
+    }
+
+    const viewFriends = () => {
+        return (
+            <>
+                <GoPeople></GoPeople>
+                <span >
+                    <span onClick={toggleViewingFriends}>Friends</span>
+                    {viewingFriends 
+                    && <ul>
+                        {user?.userData?.friends?.length > 0 ? user?.userData.friends.map((friend) => {
+                        return <li className='friend-list-item' key={friend.username}>{friend.username}</li>
+                    }) : <li className='empty-li'></li  >}
+                    </ul>}
+                </span>
+            </>
+        )
+    }
+
+    const addFriend = () => {
+        return (
+            <>
+                <IoPersonAddOutline></IoPersonAddOutline>
+                <span>
+                    <span onClick={toggleAddingFriend}>Add Friend</span>
+                    {addingFriend 
+                        &&  <form className='flex-row' onSubmit={sendFriendRequest}>
+                                <label for="username"></label>
+                                <input type="text" id="username" name="username"></input>
+                                <button className='go-button'>Go</button>
+                            </form>}
+                </span>
+            </>
+        )
+    }
+
+    const viewFriendRequests = () => {
+        return (
+            <>
+                <GoPeople></GoPeople>
+                <span >
+                    <span onClick={toggleViewingFriendRequests}>Friend Requests</span>
+                    {user?.userData?.friendRequests?.length > 0 && <IoAlertCircle id='profile-alert'></IoAlertCircle>}
+                    {viewingFriendRequests && <ul>
+                        {user?.userData?.friendRequests?.length > 0 ? user?.userData.friendRequests.map((friendRequest) => {
+                        return <li className='friend-list-item' key={friendRequest.username}>{friendRequest.username}
+                            <button className='accept-button' onClick={() => 
+                                {acceptFriendRequest(friendRequest._id)}}></button>
+                            <button className='decline-button' onClick={() => 
+                                {declineFriendRequest(friendRequest._id)}}></button>
+                        </li>
+                    }): <li className='empty-li'></li>}
+                    </ul>}
+                </span>
+            </>
+        )
+    }
+
     // const [Icon, setIcon] = useState(CgProfile)
     return (
         <IconContext.Provider value={{className:'icon'}}>
@@ -271,80 +345,19 @@ function ProfileDrop() {
                             <span>Edit Profile</span>
                         </li>
                         <li id='view-invites'>
-                            <IoPlayOutline></IoPlayOutline>
-                            <span>
-                                <span onClick={toggleViewingInvites}>Game Invites</span>
-                                {user?.userData?.invites?.length > 0 && <IoAlertCircle id='profile-alert'></IoAlertCircle>}
-                                {viewingInvites && <ul>
-                                    {user?.userData?.invites?.length > 0 ? user?.userData.invites.map((invite) => {
-                                        console.log(invite);
-                                    return <li className='friend-list-item' key={invite.id}> 
-                                        <span className='capitalize'>{invite.sender.username} invites you to play {invite.table.title}</span>
-                                        
-                                        <button className='accept-button' onClick={() => 
-                                            {acceptInvite(invite)}}>
-                                        </button>
-                                        <button className='decline-button' onClick={() => 
-                                            {declineInvite(invite)}}>
-                                        </button>
-                                    </li>
-                                }): <li className='empty-li'></li>}
-                                </ul>}
-                            </span>
+                            {viewInvites()}
                         </li>
                         <li id='view-active-games'>
-                            <PiCheckerboardFill/>
-                            <span>
-                                <span onClick={toggleViewingActiveGames}>Active Games</span>
-                                {viewingActiveGames 
-                                    && <ul>
-                                        {user?.userData?.activeGames?.length > 0 ? user?.userData.activeGames.map((game) => {
-                                            return displayActiveGame(game);
-                                        }) : <li className='empty-li'></li  >}
-                                    </ul>}
-                            </span>
-                            
+                            {viewActiveGames()}
                         </li>
                         <li id='view-friends'>
-                            <GoPeople></GoPeople>
-                            <span >
-                                <span onClick={toggleViewingFriends}>Friends</span>
-                                {viewingFriends 
-                                && <ul>
-                                    {user?.userData?.friends?.length > 0 ? user?.userData.friends.map((friend) => {
-                                    return <li className='friend-list-item' key={friend.username}>{friend.username}</li>
-                                }) : <li className='empty-li'></li  >}
-                                </ul>}
-                            </span>
+                            {viewFriends()}
                         </li>
                         <li id='add-friend'>
-                            <IoPersonAddOutline></IoPersonAddOutline>
-                            <span >
-                                <span onClick={toggleAddingFriend}>Add Friend</span>
-                                {addingFriend 
-                                    &&  <form className='flex-row' onSubmit={sendFriendRequest}>
-                                            <label for="username"></label>
-                                            <input type="text" id="username" name="username"></input>
-                                            <button className='go-button'>Go</button>
-                                        </form>}
-                            </span>
+                            {addFriend()}
                         </li>
                         <li id='view-friend-requests'>
-                            <GoPeople></GoPeople>
-                            <span >
-                                <span onClick={toggleViewingFriendRequests}>Friend Requests</span>
-                                {user?.userData?.friendRequests?.length > 0 && <IoAlertCircle id='profile-alert'></IoAlertCircle>}
-                                {viewingFriendRequests && <ul>
-                                    {user?.userData?.friendRequests?.length > 0 ? user?.userData.friendRequests.map((friendRequest) => {
-                                    return <li className='friend-list-item' key={friendRequest.username}>{friendRequest.username}
-                                        <button className='accept-button' onClick={() => 
-                                            {acceptFriendRequest(friendRequest._id)}}></button>
-                                        <button className='decline-button' onClick={() => 
-                                            {declineFriendRequest(friendRequest._id)}}></button>
-                                    </li>
-                                }): <li className='empty-li'></li>}
-                                </ul>}
-                            </span>
+                            {viewFriendRequests()}
                         </li>
                         <li onClick={logout}>
                             <TbLogout2></TbLogout2>
