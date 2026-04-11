@@ -16,7 +16,7 @@ MINOR
 - [x] Give each lobby an owner, only the owner should be able to start the game
 - [] Add messaging system
 - [] Add profile pics for preset options
-- [] Fix the design of game lobbies
+- [x] Fix the design of game lobbies
 - [x] Add success message when friend request or game invite is sent. Remove search bar as well.
 - [x] Disallow self invites or friend requests
 - [] rematches
@@ -46,3 +46,6 @@ MINOR
 - [] add stats to users
 - [] delete game when finished
 - [] make pieces move gradually
+- [x] refactor ProfileDrop
+
+for sliding men into place, think about whether having a board, square, and man component makes sense

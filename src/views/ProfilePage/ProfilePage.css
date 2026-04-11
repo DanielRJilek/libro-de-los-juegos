@@ -1,0 +1,24 @@
+.profile {
+  width: 750px;
+  height: auto;
+  background-color: rgba(141, 49, 44, 1);
+  display: flex;
+  flex-direction: column;
+  border: 4px rgba(188, 141, 51, 1) solid;
+  border-radius: 5px;
+  box-shadow: 0 6px 20px #000c;
+  color: white;
+  min-height: 750px;
+}
+
+@media (max-width: 1200px) {
+  .profile {
+    width: 750px;
+  }
+}
+
+.friend-list-item:hover {
+    font-weight: bolder;
+    /* padding-left: 20px;     */
+    cursor: pointer;
+}

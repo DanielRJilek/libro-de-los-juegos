@@ -6,6 +6,9 @@ import { CiEdit, CiCircleAlert } from "react-icons/ci";
 import { GoPeople } from "react-icons/go";
 import { IoPersonAddOutline, IoPlayOutline, IoAlertCircle } from "react-icons/io5";
 import { PiCheckerboardFill } from "react-icons/pi";
+import { GoCheck } from "react-icons/go";
+import { IoClose } from "react-icons/io5";
+
 import { useEffect, useState, useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import { UserContext } from '../../context/UserContext';
@@ -142,6 +145,8 @@ function ProfileDrop() {
                 setError(message.message);
                 return;
             }
+            user.fetchPrivateData();
+            toast.update({render: "Friend Request Declined!", type: toast.TYPE.ERROR, autoClose: 3000});
         } 
         catch (error) {
             console.log(error)
@@ -222,7 +227,7 @@ function ProfileDrop() {
     const viewInvites = () => {
         return (
         <>
-            <IoPlayOutline></IoPlayOutline>
+            <IoPlayOutline className='li-icon'></IoPlayOutline>
             <span>
                 <span onClick={toggleViewingInvites}>Game Invites</span>
                 {user?.userData?.invites?.length > 0 && <IoAlertCircle id='profile-alert'></IoAlertCircle>}
@@ -231,13 +236,20 @@ function ProfileDrop() {
                         console.log(invite);
                     return <li className='friend-list-item' key={invite.id}> 
                         <span className='capitalize'>{invite.sender.username} invites you to play {invite.table.title}</span>
+                        <div className='accept-decline-holder'>
+                            <div className='accept-button'>
+                                <GoCheck onClick={() => 
+                                {acceptInvite(invite)}}></GoCheck>
+                            </div>
+                            
+                            <div className='decline-button'>
+                                <IoClose onClick={() => 
+                                {declineInvite(invite)}}>
+                                </IoClose>
+                            </div>
+                        </div>
                         
-                        <button className='accept-button' onClick={() => 
-                            {acceptInvite(invite)}}>
-                        </button>
-                        <button className='decline-button' onClick={() => 
-                            {declineInvite(invite)}}>
-                        </button>
+                        
                     </li>
                 }): <li className='empty-li'></li>}
                 </ul>}
@@ -249,7 +261,7 @@ function ProfileDrop() {
     const viewActiveGames = () => {
         return (
             <>
-                <PiCheckerboardFill/>
+                <PiCheckerboardFill className='li-icon'/>
                 <span>
                     <span onClick={toggleViewingActiveGames}>Active Games</span>
                     {viewingActiveGames 
@@ -266,13 +278,13 @@ function ProfileDrop() {
     const viewFriends = () => {
         return (
             <>
-                <GoPeople></GoPeople>
+                <GoPeople className='li-icon'></GoPeople>
                 <span >
                     <span onClick={toggleViewingFriends}>Friends</span>
                     {viewingFriends 
                     && <ul>
                         {user?.userData?.friends?.length > 0 ? user?.userData.friends.map((friend) => {
-                        return <li className='friend-list-item' key={friend.username}>{friend.username}</li>
+                        return <li className='friend-list-item' key={friend.username} onClick={() => navigate(`/profile/${friend._id}`)}>{friend.username}</li>
                     }) : <li className='empty-li'></li  >}
                     </ul>}
                 </span>
@@ -283,7 +295,7 @@ function ProfileDrop() {
     const addFriend = () => {
         return (
             <>
-                <IoPersonAddOutline></IoPersonAddOutline>
+                <IoPersonAddOutline className='li-icon'></IoPersonAddOutline>
                 <span>
                     <span onClick={toggleAddingFriend}>Add Friend</span>
                     {addingFriend 
@@ -300,17 +312,27 @@ function ProfileDrop() {
     const viewFriendRequests = () => {
         return (
             <>
-                <GoPeople></GoPeople>
+                <GoPeople className='li-icon'></GoPeople>
                 <span >
                     <span onClick={toggleViewingFriendRequests}>Friend Requests</span>
                     {user?.userData?.friendRequests?.length > 0 && <IoAlertCircle id='profile-alert'></IoAlertCircle>}
                     {viewingFriendRequests && <ul>
                         {user?.userData?.friendRequests?.length > 0 ? user?.userData.friendRequests.map((friendRequest) => {
                         return <li className='friend-list-item' key={friendRequest.username}>{friendRequest.username}
-                            <button className='accept-button' onClick={() => 
-                                {acceptFriendRequest(friendRequest._id)}}></button>
-                            <button className='decline-button' onClick={() => 
-                                {declineFriendRequest(friendRequest._id)}}></button>
+                        <div className='accept-decline-holder'>
+                            <div className='accept-button'>
+                                <GoCheck onClick={() => 
+                                {acceptFriendRequest(friendRequest._id)}}>
+                                </GoCheck>
+                            </div>
+                            <div className='decline-button'>
+                                <IoClose onClick={() => 
+                                {declineFriendRequest(friendRequest._id)}}>
+                                </IoClose>
+                            </div>
+                        </div>
+                            
+                            
                         </li>
                     }): <li className='empty-li'></li>}
                     </ul>}
@@ -329,7 +351,7 @@ function ProfileDrop() {
                     <IoAlertCircle id='profile-alert' onClick={toggleOpen}></IoAlertCircle>}
                 {open ? <div className='drop-options'>
                     <div className='drop-header'>
-                        <ProfilePic></ProfilePic>
+                        <ProfilePic onClick={() => {navigate(`/profile/${user.userID}`)}}></ProfilePic>
                         {`${user.username}`}</div>
                     <ul id='profiledrop-options'>
                         <div className='error'>
@@ -341,7 +363,7 @@ function ProfileDrop() {
                                 : ''}  
                         </div>
                         <li id='edit-profile'>
-                            <CiEdit></CiEdit>
+                            <CiEdit className='li-icon'></CiEdit>
                             <span>Edit Profile</span>
                         </li>
                         <li id='view-invites'>
@@ -360,7 +382,7 @@ function ProfileDrop() {
                             {viewFriendRequests()}
                         </li>
                         <li onClick={logout}>
-                            <TbLogout2></TbLogout2>
+                            <TbLogout2 className='li-icon'></TbLogout2>
                             <span>Log Out</span>
                         </li>
                     </ul>

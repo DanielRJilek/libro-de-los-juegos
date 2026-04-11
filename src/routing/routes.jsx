@@ -9,6 +9,7 @@ import Lobby from "../views/Lobby/Lobby";
 import About from "../views/About/About";
 import Title from "../components/Title/Title";
 import Game from "../views/Tablas/Game";
+import ProfilePage from "../views/ProfilePage/ProfilePage";
  
 const routes = [
     {
@@ -66,6 +67,12 @@ const routes = [
                 element: (<Game>
                     <Doblet></Doblet>
                 </Game>)
+            },
+            {
+                path: "/profile/:instance",
+                element: (<Home>
+                    <ProfilePage></ProfilePage>
+                </Home>)
             }
         ]
      }

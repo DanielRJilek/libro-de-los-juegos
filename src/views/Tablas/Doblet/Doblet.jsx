@@ -82,12 +82,11 @@ function Doblet() {
             }
             const result = await response.json();
             setDice(result.dice);
+            setBoard(result.board);
             if (result.winner) {
-                setBoard(result.board);
                 setWinner(result.winner);
             }
             else if (result?.board && result?.currentPlayer?.username) {
-                setBoard(result.board);
                 setCurrentPlayer(result.currentPlayer);
             }
         } 

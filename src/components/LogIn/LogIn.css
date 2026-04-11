@@ -18,6 +18,8 @@
     margin: 50px 20px;
     padding: 20px;
     max-width: 800px;
+    margin-top: auto;
+    margin-bottom: auto;
 }
 
 button[type="submit"] {

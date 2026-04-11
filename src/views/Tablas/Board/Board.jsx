@@ -40,7 +40,6 @@ function Board({board, children}) {
                     <div className="dice-holder">
                         {children}
                     </div>
-                    
                 </div>
                 <div className="board-grid-quarter">{squares.slice(2,4)}</div>
                 <div className="board-grid-quarter"></div>
