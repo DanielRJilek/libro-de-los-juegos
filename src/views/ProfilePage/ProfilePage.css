@@ -22,3 +22,16 @@
     /* padding-left: 20px;     */
     cursor: pointer;
 }
+
+.profile-header {
+    display: flex;
+    align-items: start;
+    gap: 20px;
+    padding: 20px;
+}
+
+.profile-content {
+    display: flex;
+    gap: 50px;
+    padding: 20px;
+}

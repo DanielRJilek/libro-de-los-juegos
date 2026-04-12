@@ -35,7 +35,7 @@ function ProfilePage() {
         if (instance) {
             getUserData();
         }
-        setLoading(false);
+        
     }, [instance]);
 
     const getUserData = async () => {
@@ -51,6 +51,7 @@ function ProfilePage() {
                 });
                 const data = await response.json();
                 setProfileData(data);
+                setLoading(false);
             }     
             catch (error) {
                 console.log(error);
@@ -67,12 +68,13 @@ function ProfilePage() {
                 });
                 const data = await response.json();
                 setProfileData(data);
+                setLoading(false);
             }     
             catch (error) {
                 console.log(error);
             }
         }
-        setLoading(false);
+        
     }
 
     const displayFriends = () => {
@@ -93,6 +95,7 @@ function ProfilePage() {
         loading ? <ClipLoader color="#36d7b7" /> :
         <div className="profile">
             <div className="profile-header">
+                <div className="profile-pic"></div>
                 <h1>{profileData?.username}</h1>
             </div>
             <div className="profile-content">
