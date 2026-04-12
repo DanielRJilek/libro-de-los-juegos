@@ -344,17 +344,17 @@ function ProfileDrop() {
     return (
         <IconContext.Provider value={{className:'icon'}}>
             <div className='icon-holder'>
-                <button className='profile-pic' onClick={toggleOpen}>
-                    <img src={'https://libro-de-los-juegos-server.onrender.com/static' + user?.userData.profilePic} alt="" />
+                <button className='profile-pic-holder' onClick={toggleOpen}>
+                    <img className='profile-pic' src={'https://libro-de-los-juegos-server.onrender.com/static' + user?.userData?.profilePic} alt="profilePic" />
                 </button>
                 
                 {(user?.userData?.invites?.length || user?.userData?.friendRequests?.length > 0) && 
                     <IoAlertCircle id='profile-alert' onClick={toggleOpen}></IoAlertCircle>}
                 {open ? <div className='drop-options'>
-                    <div className='drop-header'>
-                        <button className='profile-pic' onClick={() => {navigate(`/profile/${user.userID}`)}}>
-                            <img src={'https://libro-de-los-juegos-server.onrender.com/static' + user?.userData.profilePic} alt="" />
-                        </button>
+                    <div className='drop-header' onClick={() => {navigate(`/profile/${user.userID}`)}}>
+                        <div className='profile-pic-holder' >
+                            <img className='profile-pic' src={'https://libro-de-los-juegos-server.onrender.com/static' + user?.userData?.profilePic} alt="" />
+                        </div>
                         {`${user.username}`}</div>
                     <ul id='profiledrop-options'>
                         <div className='error'>

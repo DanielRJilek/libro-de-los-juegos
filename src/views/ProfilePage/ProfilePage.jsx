@@ -42,20 +42,8 @@ function ProfilePage() {
         console.log(user.userID, instance);
         if (user.userID === instance) {
             setOwnProfile(true);
-            try {
-                const response = await fetch(`${API_URL}/users/`, {
-                    // mode: "cors",
-                    method:'GET',
-                    headers: {  'Authorization': `Bearer ${localStorage.getItem("token")}`,
-                                "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" }, 
-                });
-                const data = await response.json();
-                setProfileData(data);
-                setLoading(false);
-            }     
-            catch (error) {
-                console.log(error);
-            }
+            setProfileData(user.userData);
+            setLoading(false);
         }
         else {
             setOwnProfile(false);
@@ -95,7 +83,9 @@ function ProfilePage() {
         loading ? <ClipLoader color="#36d7b7" /> :
         <div className="profile">
             <div className="profile-header">
-                <div className="profile-pic"></div>
+                <div className="profile-pic-holder">
+                    <img className="profile-pic" src={'https://libro-de-los-juegos-server.onrender.com/static' + profileData?.profilePic} alt="profilePic" />
+                </div>
                 <h1>{profileData?.username}</h1>
             </div>
             <div className="profile-content">
