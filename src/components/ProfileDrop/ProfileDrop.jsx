@@ -345,7 +345,7 @@ function ProfileDrop() {
         <IconContext.Provider value={{className:'icon'}}>
             <div className='icon-holder'>
                 <button className='profile-pic' onClick={toggleOpen}>
-                    <img src={'https://libro-de-los-juegos-server.onrender.com/static' + userData.profilePic} alt="" />
+                    <img src={'https://libro-de-los-juegos-server.onrender.com/static' + user?.userData.profilePic} alt="" />
                 </button>
                 
                 {(user?.userData?.invites?.length || user?.userData?.friendRequests?.length > 0) && 
@@ -353,7 +353,7 @@ function ProfileDrop() {
                 {open ? <div className='drop-options'>
                     <div className='drop-header'>
                         <button className='profile-pic' onClick={() => {navigate(`/profile/${user.userID}`)}}>
-                            <img src={'https://libro-de-los-juegos-server.onrender.com/static' + userData.profilePic} alt="" />
+                            <img src={'https://libro-de-los-juegos-server.onrender.com/static' + user?.userData.profilePic} alt="" />
                         </button>
                         {`${user.username}`}</div>
                     <ul id='profiledrop-options'>
