@@ -30,7 +30,6 @@ function ProfileDrop() {
     const [viewingInvites, setViewingInvites] = useState(false);
     const [viewingActiveGames, setViewingActiveGames] = useState(false);
     const options = [  ];
-    const ProfilePic = user.profilePic;
 
     const toggleOpen = () => {
         open ? setOpen(false) : setOpen(true)
@@ -345,13 +344,17 @@ function ProfileDrop() {
     return (
         <IconContext.Provider value={{className:'icon'}}>
             <div className='icon-holder'>
-                <ProfilePic onClick={toggleOpen}></ProfilePic>
+                <button className='profile-pic' onClick={toggleOpen}>
+                    <img src={'https://libro-de-los-juegos-server.onrender.com/static' + userData.profilePic} alt="" />
+                </button>
                 
                 {(user?.userData?.invites?.length || user?.userData?.friendRequests?.length > 0) && 
                     <IoAlertCircle id='profile-alert' onClick={toggleOpen}></IoAlertCircle>}
                 {open ? <div className='drop-options'>
                     <div className='drop-header'>
-                        <ProfilePic onClick={() => {navigate(`/profile/${user.userID}`)}}></ProfilePic>
+                        <button className='profile-pic' onClick={() => {navigate(`/profile/${user.userID}`)}}>
+                            <img src={'https://libro-de-los-juegos-server.onrender.com/static' + userData.profilePic} alt="" />
+                        </button>
                         {`${user.username}`}</div>
                     <ul id='profiledrop-options'>
                         <div className='error'>

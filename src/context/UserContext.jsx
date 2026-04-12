@@ -69,10 +69,9 @@ export const UserContextProvider = ({children}) => {
         fetchData();
     }, [])
     
-    const [profilePic , setProfilePic] = useState(() => {return(CgProfile)});
     return (
         <UserContext value=
-            {{username, userID, setUsername, profilePic, setProfilePic, setUserID, isLoading,
+            {{username, userID, setUsername, setUserID, isLoading,
             userData, setUserData, fetchPrivateData
             }}>
             {children}
