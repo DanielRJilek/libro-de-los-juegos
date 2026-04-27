@@ -10,6 +10,7 @@ import About from "../views/About/About";
 import Title from "../components/Title/Title";
 import Game from "../views/Tablas/Game";
 import ProfilePage from "../views/ProfilePage/ProfilePage";
+import MusicPage from "../views/MusicPage/MusicPage";
  
 const routes = [
     {
@@ -43,7 +44,15 @@ const routes = [
      },
      {
         path: "/about",
-        element: (<About></About>)
+        element: (<Home>
+            <About></About>
+            </Home>)
+     },
+     {
+        path: "/music",
+        element: (<Home>
+            <MusicPage></MusicPage>
+            </Home>)
      },
      {
         element: (

@@ -340,7 +340,6 @@ function ProfileDrop() {
         )
     }
 
-    // const [Icon, setIcon] = useState(CgProfile)
     return (
         <IconContext.Provider value={{className:'icon'}}>
             <div className='icon-holder'>
@@ -352,9 +351,9 @@ function ProfileDrop() {
                     <IoAlertCircle id='profile-alert' onClick={toggleOpen}></IoAlertCircle>}
                 {open ? <div className='drop-options'>
                     <div className='drop-header' onClick={() => {navigate(`/profile/${user.userID}`)}}>
-                        <div className='profile-pic-holder' >
+                        <button className='profile-pic-holder' >
                             <img className='profile-pic' src={'https://libro-de-los-juegos-server.onrender.com/static' + user?.userData?.profilePic} alt="" />
-                        </div>
+                        </button>
                         {`${user.username}`}</div>
                     <ul id='profiledrop-options'>
                         <div className='error'>
@@ -365,7 +364,7 @@ function ProfileDrop() {
                                 </IconContext.Provider>
                                 : ''}  
                         </div>
-                        <li id='edit-profile'>
+                        <li id='edit-profile' onClick={() => navigate(`/profile/${user.userID}/edit`)}>
                             <CiEdit className='li-icon'></CiEdit>
                             <span>Edit Profile</span>
                         </li>

@@ -5,6 +5,7 @@ import { AuthContext } from "../../context/AuthContext";
 import { useNavigate, useParams } from "react-router";
 import { ClipLoader } from "react-spinners";
 import { toast } from "react-toastify";
+import { CiEdit } from "react-icons/ci";
 import 'react-toastify/dist/ReactToastify.css';
 import "./ProfilePage.css";
 
@@ -87,6 +88,8 @@ function ProfilePage() {
                     <img className="profile-pic" src={'https://libro-de-los-juegos-server.onrender.com/static' + profileData?.profilePic} alt="profilePic" />
                 </div>
                 <h1>{profileData?.username}</h1>
+                {ownProfile && <CiEdit className="edit-profile" onClick={() => navigate(`/profile/${user.userID}/edit`)}/>}
+
             </div>
             <div className="profile-content">
                 {ownProfile? displayFriends() : <h2>Friends: {profileData?.friendCount}</h2>}

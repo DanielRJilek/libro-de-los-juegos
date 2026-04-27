@@ -1,0 +1,26 @@
+.music-drop {
+    position: absolute;
+    margin-top: 50px;
+    right: 25px;
+    min-width: 300px;
+    min-height: 275px;
+    max-height: 60vh;
+    background-color: rgba(141, 49, 44, 1);
+    border: 2px rgba(188, 141, 51, 1) solid;
+    color: white;
+    box-shadow: 0 6px 20px #000c;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+    z-index: 2;
+}
+
+.icon-holder {
+    display: flex;
+    flex-direction: column;
+    height: 50%;
+    margin-left: auto;
+    padding-right: 10px;
+    position: relative;
+}

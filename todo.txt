@@ -47,5 +47,7 @@ MINOR
 - [] delete game when finished
 - [] make pieces move gradually
 - [x] refactor ProfileDrop
+- [] fix music drop and profile drop overlapping when both open
+- [] double scroll bar on home page
 
 for sliding men into place, think about whether having a board, square, and man component makes sense

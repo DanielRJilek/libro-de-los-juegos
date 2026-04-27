@@ -57,3 +57,9 @@
     object-fit: cover;
     cursor: default;
 }
+
+.edit-profile {
+    font-size: 1.5em;
+    cursor: pointer;
+    color: white;
+}
