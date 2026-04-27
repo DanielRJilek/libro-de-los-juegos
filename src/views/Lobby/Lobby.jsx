@@ -217,9 +217,11 @@ function Lobby() {
                                     {error && <p>{error}</p>}
                                 </div>
                                 <ul>
-                                    {lobby?.players?.length > 0 ? lobby.players.map((player) => {
-                                        return <li className='friend-list-item' key={player.id}>{player.username}</li>
-                                    }) : <li className='empty-li'>No PLayers?</li  >}
+                                    {lobby.players.map((player) => {
+                                        return <li className='friend-list-item' key={player._id} onClick={() => navigate(`/profile/${player._id}`)}>
+                                            {<img className="profile-pic" src={'https://libro-de-los-juegos-server.onrender.com/static' + player.profilePic} alt="profilePic" />}
+                                            {player.username}</li>
+                                    })}
                                 </ul>
                                 <ul>
                                     {lobby?.invites?.length > 0 ? lobby.invites.map((invite) => {

@@ -2,8 +2,6 @@
     position: absolute;
     margin-top: 50px;
     right: 25px;
-    min-width: 300px;
-    min-height: 275px;
     max-height: 60vh;
     background-color: rgba(141, 49, 44, 1);
     border: 2px rgba(188, 141, 51, 1) solid;
@@ -23,4 +21,11 @@
     margin-left: auto;
     padding-right: 10px;
     position: relative;
+}
+
+.music-controls {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
 }
