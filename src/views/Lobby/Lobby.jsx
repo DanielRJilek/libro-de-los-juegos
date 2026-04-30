@@ -204,12 +204,12 @@ function Lobby() {
         <>
             {!loading ? <>
                 <div className='lobby-top'>
-                                <img src={'https://libro-de-los-juegos-server.onrender.com/static' + game?.image}></img>
-                                <div className="lobby-top-right">
-                                    <h1 id="game-title" className="capitalize">{game?.title}</h1>
-                                    <div id="game-desc">{game?.desc}</div>
-                                </div>
-                            </div> 
+                    <img src={'https://libro-de-los-juegos-server.onrender.com/static' + game?.image}></img>
+                    <div className="lobby-top-right">
+                        <h1 id="game-title" className="capitalize">{game?.title}</h1>
+                        <div id="game-desc">{game?.desc}</div>
+                    </div>
+                </div> 
                 <div className='lobby-bottom'>
                     {lobby? <div className="lobby">
                                 <h2>Players</h2>
@@ -219,7 +219,7 @@ function Lobby() {
                                 <ul>
                                     {lobby.players.map((player) => {
                                         return <li className='friend-list-item' key={player._id} onClick={() => navigate(`/profile/${player._id}`)}>
-                                            {<img className="profile-pic" src={'https://libro-de-los-juegos-server.onrender.com/static' + player.profilePic} alt="profilePic" />}
+                                            {<img className="profile-pic" src={'https://libro-de-los-juegos-server.onrender.com/static' + player.icon} alt="icon" />}
                                             {player.username}</li>
                                     })}
                                 </ul>

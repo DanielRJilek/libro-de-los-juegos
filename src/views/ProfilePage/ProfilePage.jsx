@@ -63,7 +63,6 @@ function ProfilePage() {
                 console.log(error);
             }
         }
-        
     }
 
     const displayFriends = () => {
@@ -73,6 +72,7 @@ function ProfilePage() {
                     {<ul>
                         {user?.userData?.friends?.length > 0 ? user?.userData.friends.map((friend) => {
                         return <li className='friend-list-item' key={friend.username} onClick={() => navigate(`/profile/${friend._id}`)}>
+                            <img className="profile-pic" src={'https://libro-de-los-juegos-server.onrender.com/static' + friend.icon} alt="icon" />
                             {friend.username}</li>
                     }) : <li className='empty-li'></li  >}
                 </ul>}
@@ -85,7 +85,7 @@ function ProfilePage() {
         <div className="profile">
             <div className="profile-header">
                 <div className="profile-pic-holder">
-                    <img className="profile-pic" src={'https://libro-de-los-juegos-server.onrender.com/static' + profileData?.profilePic} alt="profilePic" />
+                    <img className="profile-pic" src={'https://libro-de-los-juegos-server.onrender.com/static' + profileData?.icon} alt="icon" />
                 </div>
                 <h1>{profileData?.username}</h1>
                 {ownProfile && <CiEdit className="edit-profile" onClick={() => navigate(`/profile/${user.userID}/edit`)}/>}

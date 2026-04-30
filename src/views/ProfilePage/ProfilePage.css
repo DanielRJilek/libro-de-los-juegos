@@ -19,7 +19,6 @@
 
 .friend-list-item:hover {
     font-weight: bolder;
-    /* padding-left: 20px;     */
     cursor: pointer;
 }
 
@@ -35,14 +34,6 @@
     display: flex;
     gap: 50px;
     padding: 20px;
-}
-
-.profile-pic-holder {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    overflow: hidden;
-    border: 2px rgba(188, 141, 51, 1) solid;
 }
 
 .profile-header .profile-pic-holder {

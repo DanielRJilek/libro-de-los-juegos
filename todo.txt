@@ -50,4 +50,15 @@ MINOR
 - [] fix music drop and profile drop overlapping when both open
 - [] double scroll bar on home page
 
+- [x] rename profilePic to icon 
+- [] Should player._id be returned for lobbies and friends list? double check no security flaw here
+- [] am i loading too much stuff from servers on every page?
+
 for sliding men into place, think about whether having a board, square, and man component makes sense
+
+
+profile edit page? or keep in profile page
+add friend request button on profile if not self and not already friends
+music drop and profile drop both dropped down at same time overlap
+fonts of music page and welcome page
+errors on profiledrop should be toasts 

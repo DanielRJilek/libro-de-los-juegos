@@ -15,6 +15,7 @@ import { UserContext } from '../../context/UserContext';
 import { useNavigate } from 'react-router';
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import UserItem from '../UserItem/UserItem';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -233,7 +234,7 @@ function ProfileDrop() {
                 {viewingInvites && <ul>
                     {user?.userData?.invites?.length > 0 ? user?.userData.invites.map((invite) => {
                         console.log(invite);
-                    return <li className='friend-list-item' key={invite.id}> 
+                    return <li className='user-item' key={invite.id}> 
                         <span className='capitalize'>{invite.sender.username} invites you to play {invite.table.title}</span>
                         <div className='accept-decline-holder'>
                             <div className='accept-button'>
@@ -283,7 +284,9 @@ function ProfileDrop() {
                     {viewingFriends 
                     && <ul>
                         {user?.userData?.friends?.length > 0 ? user?.userData.friends.map((friend) => {
-                        return <li className='friend-list-item' key={friend.username} onClick={() => navigate(`/profile/${friend._id}`)}>{friend.username}</li>
+                        return <li className='friend-list-item' key={friend.username}>
+                            <UserItem user={friend}></UserItem>
+                        </li>
                     }) : <li className='empty-li'></li  >}
                     </ul>}
                 </span>
@@ -344,7 +347,7 @@ function ProfileDrop() {
         <IconContext.Provider value={{className:'icon'}}>
             <div className='icon-holder'>
                 <button className='profile-pic-holder' onClick={toggleOpen}>
-                    <img className='profile-pic' src={'https://libro-de-los-juegos-server.onrender.com/static' + user?.userData?.profilePic} alt="profilePic" />
+                    <img className='profile-pic' src={'https://libro-de-los-juegos-server.onrender.com/static' + user?.userData?.icon} alt="icon" />
                 </button>
                 
                 {(user?.userData?.invites?.length || user?.userData?.friendRequests?.length > 0) && 
@@ -352,7 +355,7 @@ function ProfileDrop() {
                 {open ? <div className='drop-options'>
                     <div className='drop-header' onClick={() => {navigate(`/profile/${user.userID}`)}}>
                         <button className='profile-pic-holder' >
-                            <img className='profile-pic' src={'https://libro-de-los-juegos-server.onrender.com/static' + user?.userData?.profilePic} alt="" />
+                            <img className='profile-pic' src={'https://libro-de-los-juegos-server.onrender.com/static' + user?.userData?.icon} alt="" />
                         </button>
                         {`${user.username}`}</div>
                     <ul id='profiledrop-options'>
