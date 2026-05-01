@@ -3,11 +3,9 @@ import { IconContext } from 'react-icons';
 import { CgProfile } from "react-icons/cg";
 import { TbLogout2 } from "react-icons/tb";
 import { CiEdit, CiCircleAlert } from "react-icons/ci";
-import { GoPeople } from "react-icons/go";
-import { IoPersonAddOutline, IoPlayOutline, IoAlertCircle } from "react-icons/io5";
+import { GoPeople, GoCheck } from "react-icons/go";
+import { IoPersonAddOutline, IoPlayOutline, IoAlertCircle, IoClose } from "react-icons/io5";
 import { PiCheckerboardFill } from "react-icons/pi";
-import { GoCheck } from "react-icons/go";
-import { IoClose } from "react-icons/io5";
 
 import { useEffect, useState, useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
@@ -23,7 +21,6 @@ function ProfileDrop() {
     const navigate = useNavigate();
     const auth = useContext(AuthContext);
     const user = useContext(UserContext);
-    const [error, setError] = useState();
     const [open, setOpen] = useState(false);
     const [addingFriend, setAddingFriend] = useState(false);
     const [viewingFriends, setViewingFriends] = useState(false);
@@ -34,7 +31,6 @@ function ProfileDrop() {
 
     const toggleOpen = () => {
         open ? setOpen(false) : setOpen(true)
-        setError();
     }
     const toggleAddingFriend = () => {
         addingFriend ? setAddingFriend(false) : setAddingFriend(true)
@@ -51,15 +47,6 @@ function ProfileDrop() {
     const toggleViewingActiveGames = () => {
         viewingActiveGames ? setViewingActiveGames(false) : setViewingActiveGames(true)
     }
-    
-    useEffect(() => {
-        if (error) {
-            const timer = setTimeout(() => {
-                setError(null);
-            }, 3000);
-            return () => clearTimeout(timer);
-        }
-    }, [error])
 
     const logout = async (e) => {
         e.preventDefault();
@@ -71,7 +58,7 @@ function ProfileDrop() {
             });
             if (!response.ok) {
                 const message = await response.json();
-                setError(message.message);
+                toast.error(message.message, {autoClose: 3000});
                 return;
             }
             auth.setAccessToken(null);
@@ -80,7 +67,7 @@ function ProfileDrop() {
             navigate('/');
         } 
         catch (error) {
-            console.log(error);
+            toast.error(error.message, {autoClose: 3000});
         }
     }
 
@@ -96,7 +83,7 @@ function ProfileDrop() {
             });
             if (!response.ok) {
                 const message = await response.json();
-                setError(message.message);
+                toast.error(message.message, {autoClose: 3000});
                 return;
             }
             toggleAddingFriend();
@@ -104,7 +91,7 @@ function ProfileDrop() {
             });
         } 
         catch (error) {
-            console.log(error)
+            toast.error(error.message, {autoClose: 3000});
         }
     }
 
@@ -119,7 +106,7 @@ function ProfileDrop() {
             });
             if (!response.ok) {
                 const message = await response.json();
-                setError(message.message);
+                toast.error(message.message, {autoClose: 3000});
                 return;
             }
             user.fetchPrivateData();
@@ -127,7 +114,7 @@ function ProfileDrop() {
             });            
         } 
         catch (error) {
-            console.log(error)
+            toast.error(error.message, {autoClose: 3000});
         }
     }
 
@@ -142,14 +129,14 @@ function ProfileDrop() {
             });
             if (!response.ok) {
                 const message = await response.json();
-                setError(message.message);
+                toast.error(message.message, {autoClose: 3000});
                 return;
             }
             user.fetchPrivateData();
-            toast.update({render: "Friend Request Declined!", type: toast.TYPE.ERROR, autoClose: 3000});
+            toast.error("Friend Request Declined!", {autoClose: 3000});
         } 
         catch (error) {
-            console.log(error)
+            toast.error(error.message, {autoClose: 3000});
         }
     }
 
@@ -164,7 +151,7 @@ function ProfileDrop() {
             });
             if (!response.ok) {
                 const message = await response.json();
-                setError(message.message);
+                toast.error(message.message, {autoClose: 3000});
                 return;
             }
             console.log(`navigating to ${API_URL}/games/${invite.table.title}/table/${invite.table._id}`);
@@ -172,7 +159,7 @@ function ProfileDrop() {
             navigate(`${API_URL}/games/${invite.table.title}/table/${invite.table._id}`)
         } 
         catch (error) {
-            setError(error.message);
+            toast.error(error.message, {autoClose: 3000});
         }
     }
 
@@ -186,13 +173,13 @@ function ProfileDrop() {
             });
             if (!response.ok) {
                 const message = await response.json();
-                setError(message.message);
+                toast.error(message.message, {autoClose: 3000});
                 return;
             }
             user.fetchPrivateData();
         }
         catch (error) {
-            console.log(error)
+            toast.error(error.message, {autoClose: 3000});
         }
     }
 
@@ -359,14 +346,14 @@ function ProfileDrop() {
                         </button>
                         {`${user.username}`}</div>
                     <ul id='profiledrop-options'>
-                        <div className='error'>
+                        {/* <div className='error'>
                             {(error && error != null) ? 
                                 <IconContext.Provider value={{className:'icon'}}>
                                     <IoAlertCircle ></IoAlertCircle>
                                     {error}
                                 </IconContext.Provider>
                                 : ''}  
-                        </div>
+                        </div> */}
                         <li id='edit-profile' onClick={() => navigate(`/profile/${user.userID}/edit`)}>
                             <CiEdit className='li-icon'></CiEdit>
                             <span>Edit Profile</span>

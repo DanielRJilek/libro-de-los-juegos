@@ -13,7 +13,7 @@ function MusicPage() {
     return (
         <div className="music-page">
             <div className="music-header">
-                <h1>About the Music</h1>
+                <h1 className="games-title">About the Music</h1>
             </div>
             <div className="music-content"></div>
             

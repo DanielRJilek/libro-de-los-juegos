@@ -82,6 +82,12 @@ const routes = [
                 element: (<Home>
                     <ProfilePage></ProfilePage>
                 </Home>)
+            },
+            {
+                path: "/profile/:instance/edit",
+                element: (<Home>
+                    <ProfilePage edit={true}></ProfilePage>
+                </Home>)
             }
         ]
      }

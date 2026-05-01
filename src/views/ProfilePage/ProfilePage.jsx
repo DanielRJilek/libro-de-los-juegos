@@ -1,5 +1,5 @@
 const API_URL = import.meta.env.VITE_API_URL;
-import { useContext, useState, useEffect, use } from "react";
+import { useContext, useState, useEffect} from "react";
 import { UserContext } from "../../context/UserContext";
 import { AuthContext } from "../../context/AuthContext";
 import { useNavigate, useParams } from "react-router";
@@ -9,7 +9,7 @@ import { CiEdit } from "react-icons/ci";
 import 'react-toastify/dist/ReactToastify.css';
 import "./ProfilePage.css";
 
-function ProfilePage() {
+function ProfilePage({edit=false}) {
     const params = useParams();
     const navigate = useNavigate();
     const user = useContext(UserContext);
@@ -80,6 +80,34 @@ function ProfilePage() {
         )
     }
 
+    const editIcon = () => {
+    }
+
+    const editUsername = () => {
+
+    }
+
+    if (edit) {
+        return (
+            loading ? <ClipLoader color="#36d7b7" /> :
+            <div className="profile">
+                <div className="profile-header">
+                    {ownProfile && <CiEdit className="edit-profile-icon"/>}
+                    <div className="profile-pic-holder">
+                        <img className="profile-pic" src={'https://libro-de-los-juegos-server.onrender.com/static' + profileData?.icon} alt="icon" />
+                    </div>
+                    
+                    <h1>{profileData?.username}</h1>
+                    {ownProfile && <CiEdit className="edit-profile" onClick={() => navigate(`/profile/${user.userID}/edit`)}/>}
+
+                </div>
+                <div className="profile-content">
+                    {ownProfile? displayFriends() : <h2>Friends: {profileData?.friendCount}</h2>}
+                </div>
+            </div>
+        );
+    }
+
     return (
         loading ? <ClipLoader color="#36d7b7" /> :
         <div className="profile">
@@ -88,8 +116,6 @@ function ProfilePage() {
                     <img className="profile-pic" src={'https://libro-de-los-juegos-server.onrender.com/static' + profileData?.icon} alt="icon" />
                 </div>
                 <h1>{profileData?.username}</h1>
-                {ownProfile && <CiEdit className="edit-profile" onClick={() => navigate(`/profile/${user.userID}/edit`)}/>}
-
             </div>
             <div className="profile-content">
                 {ownProfile? displayFriends() : <h2>Friends: {profileData?.friendCount}</h2>}
