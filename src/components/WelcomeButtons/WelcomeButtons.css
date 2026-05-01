@@ -1,3 +1,13 @@
+@font-face {
+    font-family: tangerine-bold;
+    src:url(../../assets/Tangerine/Tangerine-Bold.ttf);
+}
+
+@font-face {
+    font-family: tangerine;
+    src:url(../../assets/Tangerine/Tangerine-Regular.ttf);
+}
+
 #play-now {
     height: 75px;
     padding: 30px;   
@@ -7,4 +17,8 @@
     margin: 0 20px;
     height: 75px;
     width: 150px;
+    font-family: tangerine;
+    font-size: 2em;
+    padding: 5px;
 }
+

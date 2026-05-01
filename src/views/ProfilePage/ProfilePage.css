@@ -53,7 +53,7 @@
     font-size: 1.5em;
     cursor: pointer;
     color: white;
-    margin-bottom: 60px;
+    margin-bottom: 50px;
 }
 
 .edit-profile-icon {
@@ -62,5 +62,5 @@
     color: white;
     position: absolute;
     margin-left: 60px;
-    margin-bottom: 60px;
+    margin-bottom: 50px;
 }
