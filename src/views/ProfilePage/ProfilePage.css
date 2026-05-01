@@ -42,7 +42,7 @@
     cursor: default;
 }
 
-.profile-header .profile-pic-holder img {
+.profile-header .profile-pic-holder .profile-pic {
     width: 80px;
     height: 80px;
     object-fit: cover;
@@ -63,4 +63,26 @@
     position: absolute;
     margin-left: 60px;
     margin-bottom: 50px;
+}
+
+.icon-options {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+    z-index: 1;
+    position: absolute;
+    top: 200px;
+}
+
+.icon-options img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+.icon-options img:hover {
+    border: 2px solid white;
+    border-radius: 5px;
 }

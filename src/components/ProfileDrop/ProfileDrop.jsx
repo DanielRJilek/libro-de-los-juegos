@@ -1,19 +1,18 @@
 import './ProfileDrop.css'
+import UserItem from '../UserItem/UserItem';
 import { IconContext } from 'react-icons';
-import { CgProfile } from "react-icons/cg";
 import { TbLogout2 } from "react-icons/tb";
-import { CiEdit, CiCircleAlert } from "react-icons/ci";
+import { CiEdit } from "react-icons/ci";
 import { GoPeople, GoCheck } from "react-icons/go";
 import { IoPersonAddOutline, IoPlayOutline, IoAlertCircle, IoClose } from "react-icons/io5";
 import { PiCheckerboardFill } from "react-icons/pi";
 
-import { useEffect, useState, useContext } from 'react';
+import { useState, useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import { UserContext } from '../../context/UserContext';
 import { useNavigate } from 'react-router';
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import UserItem from '../UserItem/UserItem';
 
 const API_URL = import.meta.env.VITE_API_URL;
 

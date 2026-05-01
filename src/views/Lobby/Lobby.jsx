@@ -3,10 +3,10 @@ import { UserContext } from "../../context/UserContext";
 import { AuthContext } from "../../context/AuthContext";
 import { useNavigate, useParams } from "react-router";
 import { socket } from "../../socket";
-import './Lobby.css'
 import { ClipLoader } from "react-spinners";
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import './Lobby.css'
 
 const API_URL = import.meta.env.VITE_API_URL;
 
