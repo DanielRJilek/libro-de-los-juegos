@@ -18,13 +18,14 @@
 }
 
 .profile-pic-holder {
-    height: 35px;
-    width: 35px;
+    height: 40px;
+    width: 40px;
     border-radius: 50%;
     padding: 0;
     display: flex;
     align-items: center;
     justify-content: center;
+    border: none;
 }
 
 .profile-pic{
@@ -35,6 +36,7 @@
     border: none;
     background-color: transparent;
     cursor: pointer;
+    border: 2px rgba(188, 141, 51, 1) solid;
 }
 
 .icon-holder > .icon:hover {

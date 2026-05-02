@@ -21,6 +21,7 @@ function Lobby() {
     const [game,setGame] = useState("");
     const [error, setError] = useState(null);
     const [addingPlayer, setAddingPlayer] = useState(false);
+    const [gameUnderConstruction, setGameUnderConstruction] = useState(false);
     let instance = params.instance;
 
     useEffect(() => {
@@ -73,6 +74,9 @@ function Lobby() {
             });
             const result = await response.json();
             setGame(result);
+            if (result.finished == "false") {
+                setGameUnderConstruction(true);
+            }
             setLoading(false);
         } 
         catch (error) {
@@ -210,7 +214,7 @@ function Lobby() {
                         <div id="game-desc">{game?.desc}</div>
                     </div>
                 </div> 
-                <div className='lobby-bottom'>
+                {!gameUnderConstruction ? <div className='lobby-bottom'>
                     {lobby? <div className="lobby">
                                 <h2>Players</h2>
                                 <div className="error">
@@ -243,7 +247,7 @@ function Lobby() {
                                         </>}
                                 </div> 
                             </div> : <button onClick={createGame}>Create Lobby</button>}
-                </div>
+                </div> : <h2 style={{textAlign: "center"}}>This game is currently under construction. Check back later!</h2>}
             </>
             : <ClipLoader className="loader"/>}
         </>
