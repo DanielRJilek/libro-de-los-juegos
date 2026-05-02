@@ -9,14 +9,17 @@
 
 #welcome > div {
     padding: 0px 50px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 #welcome-right {
     flex: 1;
-    font-size: large;
+    font-size: 1.5em;
     border-radius: 5px;
-    width: 500px;
+    max-width: 600px;
     color: rgb(61, 22, 20);
+    text-align: left;
 }
 
 @media (max-width: 1200px) {

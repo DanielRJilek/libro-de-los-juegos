@@ -10,13 +10,13 @@
 
 #play-now {
     height: 75px;
-    padding: 30px;   
+    /* padding: 30px;    */
 }
 
 #play-now button {
     margin: 0 20px;
-    height: 75px;
-    width: 150px;
+    height: 1.5em;
+    width: 4em;
     font-family: tangerine;
     font-size: 2em;
     padding: 5px;

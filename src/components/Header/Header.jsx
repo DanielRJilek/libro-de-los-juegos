@@ -11,7 +11,11 @@ function Header() {
         <div id='header'>
             <Logo></Logo>
             <div id='header-menu'>
-                <span className='header-games' onClick={() => {navigate('/games')}}>Games</span>
+                <nav>
+                    <span onClick={() => {navigate('/')}}>Home</span>
+                    <span onClick={() => {navigate('/about')}}>About</span>
+                    <span onClick={() => {navigate('/games')}}>Games</span>
+                </nav>
                 <MusicDrop></MusicDrop>
                 <Auth></Auth>
             </div>    
