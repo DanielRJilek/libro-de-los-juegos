@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect, use } from "react";
+import { useContext, useState, useEffect } from "react";
 import { UserContext } from "../../context/UserContext";
 import { AuthContext } from "../../context/AuthContext";
 import { useNavigate, useParams } from "react-router";
@@ -8,6 +8,8 @@ import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import './Lobby.css'
 import UserItem from "../../components/UserItem/UserItem";
+import ConfirmModal from "../../components/ConfirmModal/ConfirmModal";
+import { IoTrashOutline } from "react-icons/io5";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -23,6 +25,7 @@ function Lobby() {
     const [error, setError] = useState(null);
     const [addingPlayer, setAddingPlayer] = useState(false);
     const [gameUnderConstruction, setGameUnderConstruction] = useState(false);
+    const [deleteModalOpen, setDeleteModalOpen] = useState(false);
     let instance = params.instance;
 
     useEffect(() => {
@@ -155,6 +158,9 @@ function Lobby() {
         catch (error) {
             setError(error.message);
         }
+        finally {
+            setDeleteModalOpen(false);
+        }
     }
 
     const invitePlayer = async (e) => {
@@ -216,8 +222,23 @@ function Lobby() {
                     </div>
                 </div> 
                 {!gameUnderConstruction ? <div className='lobby-bottom'>
-                    {lobby? <div className="lobby">
-                                <h2>Players</h2>
+                    {lobby? <div className="lobby"> 
+                        <div className="lobby-header">
+                            <span className="lobby-header-spacer" aria-hidden="true" />
+                            <h2>Players</h2>
+                            <div className="lobby-header-actions">
+                                {lobby?.owner?._id == user.userID && (
+                                    <button
+                                        type="button"
+                                        onClick={() => setDeleteModalOpen(true)}
+                                        aria-label="Delete lobby"
+                                    >
+                                        <IoTrashOutline />
+                                    </button>
+                                )}
+                            </div>
+                        </div>
+                                
                                 <div className="error">
                                     {error && <p>{error}</p>}
                                 </div>
@@ -241,7 +262,7 @@ function Lobby() {
                                     {lobby?.players?.length < 2 &&
                                     <button onClick={toggleAddingPlayer} className='drop-down'>Invite Player</button>}
                                     {lobby?.owner?._id == user.userID && <>
-                                        <button onClick={deleteLobby}>Delete Lobby</button>
+                                        
                                         {lobby?.players?.length == 2 && <button onClick={play}>Play</button>}
                                         </>}
                                 </div> 
@@ -249,6 +270,17 @@ function Lobby() {
                 </div> : <h2 style={{textAlign: "center"}}>This game is currently under construction. Check back later!</h2>}
             </>
             : <ClipLoader className="loader"/>}
+            <ConfirmModal
+                open={deleteModalOpen}
+                onClose={() => setDeleteModalOpen(false)}
+                title="Delete this lobby?"
+                message="Everyone will be removed from the table. This cannot be undone."
+                onConfirm={deleteLobby}
+                confirmLabel="Delete lobby"
+                pendingConfirmLabel="Deleting…"
+                cancelLabel="Cancel"
+                variant="danger"
+            />
         </>
     )
 }

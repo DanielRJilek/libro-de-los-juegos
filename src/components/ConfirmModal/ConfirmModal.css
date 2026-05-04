@@ -1,0 +1,78 @@
+dialog.confirm-modal {
+  max-width: 420px;
+  width: calc(100vw - 2rem);
+  margin: auto;
+  padding: 1.5rem 1.5rem 1.25rem;
+  border: 4px solid rgba(188, 141, 51, 1);
+  border-radius: 8px;
+  box-shadow: 0 12px 40px #000a;
+  color: white;
+  background-color: rgba(141, 49, 44, 1);
+}
+
+dialog.confirm-modal::backdrop {
+  background-color: rgba(0, 0, 0, 0.55);
+}
+
+.confirm-modal-title {
+  margin: 0 0 0.75rem;
+  font-size: 1.35rem;
+  font-weight: 600;
+  text-align: left;
+}
+
+.confirm-modal-text {
+  margin: 0 0 1.25rem;
+  line-height: 1.45;
+  opacity: 0.95;
+  text-align: left;
+}
+
+.confirm-modal-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.confirm-modal-actions form {
+  display: inline;
+  margin: 0;
+}
+
+.confirm-modal-button {
+  border-radius: 8px;
+  padding: 0.55em 1.1em;
+  font-size: 1em;
+  font-family: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  border: 2px solid rgba(188, 141, 51, 1);
+  transition: filter 0.2s;
+}
+
+.confirm-modal-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+.confirm-modal-button-cancel {
+  background-color: rgba(90, 40, 36, 1);
+  color: white;
+}
+
+.confirm-modal-button-danger {
+  background-color: #5c1a1a;
+  color: white;
+  border-color: #c9a227;
+}
+
+.confirm-modal-button-primary {
+  background-color: rgba(141, 49, 44, 1);
+  color: white;
+}
+
+.confirm-modal-button:not(:disabled):hover {
+  filter: brightness(1.12);
+}
