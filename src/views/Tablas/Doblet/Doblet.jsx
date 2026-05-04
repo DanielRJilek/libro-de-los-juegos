@@ -7,21 +7,35 @@ import { AuthContext } from "../../../context/AuthContext";
 import { useNavigate, useParams } from "react-router";
 import { UserContext } from "../../../context/UserContext";
 import { socket } from "../../../socket";
+import { ClipLoader } from "react-spinners";
+import "./Doblet.css"
+import UserItem from '../../../components/UserItem/UserItem';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 function Doblet() {
     const auth = useContext(AuthContext);
     const user = useContext(UserContext);
-    const [board,setBoard] = useState([[2,0,0,2], [2,0,0,2], [2,0,0,2], [2,0,0,2], [2,0,0,2], [2,0,0,2]]);
-    const [currentPlayer, setCurrentPlayer] = useState({id: "", username: ""});
+    const [gameState, setGameState] = useState();
     const [loading, setLoading] = useState(true);
     const [isConnected, setIsConnected] = useState(socket.connected);
     const [winner, setWinner] = useState();
     const [dice, setDice] = useState([1,1,1]);
+    const [userPlayer, setUserPlayer] = useState();
+    const [otherPlayer, setOtherPlayer] = useState();
     const navigate = useNavigate();
     const params = useParams();
     const tableID = params.instance;
+
+    const determineUserPlayer = () => {
+        if (gameState?.players[0]._id && gameState?.players[0]._id == user.userID) {
+                setUserPlayer(1);
+                setOtherPlayer(2);
+        } else {
+            setUserPlayer(2);
+            setOtherPlayer(1);
+        }
+    }
 
     useEffect(() => {
         if (!user.userID) return;
@@ -34,8 +48,8 @@ function Doblet() {
         async function onGameUpdate(value) {
             setDice(value.dice);
             await new Promise(resolve => setTimeout(resolve, 2000));
-            setBoard(value.board);
-            setCurrentPlayer(value.currentPlayer);
+            setGameState(value.gameState);
+            
             if (value.winner) {
                 setWinner(value.winner);
             }
@@ -81,14 +95,6 @@ function Doblet() {
                 throw new Error("Failed");
             }
             const result = await response.json();
-            setDice(result.dice);
-            setBoard(result.board);
-            if (result.winner) {
-                setWinner(result.winner);
-            }
-            else if (result?.board && result?.currentPlayer?.username) {
-                setCurrentPlayer(result.currentPlayer);
-            }
         } 
         catch (error) {
             console.log(error)
@@ -101,8 +107,7 @@ function Doblet() {
     const showRoll = () => {
     }
 
-    useEffect(() => {
-        const getGame = async () => {
+    const getGame = async () => {
             try {
                 const response = await fetch(`${API_URL}/games/doblet/table/${tableID}`, {
                 method:'GET',
@@ -114,8 +119,8 @@ function Doblet() {
                     navigate('../games/doblet/table/' + tableID);
                 }
                 if (result?.board && result?.currentPlayer?.username) {
-                    setBoard(result.board);
-                    setCurrentPlayer(result.currentPlayer);
+                    setGameState(result)
+                    setLoading(false)
                 }
                 
             } 
@@ -123,45 +128,56 @@ function Doblet() {
             
             }
         }
+
+    useEffect(() => {
         getGame();
-        setLoading(false);
+        determineUserPlayer();
     }, [])
 
-    return (
-            <>
-                <div className="game-screen">
-                    <div className="game-side">
-                        
-                    </div>
-                    <div className="game-center">
-                        <div className="player-holder"></div>
-                        <Board board={board} children={
-                            <>
-                                <Dice value={dice[0]}></Dice>
-                                <Dice value={dice[1]}></Dice>
-                                <Dice value={dice[2]}></Dice>
-                            </>
-                        }>
-                        </Board>
-                        
-                        <div className="player-holder"></div>
-                    </div>
-                    <div className="game-side">
-                        <div className="game-text">
-                            {!winner && <h2>Current Player: {currentPlayer.username}</h2>}
-                            {winner && <h2>{winner.username} wins!</h2>}
+    if (loading) {
+        return <ClipLoader></ClipLoader>
+    }
+    else {
+        return (
+                loading? <ClipLoader></ClipLoader> :
+                <>
+                    <div className="game-screen">
+                        <div className="game-side">
+                            
                         </div>
-                        <div className="button-holder">
-                            {!winner && currentPlayer._id == user.userID && <button onClick={roll}>Roll!</button>}
-                            <button onClick={quit}>Quit</button>
+                        <div className="game-center">
+                            <div className="player-holder">
+                                <UserItem key={otherPlayer-1} user={gameState.players[otherPlayer-1]}></UserItem>
+                                <UserItem key={userPlayer-1} user={gameState.players[userPlayer-1]}></UserItem>
+                            </div>
+                            <Board board={gameState?.board} userPlayer={userPlayer} otherPlayer={otherPlayer} children={
+                                <>
+                                    <Dice value={dice[0]}></Dice>
+                                    <Dice value={dice[1]}></Dice>
+                                    <Dice value={dice[2]}></Dice>
+                                </>
+                            }>
+                            </Board>
+                            
+                            <div className="player-holder"></div>
+                        </div>
+                        <div className="game-side">
+                            <div className="game-text">
+                                {!winner && <h2>Current Player: {gameState?.currentPlayer.username}</h2>}
+                                {winner && <h2>{winner.username} wins!</h2>}
+                            </div>
+                            <div className="button-holder">
+                                {!winner && gameState?.currentPlayer._id == user.userID && <button onClick={roll}>Roll!</button>}
+                                <button onClick={quit}>Quit</button>
+                            </div>
                         </div>
                     </div>
-                </div>
-                
-                
-                
-            </>
-    )
+                    
+                    
+                    
+                </>
+        )
+    }
 }
 
 export default Doblet

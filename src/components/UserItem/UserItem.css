@@ -2,17 +2,18 @@
     display: flex;
     align-items: center;
     font-size: large;
-    padding-left: 10px;    
+    /* padding-left: 10px;     */
 }
 
 .user-item:hover {
-    font-weight: bold;
+    /* font-weight: bold; */
     cursor: pointer;
+    filter: brightness(1.1);
 }
 
-.user-item .profile-pic img{
-    width: 15px;
-    height: 15px;
+.user-item .profile-pic {
+    width: 30px;
+    height: 30px;
     object-fit: cover;
     margin-right: 10px;
 }

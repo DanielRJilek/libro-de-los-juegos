@@ -62,3 +62,14 @@ add friend request button on profile if not self and not already friends
 music drop and profile drop both dropped down at same time overlap
 fonts of music page and welcome page
 errors on profiledrop should be toasts 
+
+- [] add global socket for live updates and possibly chats
+- [x] fix game end
+- [] update messages in game
+- [] make pieces move slowly and one by one
+- [] label who's red and who's yellow
+- [] add actual doublet rule
+- [] clear games from active games after game over
+- [] allow deleting friends
+- [] add double  checks for delete lobby, etc
+- [] move delete lobby button to corner and use icon

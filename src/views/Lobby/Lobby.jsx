@@ -7,6 +7,7 @@ import { ClipLoader } from "react-spinners";
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import './Lobby.css'
+import UserItem from "../../components/UserItem/UserItem";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -222,9 +223,7 @@ function Lobby() {
                                 </div>
                                 <ul>
                                     {lobby.players.map((player) => {
-                                        return <li className='friend-list-item' key={player._id} onClick={() => navigate(`/profile/${player._id}`)}>
-                                            {<img className="profile-pic" src={'https://libro-de-los-juegos-server.onrender.com/static' + player.icon} alt="icon" />}
-                                            {player.username}</li>
+                                        return (<UserItem key={player._id} user={player}></UserItem>)
                                     })}
                                 </ul>
                                 <ul>

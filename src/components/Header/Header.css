@@ -9,7 +9,6 @@
 }
 
 #header {
-    background-color: rgba(141, 49, 44, 0.0);
     height: 75px;
     display: flex;
     justify-content: space-between;
@@ -54,7 +53,7 @@ nav span {
     padding: 5px;
 }
 
-.header-games:hover {
+nav > span:hover {
     filter: brightness(1.2);
     background-color: rgba(117, 117, 117, 0.123);
 }
@@ -65,5 +64,6 @@ nav span {
 
 nav {
     display: flex;
-    gap: 20px;
+    gap: 40px;
+    font-weight: bolder;
 }

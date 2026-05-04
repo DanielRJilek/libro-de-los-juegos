@@ -17,11 +17,6 @@
   }
 }
 
-.friend-list-item:hover {
-    font-weight: bolder;
-    cursor: pointer;
-}
-
 .profile-header {
     display: flex;
     align-items: center;
@@ -85,4 +80,9 @@
 .icon-options img:hover {
     border: 2px solid white;
     border-radius: 5px;
+}
+
+.profile-friends {
+    display: flex;
+    flex-direction: column;
 }

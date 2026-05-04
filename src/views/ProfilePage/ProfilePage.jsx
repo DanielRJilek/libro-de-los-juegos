@@ -5,6 +5,7 @@ import { useNavigate, useParams } from "react-router";
 import { ClipLoader } from "react-spinners";
 import { toast } from "react-toastify";
 import { CiEdit } from "react-icons/ci";
+import UserItem from "../../components/UserItem/UserItem"
 import 'react-toastify/dist/ReactToastify.css';
 import "./ProfilePage.css";
 
@@ -93,16 +94,14 @@ function ProfilePage({edit=false}) {
 
     const displayFriends = () => {
         return (
-            <span >
-                <h2>Friends</h2>
+            <div className="profile-friends">
+                <h2>Friends: {profileData?.friendCount}</h2>
                     {<ul>
                         {user?.userData?.friends?.length > 0 ? user?.userData.friends.map((friend) => {
-                        return <li className='friend-list-item' key={friend.username} onClick={() => navigate(`/profile/${friend._id}`)}>
-                            <img className="profile-pic" src={'https://libro-de-los-juegos-server.onrender.com/static' + friend.icon} alt="icon" />
-                            {friend.username}</li>
+                        return <UserItem user={friend}></UserItem>
                     }) : <li className='empty-li'></li  >}
                 </ul>}
-            </span>
+            </div>
         )
     }
 
