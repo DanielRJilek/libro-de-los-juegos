@@ -127,7 +127,6 @@ function Lobby() {
                 throw new Error("Failed");
             }
             const result = await response.json();
-            
             navigate(`${API_URL}/games/${title}/table/${result._id}`)
             instance = result._id;
             await getTable();

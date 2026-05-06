@@ -337,14 +337,6 @@ function ProfileDrop() {
                         </button>
                         {`${user.username}`}</div>
                     <ul id='profiledrop-options'>
-                        {/* <div className='error'>
-                            {(error && error != null) ? 
-                                <IconContext.Provider value={{className:'icon'}}>
-                                    <IoAlertCircle ></IoAlertCircle>
-                                    {error}
-                                </IconContext.Provider>
-                                : ''}  
-                        </div> */}
                         <li id='edit-profile' onClick={() => navigate(`/profile/${user.userID}/edit`)}>
                             <CiEdit className='li-icon'></CiEdit>
                             <span>Edit Profile</span>
