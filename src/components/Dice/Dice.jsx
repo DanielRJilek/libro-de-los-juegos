@@ -1,5 +1,4 @@
 import './Dice.css'
-// import { GiInvertedDice1, GiInvertedDice2, GiInvertedDice3, GiInvertedDice4, GiInvertedDice5, GiInvertedDice6 } from "react-icons/gi";
 import { BsDice1Fill, BsDice2Fill, BsDice3Fill, BsDice4Fill, BsDice5Fill, BsDice6Fill } from "react-icons/bs";
 import { useState, useEffect, useRef } from 'react';
 

@@ -6,7 +6,6 @@ import { CiEdit } from "react-icons/ci";
 import { GoPeople, GoCheck } from "react-icons/go";
 import { IoPersonAddOutline, IoPlayOutline, IoAlertCircle, IoClose } from "react-icons/io5";
 import { PiCheckerboardFill } from "react-icons/pi";
-
 import { useState, useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import { UserContext } from '../../context/UserContext';
@@ -26,7 +25,6 @@ function ProfileDrop() {
     const [viewingFriendRequests, setViewingFriendRequests] = useState(false);
     const [viewingInvites, setViewingInvites] = useState(false);
     const [viewingActiveGames, setViewingActiveGames] = useState(false);
-    const options = [  ];
 
     const toggleOpen = () => {
         open ? setOpen(false) : setOpen(true)
@@ -199,10 +197,8 @@ function ProfileDrop() {
                     className='game-list-item' key={game._id}>
                         <span className='capitalize'>{game.title}</span> {' lobby (empty)'}</li>
             }
-
             return <li onClick={() => 
                 {navigate(`${API_URL}/games/${game.title}/table/${game._id}/`)}}
-                
                 className='game-list-item' key={game._id}>
                     <span className='capitalize'>{game.title}</span> {' lobby with '}   
                 {otherPlayers.map((player) => player.username).join(', ')}
@@ -234,8 +230,6 @@ function ProfileDrop() {
                                 </IoClose>
                             </div>
                         </div>
-                        
-                        
                     </li>
                 }): <li className='empty-li'></li>}
                 </ul>}
@@ -306,7 +300,7 @@ function ProfileDrop() {
                     {user?.userData?.friendRequests?.length > 0 && <IoAlertCircle id='profile-alert'></IoAlertCircle>}
                     {viewingFriendRequests && <ul>
                         {user?.userData?.friendRequests?.length > 0 ? user?.userData.friendRequests.map((friendRequest) => {
-                        return <li className='friend-list-item' key={friendRequest.username}>{friendRequest.username}
+                        return <UserItem key={friendRequest.username} user={friendRequest}>  
                         <div className='accept-decline-holder'>
                             <div className='accept-button'>
                                 <GoCheck onClick={() => 
@@ -319,9 +313,7 @@ function ProfileDrop() {
                                 </IoClose>
                             </div>
                         </div>
-                            
-                            
-                        </li>
+                        </UserItem>
                     }): <li className='empty-li'></li>}
                     </ul>}
                 </span>

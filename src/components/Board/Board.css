@@ -4,7 +4,6 @@
     display: grid;
     grid-template-rows: repeat(3, 125px);
     grid-template-columns: 1fr 1fr;
-    /* padding-top: 16px; */
     position: relative;
     top: 16px;
 }

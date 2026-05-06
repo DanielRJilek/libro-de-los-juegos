@@ -24,7 +24,6 @@ function SignUp() {
         setLoading(true);
         try {
             const response = await fetch(`${API_URL}/users`, {
-                // mode: "cors",
                 method:'POST',
                 headers: { "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
                 body: JSON.stringify({username, password1, password2}),
@@ -54,6 +53,7 @@ function SignUp() {
             console.log(error)
         }
     }
+
     return (
         <form className='login-form' onSubmit={handleSubmit}>
             <label for="username">Username</label>
@@ -67,7 +67,6 @@ function SignUp() {
                 <span>Already have an account? </span>
                 <a href='/login'>Login</a>
             </div>
-            
             <div className='error'>
                 {(error && error != null) ? 
                 <IconContext.Provider value={{className:'icon'}}>
@@ -76,7 +75,6 @@ function SignUp() {
                 </IconContext.Provider>
                 : ''}
             </div>
-            
         </form>
     )
 }

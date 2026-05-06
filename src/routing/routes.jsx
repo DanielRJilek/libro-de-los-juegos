@@ -3,12 +3,12 @@ import Home from "../views/Home/Home";
 import LogIn from "../components/LogIn/LogIn";
 import Welcome from "../views/Welcome/Welcome";
 import SignUp from "../components/Signup/Signup";
-import Doblet from "../views/Tablas/Doblet/Doblet";
+import Doblet from "../views/Doblet/Doblet";
 import ProtectedRoute from "./ProtectedRoute";
 import Lobby from "../views/Lobby/Lobby";
 import About from "../views/About/About";
 import Title from "../components/Title/Title";
-import Game from "../views/Tablas/Game";
+import Game from "../views/Game/Game";
 import ProfilePage from "../views/ProfilePage/ProfilePage";
 import MusicPage from "../views/MusicPage/MusicPage";
  

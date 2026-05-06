@@ -4,7 +4,6 @@ import { FaForwardStep, FaBackwardStep, FaPause, FaPlay } from "react-icons/fa6"
 import { IconContext } from 'react-icons';
 import { useEffect, useState, useContext } from 'react';
 import { useNavigate } from 'react-router';
-import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -19,7 +18,6 @@ function MusicDrop() {
     }
 
     return (
-        
         <IconContext.Provider value={{className:'audio-icon'}}>
             <div className="icon-holder">
                 <HiMiniSpeakerWave onClick={toggleOpen}></HiMiniSpeakerWave>
@@ -33,8 +31,6 @@ function MusicDrop() {
                             <button onClick={() => navigate("/music")}>About the Music</button>
                         </div> : null}
             </div>
-            
-
         </IconContext.Provider>
     )
 }

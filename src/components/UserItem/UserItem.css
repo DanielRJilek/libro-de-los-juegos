@@ -2,11 +2,9 @@
     display: flex;
     align-items: center;
     font-size: large;
-    /* padding-left: 10px;     */
 }
 
 .user-item:hover {
-    /* font-weight: bold; */
     cursor: pointer;
     filter: brightness(1.1);
 }

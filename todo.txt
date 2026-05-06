@@ -71,5 +71,7 @@ errors on profiledrop should be toasts
 - [] add actual doublet rule
 - [] clear games from active games after game over
 - [] allow deleting friends
-- [] add double  checks for delete lobby, etc
-- [] move delete lobby button to corner and use icon
+- [x] add double  checks for delete lobby, etc
+- [x] move delete lobby button to corner and use icon
+- [] make players have pieces which themselves have a position on both front and back ends
+- [] piece movement can be done with frontend functions (bearoff and move)

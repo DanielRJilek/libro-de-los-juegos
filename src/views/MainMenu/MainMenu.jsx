@@ -1,5 +1,4 @@
 import './MainMenu.css'
-import Header from '../../components/Header/Header';
 import GameCard from '../../components/GameCard/GameCard';
 import { useEffect, useState } from 'react';
 import { ClipLoader } from "react-spinners";

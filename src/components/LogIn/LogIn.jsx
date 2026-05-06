@@ -3,7 +3,6 @@ import {useNavigate} from 'react-router'
 import { AuthContext } from '../../context/AuthContext';
 import { useContext, useState } from 'react';
 import { UserContext } from '../../context/UserContext';
-import { CgProfile } from "react-icons/cg";
 import { ClipLoader } from "react-spinners";
 import { IconContext } from 'react-icons';
 import { IoAlertCircle } from "react-icons/io5";
@@ -29,7 +28,6 @@ function LogIn() {
             });
             setLoading(false);
             if (!response.ok) {
-                // throw new Error("Failed");
                 const message = await response.json();
                 setError(message.message);
             }
@@ -38,11 +36,8 @@ function LogIn() {
                 user.setUsername(username);
                 user.setUserID(id.toString());
                 auth.setAccessToken(token);
-                // localStorage.setItem("token", token);
-                
                 navigate('/games');
-            }
-            
+            } 
         } 
         catch (error) {
             console.log(error)
@@ -67,8 +62,7 @@ function LogIn() {
                             {error}
                         </IconContext.Provider>
                         : ''}  
-                </div>
-                    
+                </div> 
             </form>
         )
     }   

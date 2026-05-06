@@ -1,15 +1,15 @@
-import '../Game.css'
-import Header from "../../../components/Header/Header"
-import Board from "../Board/Board";
-import Dice from "../Dice/Dice";
+import '../Game/Game.css'
+import Header from "../../components/Header/Header"
+import Board from "../../components/Board/Board";
+import Dice from "../../components/Dice/Dice";
 import { useState, useContext, useEffect } from "react";
-import { AuthContext } from "../../../context/AuthContext";
+import { AuthContext } from "../../context/AuthContext";
 import { useNavigate, useParams } from "react-router";
-import { UserContext } from "../../../context/UserContext";
-import { socket } from "../../../socket";
+import { UserContext } from "../../context/UserContext";
+import { socket } from "../../socket";
 import { ClipLoader } from "react-spinners";
 import "./Doblet.css"
-import UserItem from '../../../components/UserItem/UserItem';
+import UserItem from '../../components/UserItem/UserItem';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -172,9 +172,6 @@ function Doblet() {
                             </div>
                         </div>
                     </div>
-                    
-                    
-                    
                 </>
         )
     }

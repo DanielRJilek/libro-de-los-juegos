@@ -1,5 +1,4 @@
 import { createContext, useEffect, useState, useContext, use } from "react";
-import { CgProfile } from "react-icons/cg";
 import { AuthContext } from '../context/AuthContext';
 const API_URL = import.meta.env.VITE_API_URL;
 

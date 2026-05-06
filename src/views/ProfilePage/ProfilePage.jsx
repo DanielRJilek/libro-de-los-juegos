@@ -59,7 +59,6 @@ function ProfilePage({edit=false}) {
             setOwnProfile(true);
             try {
                 const response = await fetch(`${API_URL}/users/${instance}`, {
-                    // mode: "cors",
                     method:'GET',
                     headers: {  'Authorization': `Bearer ${localStorage.getItem("token")}`,
                                 "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" }, 
@@ -77,7 +76,6 @@ function ProfilePage({edit=false}) {
             setOwnProfile(false);
             try {
                 const response = await fetch(`${API_URL}/users/${instance}`, {
-                    // mode: "cors",
                     method:'GET',
                     headers: {  'Authorization': `Bearer ${localStorage.getItem("token")}`,
                                 "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" }, 
@@ -152,7 +150,6 @@ function ProfilePage({edit=false}) {
     const editIcon = () => {
         return (
             <>
-                
                 {editingIcon && (
                     <div className="icon-options">
                         {icons.map((icon) => (
@@ -176,19 +173,11 @@ function ProfilePage({edit=false}) {
             loading ? <ClipLoader color="#36d7b7" /> :
             <div className="profile">
                 <div className="profile-header">
-                    
                     <div className="profile-pic-holder">
-                        
                         <CiEdit className="edit-profile-icon" onClick={() => toggleEditingIcon()}/>
                         <img className="profile-pic" src={'https://libro-de-los-juegos-server.onrender.com/static' + profileData?.icon} alt="icon" />
-                        
                     </div>
-                    
-                    
-                    <h1>{profileData?.username}</h1>
-                    {/* {ownProfile && editUsername() } */}
-                    
-
+                    <h1>{profileData?.username}</h1>                   
                 </div>
                 {ownProfile &&  editIcon()}
                 <div className="profile-content">
