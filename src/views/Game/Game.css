@@ -2,15 +2,20 @@
   background-image: url(../../assets/images/seville_alcazar.jpeg);
   background-size: cover;
   background-repeat: no-repeat;
+  background-attachment: fixed;
   align-items: center;
+  position: relative;
 }
 
 .game-screen {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: center;
     align-items: center;
     width: 100%;
+    gap: clamp(16px, 2.8vw, 36px);
+    padding: 18px clamp(10px, 2vw, 24px) 28px;
+    box-sizing: border-box;
 }
 
 .game-side {
@@ -19,10 +24,11 @@
     flex-direction: column;
     justify-content: space-around;
     color: white;
+    gap: 12px;
 }
 
 .game-center {
-    padding: 0 20px
+    padding: 0 20px;
 }
 
 .button-holder {
@@ -30,4 +36,14 @@
     flex-direction: column;
     justify-content: space-between;
     flex: 1;
+}
+
+@media (max-width: 1280px) {
+  .game-screen {
+    flex-direction: column;
+  }
+
+  .game-side {
+    width: min(700px, 95vw);
+  }
 }

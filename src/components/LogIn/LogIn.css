@@ -1,16 +1,20 @@
 .login-input {
     outline: none;
-    border: 1px solid black;
-    padding: 5px;
+    border: 1px solid rgba(188, 141, 51, 0.75);
+    padding: 8px 10px;
     margin: 5px;
-    border-radius: 5px;
-    background-color: light-dark(rgb(232, 240, 254), rgba(70, 90, 126, 0.4))
+    border-radius: 8px;
+    background-color: rgba(250, 235, 206, 0.95);
+    color: #2c160f;
+    min-width: 240px;
 }
 
 .login-form {
-    background-color: rgba(255, 255, 255, 1.0);
-    box-shadow: 0 6px 20px #000c;
-    border-radius: 10px;
+    background: linear-gradient(180deg, rgba(82, 33, 29, 0.92) 0%, rgba(62, 24, 21, 0.9) 100%);
+    box-shadow: var(--shadow-heavy);
+    border-radius: var(--radius-xl);
+    border: 2px solid rgba(188, 141, 51, 0.78);
+    color: var(--text-ivory);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -20,25 +24,24 @@
     max-width: 800px;
     margin-top: auto;
     margin-bottom: auto;
+    min-width: min(92vw, 400px);
+    transition: transform var(--motion-base) var(--motion-ease), box-shadow var(--motion-base) var(--motion-ease);
 }
 
-button[type="submit"] {
-  border-radius: 15px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  text-align: center;
-  line-height: 1;
-  background-color: rgba(141, 49, 44, 1);
-  cursor: pointer;
+.login-form:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 42px rgba(0, 0, 0, 0.42);
+}
+
+.login-form button[type="submit"] {
+  margin: 16px 0 10px;
+}
+
+.login-form a {
+  color: #ffe8b3;
+  transition: color var(--motion-base) var(--motion-ease);
+}
+
+.login-form a:hover {
   color: white;
-  transition: 0.25s;
-  border: 2px rgba(188, 141, 51, 1) solid;
-  margin: 20px;
-}
-
-input[type="submit"]:hover {
-  filter: brightness(1.3); 
 }

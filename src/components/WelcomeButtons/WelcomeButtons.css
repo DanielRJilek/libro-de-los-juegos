@@ -10,6 +10,7 @@
 
 #play-now {
     height: 75px;
+    animation: welcome-buttons-enter var(--motion-slow) var(--motion-ease);
 }
 
 #play-now button {
@@ -19,5 +20,17 @@
     font-family: tangerine;
     font-size: 2em;
     padding: 5px;
+    border-radius: 30em;
+}
+
+@keyframes welcome-buttons-enter {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 

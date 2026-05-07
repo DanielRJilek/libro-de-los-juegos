@@ -12,10 +12,23 @@
     font-size: 150px;
     text-align: center;
     margin: 0vh 0;
-    color: rgb(63, 32, 9);
+    color: #f3d8a4;
     font-family: tangerine-bold;
     display: flex;
     align-items: center;
     align-self: center;
+    text-shadow: 0 6px 16px rgba(0, 0, 0, 0.45), 0 0 22px rgba(188, 141, 51, 0.25);
+    animation: title-fade-in var(--motion-slow) var(--motion-ease);
+}
+
+@keyframes title-fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 

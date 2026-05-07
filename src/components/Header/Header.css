@@ -14,6 +14,14 @@
     justify-content: space-between;
     width: 100%;
     align-items: center;
+    box-sizing: border-box;
+    padding: 0 14px;
+    border-bottom: 2px solid rgba(188, 141, 51, 0.42);
+    background: linear-gradient(180deg, rgba(48, 24, 20, 0.84) 0%, rgba(40, 19, 16, 0.72) 100%);
+    backdrop-filter: blur(4px);
+    position: sticky;
+    top: 0;
+    z-index: 4;
 }
 
 #header .logo {
@@ -21,6 +29,11 @@
     align-self: center;
     padding-left: 5px;
     cursor: pointer;
+    transition: transform var(--motion-base) var(--motion-ease), filter var(--motion-base) var(--motion-ease);
+}
+
+#header .logo:hover {
+    transform: scale(1.03);
 }
 
 #header > button {
@@ -41,6 +54,7 @@
     height: 30px;
     width: 30px;
     margin: auto;
+    transition: transform var(--motion-fast) var(--motion-ease), filter var(--motion-base) var(--motion-ease);
 }
 
 #header .audio-icon:hover {
@@ -49,13 +63,16 @@
 
 nav span {
     cursor: pointer;
-    border-radius: 5px;
-    padding: 5px;
+    border-radius: 999px;
+    padding: 6px 12px;
+    transition: background-color var(--motion-base) var(--motion-ease), transform var(--motion-fast) var(--motion-ease), color var(--motion-base) var(--motion-ease);
 }
 
 nav > span:hover {
-    filter: brightness(1.2);
-    background-color: rgba(117, 117, 117, 0.123);
+    filter: none;
+    background-color: rgba(188, 141, 51, 0.2);
+    color: var(--text-ivory);
+    transform: translateY(-1px);
 }
 
 .game-page #header-menu{

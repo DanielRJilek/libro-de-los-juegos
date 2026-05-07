@@ -5,6 +5,8 @@ import { useEffect, useState, useContext } from "react";
 import { UserContext } from "../../context/UserContext";
 import Square from "../../components/Square/Square";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 function Board({board, userPlayer, children, maxPieces, xSize, ySize}) {
     const user = useContext(UserContext);
     const [loading, setLoading] = useState(true);
@@ -27,7 +29,7 @@ function Board({board, userPlayer, children, maxPieces, xSize, ySize}) {
     return(
         loading ? <ClipLoader></ClipLoader> :
         <div className={flipVertical ? "board-holder rotate-180" : "board-holder"}>
-            <img className="game-board" src="https://libro-de-los-juegos-server.onrender.com/static/images/board.png"></img>
+            <img className="game-board" src={`${API_URL}/static/images/board.png`}></img>
             <div className="board-grid">
                 <div className="board-grid-quarter">{squares.slice(0,halfSize)}</div>
                 <div className="board-grid-quarter"></div>

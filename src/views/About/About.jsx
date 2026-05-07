@@ -3,9 +3,9 @@ import { ClipLoader } from "react-spinners";
 
 function About() {
     return (
-      <div id='main'>
-        <span className='games-title'>About</span>
-      </div> 
+        <div className='about-page'>
+            <span className='games-title'>About</span>
+        </div>
     )
 }
 

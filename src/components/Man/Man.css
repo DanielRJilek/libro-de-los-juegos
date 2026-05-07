@@ -2,6 +2,16 @@
     border-radius: 50%;
     height: 50%;
     width: 50%;
-    margin: auto;
     border: 3px solid black;
+    transition:
+        transform var(--motion-fast) var(--motion-ease),
+        box-shadow var(--motion-base) var(--motion-ease),
+        border-color var(--motion-base) var(--motion-ease);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+}
+
+.man:hover {
+    transform: translateY(-1px) scale(1.03);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+    border-color: rgba(188, 141, 51, 1);
 }

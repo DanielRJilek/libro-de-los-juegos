@@ -53,10 +53,16 @@
   background-color: rgba(141, 49, 44, 1);
   display: flex;
   flex-direction: column;
-  border: 4px rgba(188, 141, 51, 1) solid;
-  border-radius: 5px;
-  box-shadow: 0 6px 20px #000c;
+  border: 3px rgba(188, 141, 51, 0.9) solid;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
   color: white;
+  transition: transform var(--motion-base) var(--motion-ease), box-shadow var(--motion-base) var(--motion-ease);
+}
+
+.lobby-top-right:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-heavy);
 }
 
 @media (max-width: 1200px) {
@@ -71,7 +77,8 @@
   position: relative;
   border: 4px solid rgba(141, 49, 44, 1);
   outline: 4px rgba(188, 141, 51, 1) solid;
-  border-radius: 5px;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
 }
 
 .lobby-bottom {
@@ -91,15 +98,21 @@
 
 .lobby {
   background-color: rgba(141, 49, 44, 1);
-  border: 4px rgba(188, 141, 51, 1) solid;
-  border-radius: 5px;
-  box-shadow: 0 6px 20px #000c;
+  border: 3px rgba(188, 141, 51, 0.9) solid;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
   color: white;
   min-width: 400px;
   min-height: 300px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  transition: transform var(--motion-base) var(--motion-ease), box-shadow var(--motion-base) var(--motion-ease);
+}
+
+.lobby:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-heavy);
 }
 
 .button-holder {

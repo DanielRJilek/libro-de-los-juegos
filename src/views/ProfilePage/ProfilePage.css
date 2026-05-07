@@ -5,10 +5,16 @@
   display: flex;
   flex-direction: column;
   border: 4px rgba(188, 141, 51, 1) solid;
-  border-radius: 5px;
-  box-shadow: 0 6px 20px #000c;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
   color: white;
   min-height: 750px;
+  transition: box-shadow var(--motion-base) var(--motion-ease), transform var(--motion-base) var(--motion-ease);
+}
+
+.profile:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-heavy);
 }
 
 @media (max-width: 1200px) {
@@ -49,6 +55,7 @@
     cursor: pointer;
     color: white;
     margin-bottom: 50px;
+    transition: color var(--motion-base) var(--motion-ease), transform var(--motion-fast) var(--motion-ease);
 }
 
 .edit-profile-icon {
@@ -58,6 +65,7 @@
     position: absolute;
     margin-left: 60px;
     margin-bottom: 50px;
+    transition: color var(--motion-base) var(--motion-ease), transform var(--motion-fast) var(--motion-ease);
 }
 
 .icon-options {
@@ -67,6 +75,12 @@
     z-index: 1;
     position: absolute;
     top: 200px;
+    border-radius: 1em;
+    padding: 5px;
+    background-color: rgba(141, 49, 44, 1);
+    border: 2px rgba(188, 141, 51, 1) solid;
+    box-shadow: 0 6px 20px #000c;
+    animation: icon-options-enter var(--motion-slow) var(--motion-ease);
 }
 
 .icon-options img {
@@ -75,14 +89,36 @@
     object-fit: cover;
     cursor: pointer;
     box-sizing: border-box;
+    border-radius: 10em;
+    border: 2px rgba(188, 141, 51, 1) solid;
+    transition: transform var(--motion-fast) var(--motion-ease), border-color var(--motion-base) var(--motion-ease), box-shadow var(--motion-base) var(--motion-ease);
 }
 
 .icon-options img:hover {
     border: 2px solid white;
-    border-radius: 5px;
+    border-radius: 10em;
+    transform: translateY(-2px) scale(1.04);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35);
 }
 
 .profile-friends {
     display: flex;
     flex-direction: column;
+}
+
+.edit-profile:hover,
+.edit-profile-icon:hover {
+    color: rgba(255, 235, 173, 1);
+    transform: scale(1.05);
+}
+
+@keyframes icon-options-enter {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }

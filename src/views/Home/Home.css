@@ -5,6 +5,7 @@
     background-attachment: fixed;
     display: flex;
     flex-direction: column;
+    position: relative;
 }
 
 #main {
@@ -13,5 +14,8 @@
     flex-direction: column;
     flex: 1;
     align-items: center;
+    padding: 20px clamp(16px, 3vw, 42px) 36px;
+    box-sizing: border-box;
+    gap: 18px;
 }
 

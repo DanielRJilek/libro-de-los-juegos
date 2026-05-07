@@ -8,6 +8,7 @@ dialog.confirm-modal {
   box-shadow: 0 12px 40px #000a;
   color: white;
   background-color: rgba(141, 49, 44, 1);
+  animation: modal-enter var(--motion-base) var(--motion-ease);
 }
 
 dialog.confirm-modal::backdrop {
@@ -49,7 +50,10 @@ dialog.confirm-modal::backdrop {
   font-weight: 500;
   cursor: pointer;
   border: 2px solid rgba(188, 141, 51, 1);
-  transition: filter 0.2s;
+  transition:
+    filter var(--motion-base) var(--motion-ease),
+    transform var(--motion-fast) var(--motion-ease),
+    box-shadow var(--motion-base) var(--motion-ease);
 }
 
 .confirm-modal-button:disabled {
@@ -75,4 +79,17 @@ dialog.confirm-modal::backdrop {
 
 .confirm-modal-button:not(:disabled):hover {
   filter: brightness(1.12);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+}
+
+@keyframes modal-enter {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
