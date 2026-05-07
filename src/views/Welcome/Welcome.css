@@ -29,11 +29,6 @@
     transition: transform var(--motion-base) var(--motion-ease), box-shadow var(--motion-base) var(--motion-ease);
 }
 
-#welcome-right:hover {
-    /* transform: translateY(-3px); */
-    /* box-shadow: var(--shadow-heavy); */
-}
-
 #welcome-text-holder p {
     margin-top: 0;
     line-height: 1.45;

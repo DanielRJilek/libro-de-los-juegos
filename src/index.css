@@ -241,6 +241,7 @@ a:focus-visible {
     flex-direction: column;
     flex: 1;
     align-items: center;
+    box-sizing: border-box;
 }
 
 .error {
@@ -252,4 +253,8 @@ a:focus-visible {
 
 .capitalize {
   text-transform: capitalize;
+}
+
+ul {
+  list-style-type: none;
 }

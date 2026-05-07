@@ -323,7 +323,7 @@ function ProfileDrop() {
 
     return (
         <IconContext.Provider value={{className:'icon'}}>
-            <div className='icon-holder'>
+            <div className='icon-holder profile-drop'>
                 <button className='profile-pic-holder' onClick={toggleOpen}>
                     <img className='profile-pic' src={'https://libro-de-los-juegos-server.onrender.com/static' + user?.userData?.icon} alt="icon" />
                 </button>

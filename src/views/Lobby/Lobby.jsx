@@ -224,7 +224,7 @@ function Lobby() {
                     {lobby? <div className="lobby animate-fade-in-up animate-delay-2"> 
                         <div className="lobby-header">
                             <span className="lobby-header-spacer" aria-hidden="true" />
-                            <h2>Players</h2>
+                            <h2>Players: {lobby?.players?.length}</h2>
                             <div className="lobby-header-actions">
                                 {lobby?.owner?._id == user.userID && (
                                     <button
@@ -237,35 +237,32 @@ function Lobby() {
                                 )}
                             </div>
                         </div>
-                                
-                                <div className="error">
-                                    {error && <p>{error}</p>}
-                                </div>
-                                <ul>
-                                    {lobby.players.map((player) => {
-                                        return (<UserItem key={player._id} user={player}></UserItem>)
-                                    })}
-                                </ul>
-                                <ul>
-                                    {lobby?.invites?.length > 0 ? lobby.invites.map((invite) => {
-                                        return <li className='friend-list-item invite-list-item' key={invite.id}>{invite.username} (invited)</li>
-                                    }) : null}
-                                </ul>
-                                <div className="button-holder">
-                                    {addingPlayer
-                                        &&  <form className='flex-row' onSubmit={invitePlayer}>
-                                                <label for="username"></label>
-                                                <input type="text" id="username" name="username"></input>
-                                                <button className='go-button'>Go</button>
-                                            </form>}
-                                    {lobby?.players?.length < 2 &&
-                                    <button onClick={toggleAddingPlayer} className='drop-down'>Invite Player</button>}
-                                    {lobby?.owner?._id == user.userID && <>
-                                        
-                                        {lobby?.players?.length == 2 && <button onClick={play}>Play</button>}
-                                        </>}
-                                </div> 
-                            </div> : <button onClick={createGame}>Create Lobby</button>}
+                            <ul>
+                                {lobby.players.map((player) => {
+                                    return (<UserItem  key={player._id} user={player}>
+                                    </UserItem>)
+                                })}
+                            </ul>
+                            <ul>
+                                {lobby?.invites?.length > 0 ? lobby.invites.map((invite) => {
+                                    return <UserItem className='invite-list-item' key={invite._id} user={invite}></UserItem>
+                                }) : <li className='empty-li'></li>}
+                            </ul>
+                            <div className="button-holder">
+                                {addingPlayer
+                                    &&  <form className='flex-row' onSubmit={invitePlayer}>
+                                            <label for="username"></label>
+                                            <input type="text" id="username" name="username"></input>
+                                            <button className='go-button'>Go</button>
+                                        </form>}
+                                {lobby?.players?.length < 2 &&
+                                <button onClick={toggleAddingPlayer} className='drop-down'>Invite Player</button>}
+                                {lobby?.owner?._id == user.userID && <>
+                                    
+                                    {lobby?.players?.length == 2 && <button onClick={play}>Play</button>}
+                                    </>}
+                            </div> 
+                        </div> : <button onClick={createGame}>Create Lobby</button>}
                 </div> : <h2 style={{textAlign: "center"}}>This game is currently under construction. Check back later!</h2>}
             </>
             : <ClipLoader className="loader"/>}

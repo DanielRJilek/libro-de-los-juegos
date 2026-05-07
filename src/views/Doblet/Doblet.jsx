@@ -28,6 +28,9 @@ function Doblet() {
     const navigate = useNavigate();
     const params = useParams(); 
     const tableID = params.instance;
+    const resolvedWinner = winner ?? gameState?.winner;
+    const isGameOver = Boolean(resolvedWinner);
+    const didCurrentUserWin = resolvedWinner?._id == user.userID;
 
     useEffect(() => {
         getGame();
@@ -50,8 +53,8 @@ function Doblet() {
             await new Promise(resolve => setTimeout(resolve, 2000));
             setGameState(value.gameState);
             
-            if (value.winner) {
-                setWinner(value.winner);
+            if (value.winner || value?.gameState?.winner) {
+                setWinner(value.winner ?? value.gameState.winner);
             }
         }
         function onConnect() {
@@ -123,6 +126,11 @@ function Doblet() {
     const showRoll = () => {
     }
 
+    const leaveGameOverScreen = () => {
+        socket.disconnect();
+        navigate('../games/doblet');
+    }
+
     const getGame = async () => {
         try {
             const response = await fetch(`${API_URL}/games/doblet/table/${tableID}`, {
@@ -136,6 +144,9 @@ function Doblet() {
             }
             if (result?.board && result?.currentPlayer?.username) {
                 setGameState(result)
+                if (result.winner) {
+                    setWinner(result.winner);
+                }
                 setLoading(false)
             }
         } 
@@ -160,23 +171,32 @@ function Doblet() {
                             {otherPlayer && <UserItem key={otherPlayer-1} user={gameState.players[otherPlayer-1]}></UserItem>}
                             {userPlayer && <UserItem key={userPlayer-1} user={gameState.players[userPlayer-1]}></UserItem>}
                         </div>
-                        <Board board={gameState?.board} xSize={6} ySize={4} maxPieces={2} userPlayer={userPlayer} children={
-                            <>
-                                <Dice value={dice[0]}></Dice>
-                                <Dice value={dice[1]}></Dice>
-                                <Dice value={dice[2]}></Dice>
-                            </>
-                        }>
-                        </Board>
+                        <div className="game-board-stage">
+                            <Board board={gameState?.board} xSize={6} ySize={4} maxPieces={2} userPlayer={userPlayer} children={
+                                <>
+                                    <Dice value={dice[0]}></Dice>
+                                    <Dice value={dice[1]}></Dice>
+                                    <Dice value={dice[2]}></Dice>
+                                </>
+                            }>
+                            </Board>
+                            {isGameOver && (
+                                <div className="game-over-overlay animate-fade-in-up">
+                                    <h2>Game Over</h2>
+                                    <p>{didCurrentUserWin ? "You won!" : `${resolvedWinner?.username} won.`}</p>
+                                    <button type="button" onClick={leaveGameOverScreen}>Leave Table</button>
+                                </div>
+                            )}
+                        </div>
                         <div className="player-holder"></div>
                     </div>
                     <div className="game-side animate-fade-in-up animate-delay-2">
                         <div className="game-text">
-                            {!winner && <h2>Current Player: {gameState?.currentPlayer.username}</h2>}
-                            {winner && <h2>{winner.username} wins!</h2>}
+                            {!resolvedWinner && <h2>Current Player: {gameState?.currentPlayer.username}</h2>}
+                            {resolvedWinner && <h2>{resolvedWinner.username} wins!</h2>}
                         </div>
                         <div className="button-holder">
-                            {!winner && gameState?.currentPlayer._id == user.userID && <button onClick={roll}>Roll!</button>}
+                            {!resolvedWinner && gameState?.currentPlayer._id == user.userID && <button onClick={roll}>Roll!</button>}
                             <button onClick={() => setQuitModalOpen(true)}>Quit</button>
                         </div>
                     </div>

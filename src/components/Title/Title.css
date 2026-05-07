@@ -9,7 +9,7 @@
 }
 
 .title {
-    font-size: 150px;
+    font-size: clamp(64px, 10vw, 150px);
     text-align: center;
     margin: 0vh 0;
     color: #f3d8a4;

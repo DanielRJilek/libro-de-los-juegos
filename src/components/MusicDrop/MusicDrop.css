@@ -1,4 +1,4 @@
-.music-drop {
+.music-dropper .music-drop {
     position: absolute;
     margin-top: 50px;
     right: 25px;
@@ -14,7 +14,7 @@
     z-index: 2;
 }
 
-.icon-holder {
+.music-dropper.icon-holder {
     display: flex;
     flex-direction: column;
     height: 50%;

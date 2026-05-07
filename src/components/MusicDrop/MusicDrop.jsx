@@ -19,7 +19,7 @@ function MusicDrop() {
 
     return (
         <IconContext.Provider value={{className:'audio-icon'}}>
-            <div className="icon-holder">
+            <div className="icon-holder music-dropper">
                 <HiMiniSpeakerWave onClick={toggleOpen}></HiMiniSpeakerWave>
                 {open ? <div className="music-drop animate-fade-in-up animate-delay-1">
                             <div className="music-controls">

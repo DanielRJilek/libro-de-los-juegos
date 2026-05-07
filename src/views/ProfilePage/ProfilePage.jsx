@@ -6,6 +6,7 @@ import { ClipLoader } from "react-spinners";
 import { toast } from "react-toastify";
 import { CiEdit } from "react-icons/ci";
 import UserItem from "../../components/UserItem/UserItem"
+import ConfirmModal from "../../components/ConfirmModal/ConfirmModal";
 import 'react-toastify/dist/ReactToastify.css';
 import "./ProfilePage.css";
 
@@ -24,6 +25,8 @@ function ProfilePage({edit=false}) {
     const [editingIcon, setEditingIcon] = useState(false);
     const [editingUsername, setEditingUsername] = useState(false);
     const [icons, setIcons] = useState([]);
+    const [removeFriendModalOpen, setRemoveFriendModalOpen] = useState(false);
+    const isFriend = !ownProfile && user?.userData?.friends?.some((friend) => friend._id === instance);
 
     useEffect(() => {
         if (error) {
@@ -43,15 +46,6 @@ function ProfilePage({edit=false}) {
         }
         
     }, [instance]);
-
-    useEffect(() => {
-        setLoading(true);
-        setProfileData(null);
-        if (instance) {
-            getUserData();
-        }
-        
-    }, []);
 
     const getUserData = async () => {
         console.log(user.userID, instance);
@@ -93,7 +87,7 @@ function ProfilePage({edit=false}) {
     const displayFriends = () => {
         return (
             <div className="profile-friends">
-                <h2>Friends: {profileData?.friendCount}</h2>
+                <span>Friends: {profileData?.friendCount}</span>
                     {<ul>
                         {user?.userData?.friends?.length > 0 ? user?.userData.friends.map((friend) => {
                         return <UserItem user={friend}></UserItem>
@@ -147,6 +141,30 @@ function ProfilePage({edit=false}) {
         
     };
 
+    const removeFriend = async () => {
+        if (!instance) return;
+        try {
+            const response = await fetch(`${API_URL}/users/${user.userID}/friends/`, {
+                method:'DELETE',
+                headers: {  'Authorization': `Bearer ${auth.accessToken}`,
+                            "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
+                body: JSON.stringify({friendID: instance}),
+            });
+            if (!response.ok) {
+                const message = await response.json();
+                setError(message.message || "Failed to remove friend.");
+                return;
+            }
+            user.fetchPrivateData();
+            toast.success("Friend removed.", {});
+            navigate(`/profile/${instance}`);
+        } catch (error) {
+            setError(error.message);
+        } finally {
+            setRemoveFriendModalOpen(false);
+        }
+    }
+
     const editIcon = () => {
         return (
             <>
@@ -181,7 +199,11 @@ function ProfilePage({edit=false}) {
                 </div>
                 {ownProfile &&  editIcon()}
                 <div className="profile-content">
-                    {ownProfile? displayFriends() : <h2>Friends: {profileData?.friendCount}</h2>}
+                    <span>Member since: {new Date(profileData?.memberSince).toLocaleDateString()}</span>
+                    {/* <span>Last online: {new Date(profileData?.lastOnline).toLocaleDateString()}</span> */}
+                    <span>Wins: {profileData?.gamesWon}</span>
+                    <span>Games played: {profileData?.gamesPlayed}</span>
+                    {ownProfile? displayFriends() : <span>Friends: {profileData?.friendCount}</span>}
                 </div>
             </div>
         );
@@ -196,9 +218,29 @@ function ProfilePage({edit=false}) {
                 </div>
                 <h1>{profileData?.username}</h1>
             </div>
+            {isFriend && (
+                <div className="profile-actions">
+                    <button type="button" onClick={() => setRemoveFriendModalOpen(true)}>Remove Friend</button>
+                </div>
+            )}
             <div className="profile-content">
-                {ownProfile? displayFriends() : <h2>Friends: {profileData?.friendCount}</h2>}
+                <span>Member since: {new Date(profileData?.memberSince).toLocaleDateString()}</span>
+                {/* <span>Last online: {new Date(profileData?.lastOnline).toLocaleDateString()}</span> */}
+                <span>Wins: {profileData?.gamesWon}</span>
+                <span>Games played: {profileData?.gamesPlayed}</span>
+                {ownProfile? displayFriends() : <span>Friends: {profileData?.friendCount}</span>}
             </div>
+            <ConfirmModal
+                open={removeFriendModalOpen}
+                onClose={() => setRemoveFriendModalOpen(false)}
+                title="Remove this friend?"
+                message={`This will remove ${profileData?.username} from your friends list.`}
+                onConfirm={removeFriend}
+                confirmLabel="Remove friend"
+                pendingConfirmLabel="Removing…"
+                cancelLabel="Cancel"
+                variant="danger"
+            />
         </div>
     );
 }
