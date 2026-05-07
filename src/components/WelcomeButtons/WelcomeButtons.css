@@ -9,12 +9,16 @@
 }
 
 #play-now {
-    height: 75px;
-    animation: welcome-buttons-enter var(--motion-slow) var(--motion-ease);
+    height: auto;
+    min-height: 75px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px 24px;
 }
 
 #play-now button {
-    margin: 0 20px;
     height: 1.5em;
     width: 4em;
     font-family: tangerine;
@@ -23,14 +27,4 @@
     border-radius: 30em;
 }
 
-@keyframes welcome-buttons-enter {
-    from {
-        opacity: 0;
-        transform: translateY(8px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
 

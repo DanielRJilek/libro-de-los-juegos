@@ -3,8 +3,8 @@ import { ClipLoader } from "react-spinners";
 
 function About() {
     return (
-        <div className='about-page'>
-            <span className='games-title'>About</span>
+        <div className='about-page animate-fade-in-up'>
+            <span className='games-title animate-fade-in-up animate-delay-1'>About</span>
         </div>
     )
 }

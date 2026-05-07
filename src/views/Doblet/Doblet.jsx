@@ -151,11 +151,11 @@ function Doblet() {
         return (
             loading? <ClipLoader></ClipLoader> :
             <>
-                <div className="game-screen">
-                    <div className="game-side">
+                <div className="game-screen animate-fade-in-up">
+                    <div className="game-side animate-fade-in-up animate-delay-1">
                         
                     </div>
-                    <div className="game-center">
+                    <div className="game-center animate-fade-in-up animate-delay-1">
                         <div className="player-holder">
                             {otherPlayer && <UserItem key={otherPlayer-1} user={gameState.players[otherPlayer-1]}></UserItem>}
                             {userPlayer && <UserItem key={userPlayer-1} user={gameState.players[userPlayer-1]}></UserItem>}
@@ -170,7 +170,7 @@ function Doblet() {
                         </Board>
                         <div className="player-holder"></div>
                     </div>
-                    <div className="game-side">
+                    <div className="game-side animate-fade-in-up animate-delay-2">
                         <div className="game-text">
                             {!winner && <h2>Current Player: {gameState?.currentPlayer.username}</h2>}
                             {winner && <h2>{winner.username} wins!</h2>}

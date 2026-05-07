@@ -3,7 +3,7 @@ import Logo from '../Logo/Logo';
 
 function Title() {
     return (
-        <div className='title'>
+        <div className='title animate-fade-in-up'>
             <Logo></Logo>
             Libro de los Juegos
         </div>

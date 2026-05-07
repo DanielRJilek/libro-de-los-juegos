@@ -171,7 +171,7 @@ function ProfilePage({edit=false}) {
     if (edit) {
         return (
             loading ? <ClipLoader color="#36d7b7" /> :
-            <div className="profile">
+            <div className="profile animate-fade-in-up">
                 <div className="profile-header">
                     <div className="profile-pic-holder">
                         <CiEdit className="edit-profile-icon" onClick={() => toggleEditingIcon()}/>
@@ -189,7 +189,7 @@ function ProfilePage({edit=false}) {
 
     return (
         loading ? <ClipLoader color="#36d7b7" /> :
-        <div className="profile">
+        <div className="profile animate-fade-in-up">
             <div className="profile-header">
                 <div className="profile-pic-holder">
                     <img className="profile-pic" src={'https://libro-de-los-juegos-server.onrender.com/static' + profileData?.icon} alt="icon" />

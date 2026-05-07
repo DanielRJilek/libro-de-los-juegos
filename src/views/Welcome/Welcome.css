@@ -6,11 +6,10 @@
     margin: 0 20px;
     justify-content: center;
     gap: clamp(16px, 3vw, 36px);
-    align-items: stretch;
+    align-items: center;
 }
 
 #welcome > div {
-    padding: 0px 50px;
     margin-left: auto;
     margin-right: auto;
 }
@@ -25,14 +24,14 @@
     background: linear-gradient(180deg, rgba(107, 47, 41, 0.9) 0%, rgba(82, 33, 29, 0.86) 100%);
     border: 2px solid rgba(188, 141, 51, 0.7);
     box-shadow: var(--shadow-soft);
-    padding: clamp(18px, 2vw, 28px);
+    padding: 50px;
     box-sizing: border-box;
     transition: transform var(--motion-base) var(--motion-ease), box-shadow var(--motion-base) var(--motion-ease);
 }
 
 #welcome-right:hover {
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-heavy);
+    /* transform: translateY(-3px); */
+    /* box-shadow: var(--shadow-heavy); */
 }
 
 #welcome-text-holder p {

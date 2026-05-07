@@ -213,15 +213,15 @@ function Lobby() {
     return (
         <>
             {!loading ? <>
-                <div className='lobby-top'>
+                <div className='lobby-top animate-fade-in-up'>
                     <img src={'https://libro-de-los-juegos-server.onrender.com/static' + game?.image}></img>
                     <div className="lobby-top-right">
                         <h1 id="game-title" className="capitalize">{game?.title}</h1>
                         <div id="game-desc">{game?.desc}</div>
                     </div>
                 </div> 
-                {!gameUnderConstruction ? <div className='lobby-bottom'>
-                    {lobby? <div className="lobby"> 
+                {!gameUnderConstruction ? <div className='lobby-bottom animate-fade-in-up animate-delay-1'>
+                    {lobby? <div className="lobby animate-fade-in-up animate-delay-2"> 
                         <div className="lobby-header">
                             <span className="lobby-header-spacer" aria-hidden="true" />
                             <h2>Players</h2>

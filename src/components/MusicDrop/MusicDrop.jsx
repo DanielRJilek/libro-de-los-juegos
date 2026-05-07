@@ -21,7 +21,7 @@ function MusicDrop() {
         <IconContext.Provider value={{className:'audio-icon'}}>
             <div className="icon-holder">
                 <HiMiniSpeakerWave onClick={toggleOpen}></HiMiniSpeakerWave>
-                {open ? <div className="music-drop">
+                {open ? <div className="music-drop animate-fade-in-up animate-delay-1">
                             <div className="music-controls">
                                 <FaBackwardStep />
                                 {musicPaused ? <FaPlay onClick={() => setMusicPaused(false)} /> : <FaPause onClick={() => setMusicPaused(true)} />}

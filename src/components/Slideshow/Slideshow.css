@@ -4,6 +4,7 @@
     object-fit: contain;
     overflow: hidden;
     position: relative;
+    padding: 0px 50px;
 }
 
 .slideshow img {

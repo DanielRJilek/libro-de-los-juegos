@@ -199,6 +199,32 @@ a:focus-visible {
   visibility: hidden;
 }
 
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up var(--motion-slow) var(--motion-ease);
+  /* Ensures the initial "from" state is applied before the first frame,
+     but releases control after the animation ends (so hover transforms work). */
+  animation-fill-mode: backwards;
+}
+
+.animate-delay-1 {
+  animation-delay: 60ms;
+}
+
+.animate-delay-2 {
+  animation-delay: 120ms;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

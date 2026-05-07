@@ -61,8 +61,8 @@
 }
 
 .lobby-top-right:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-heavy);
+  /* transform: translateY(-2px); */
+  /* box-shadow: var(--shadow-heavy); */
 }
 
 @media (max-width: 1200px) {
@@ -111,8 +111,8 @@
 }
 
 .lobby:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-heavy);
+  /* transform: translateY(-2px); */
+  /* box-shadow: var(--shadow-heavy); */
 }
 
 .button-holder {
@@ -162,4 +162,8 @@
 
 .lobby-header button {
   padding: 5px;
+}
+
+#game-desc {
+  text-align: left;
 }

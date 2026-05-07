@@ -330,7 +330,7 @@ function ProfileDrop() {
                 
                 {(user?.userData?.invites?.length || user?.userData?.friendRequests?.length > 0) && 
                     <IoAlertCircle id='profile-alert' onClick={toggleOpen}></IoAlertCircle>}
-                {open ? <div className='drop-options'>
+                {open ? <div className='drop-options animate-fade-in-up animate-delay-1'>
                     <div className='drop-header' onClick={() => {navigate(`/profile/${user.userID}`)}}>
                         <button className='profile-pic-holder' >
                             <img className='profile-pic' src={'https://libro-de-los-juegos-server.onrender.com/static' + user?.userData?.icon} alt="" />

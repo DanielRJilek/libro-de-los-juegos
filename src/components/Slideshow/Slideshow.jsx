@@ -45,13 +45,13 @@ function Slideshow() {
 
     return (
         loading ? <ClipLoader></ClipLoader> :
-        <div className="slideshow">
+        <div className="slideshow animate-fade-in-up animate-delay-1">
             <ul>
                 {images.map((image) => (
                     <li key={image.id}>
                         <img src={image.src} className={`fade ${index==image.id ? `visible` : prevIndex==image.id ? `fading-out` : `hidden`}` }/>
                     </li>
-                ))};
+                ))}
             </ul>
         </div>
     );

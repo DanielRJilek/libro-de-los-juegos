@@ -10,7 +10,7 @@ function WelcomeButtons() {
         navigate('/about');
     }
     return (
-        <div id='play-now'>
+        <div id='play-now' className='animate-fade-in-up'>
             <button onClick={login}>Play Now</button>
             <button onClick={about}>About</button>
         </div>

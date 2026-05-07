@@ -6,7 +6,7 @@ function GameCard({game}) {
     const navigate = useNavigate();
 
     return (
-        <div className='game-card' onClick={() => {navigate('/games/' + game.title.toLowerCase())}}>
+        <div className='game-card animate-fade-in-up' onClick={() => {navigate('/games/' + game.title.toLowerCase())}}>
             <img src={'https://libro-de-los-juegos-server.onrender.com/static' + game.image} alt="" />
             <span className='capitalize'>{game?.title.charAt(0).toUpperCase() + game?.title.slice(1)}</span>
         </div>

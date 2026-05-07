@@ -26,8 +26,8 @@ function MainMenu() {
   
   return (
     <>
-      <span className='games-title'>Games</span>        
-        {!loading ? <div className='gallery'>
+      <span className='games-title animate-fade-in-up'>Games</span>        
+        {!loading ? <div className='gallery animate-fade-in-up animate-delay-1'>
           {games.length > 0 && games.map((game) => {
             return <GameCard key={game.title} game={game}></GameCard>
           })} 

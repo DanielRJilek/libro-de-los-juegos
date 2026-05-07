@@ -9,8 +9,8 @@ function Welcome() {
     return (
         <div id='welcome'>
             <Slideshow></Slideshow>
-            <div id='welcome-right'>
-                <div id='welcome-text-holder'>
+            <div id='welcome-right' className='welcome-pane animate-fade-in-up animate-delay-1'>
+                <div id='welcome-text-holder' className='animate-fade-in-up animate-delay-2'>
                     {/* <h1>{welcome_header}</h1> */}
                     <p>{welcome_text}</p>
                 </div>

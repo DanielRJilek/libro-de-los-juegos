@@ -48,7 +48,7 @@ function LogIn() {
     }
     else {
         return (
-            <form className='login-form' onSubmit={handleSubmit}>
+            <form className='login-form animate-fade-in-up' onSubmit={handleSubmit}>
                 <label for="username">Username</label>
                 <input className='login-input' type="text" id="username" name="username"></input>
                 <label for="password">Password</label>
