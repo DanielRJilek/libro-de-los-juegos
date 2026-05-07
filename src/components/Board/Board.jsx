@@ -5,9 +5,10 @@ import { useEffect, useState, useContext } from "react";
 import { UserContext } from "../../context/UserContext";
 import Square from "../../components/Square/Square";
 
-function Board({board, userPlayer, otherPlayer, children}) {
+function Board({board, userPlayer, children, maxPieces, xSize, ySize}) {
     const user = useContext(UserContext);
     const [loading, setLoading] = useState(true);
+    const flipVertical = userPlayer == 1;
     
     useEffect(() => {
         setLoading(false);
@@ -15,31 +16,20 @@ function Board({board, userPlayer, otherPlayer, children}) {
 
     // User should always be at the bottom
     const squares = [];
-    let i =0
-    for (let y=0;y<2;y++) {
-        let row = [];
-        for (let x=0;x<6;x++) {
-            row.push(<Square key={i} x={x} y={y} count={board[x][y]} player={otherPlayer}></Square>);
-            i++;
+    for (let y=0;y<ySize;y++) {
+        for (let x=0;x<xSize;x++) {
+            squares.push(<Square key={`${x}-${y}`} x={x} y={y} pieces={board[x][y]} maxPieces={maxPieces}></Square>);
         }
-        squares.push(row);
-    }
-    // Bottom (user) player
-    for (let y=2;y<4;y++) {
-        let row = [];
-        for (let x=0;x<6;x++) {
-            row.push(<Square key={i} x={x} y={y} count={board[x][y]} player={userPlayer}></Square>);
-            i++;
-        }
-        squares.push(row);
-    }
+    }   
+    const halfSize = Math.ceil(squares.length / 2);
+    
 
     return(
         loading ? <ClipLoader></ClipLoader> :
-        <div className="board-holder">
+        <div className={flipVertical ? "board-holder rotate-180" : "board-holder"}>
             <img className="game-board" src="https://libro-de-los-juegos-server.onrender.com/static/images/board.png"></img>
             <div className="board-grid">
-                <div className="board-grid-quarter">{squares.slice(0,2)}</div>
+                <div className="board-grid-quarter">{squares.slice(0,halfSize)}</div>
                 <div className="board-grid-quarter"></div>
                 <div className="board-grid-quarter"></div>
                 <div className="board-midline-filler">
@@ -47,7 +37,7 @@ function Board({board, userPlayer, otherPlayer, children}) {
                         {children}
                     </div>
                 </div>
-                <div className="board-grid-quarter">{squares.slice(2,4)}</div>
+                <div className="board-grid-quarter">{squares.slice(halfSize)}</div>
                 <div className="board-grid-quarter"></div>
             </div>
         </div>

@@ -75,3 +75,4 @@ errors on profiledrop should be toasts
 - [x] move delete lobby button to corner and use icon
 - [] make players have pieces which themselves have a position on both front and back ends
 - [] piece movement can be done with frontend functions (bearoff and move)
+- [] show friends when inviting?

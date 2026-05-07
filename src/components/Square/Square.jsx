@@ -1,11 +1,13 @@
 import Man from '../Man/Man'
 import './Square.css'
 
-function Square({x,y, count, player}) {
+function Square({x,y, pieces, maxPieces}) {
+    console.log(x, y, pieces, maxPieces);
     return (
         <div className='board-square'>
-            {Array.from({length: count}, () => <Man player={player}></Man>)}
-            {player}
+            {pieces?.map((piece, index) => (
+                <Man key={`${x}-${y}-${index}`} player={piece.player} position={[x,y]}></Man>
+            ))}
         </div>
     )
 }

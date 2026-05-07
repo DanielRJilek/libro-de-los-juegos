@@ -22,12 +22,20 @@ function Doblet() {
     const [isConnected, setIsConnected] = useState(socket.connected);
     const [winner, setWinner] = useState();
     const [dice, setDice] = useState([1,1,1]);
-    const [userPlayer, setUserPlayer] = useState();
-    const [otherPlayer, setOtherPlayer] = useState();
+    const [userPlayer, setUserPlayer] = useState(null);
+    const [otherPlayer, setOtherPlayer] = useState(null);
     const [quitModalOpen, setQuitModalOpen] = useState(false);
     const navigate = useNavigate();
-    const params = useParams();
+    const params = useParams(); 
     const tableID = params.instance;
+
+    useEffect(() => {
+        getGame();
+    }, [])
+
+    useEffect(() => {
+        determineUserPlayer();
+    }, [gameState, user.userID])
 
     useEffect(() => {
         if (!user.userID) return;
@@ -71,21 +79,25 @@ function Doblet() {
         };
     }, []);
 
+    const movePiece = (piece, newPosition) => {}
+
     const determineUserPlayer = () => {
-        if (gameState?.players[0]._id && gameState?.players[0]._id == user.userID) {
-                setUserPlayer(1);
-                setOtherPlayer(2);
-        } else {
-            setUserPlayer(2);
-            setOtherPlayer(1);
-        }
-    }    
+        console.log(gameState?.players);
+        if (gameState?.players) {
+            for (let player of gameState?.players) {
+                if (player._id == user.userID) {
+                    setUserPlayer(player.playerNumber);
+                    setOtherPlayer(player.playerNumber == 1 ? 2 : 1);
+                        break;
+                    }
+                }
+            }
+    } 
 
     const quit = () => {
         socket.disconnect();
         setQuitModalOpen(false);
-        navigate('../games/doblet')
-        
+        navigate('../games/doblet') 
     }
 
     const roll = async() => {
@@ -132,11 +144,6 @@ function Doblet() {
         }
     }
 
-    useEffect(() => {
-        getGame();
-        determineUserPlayer();
-    }, [])
-
     if (loading) {
         return <ClipLoader></ClipLoader>
     }
@@ -150,10 +157,10 @@ function Doblet() {
                     </div>
                     <div className="game-center">
                         <div className="player-holder">
-                            <UserItem key={otherPlayer-1} user={gameState.players[otherPlayer-1]}></UserItem>
-                            <UserItem key={userPlayer-1} user={gameState.players[userPlayer-1]}></UserItem>
+                            {otherPlayer && <UserItem key={otherPlayer-1} user={gameState.players[otherPlayer-1]}></UserItem>}
+                            {userPlayer && <UserItem key={userPlayer-1} user={gameState.players[userPlayer-1]}></UserItem>}
                         </div>
-                        <Board board={gameState?.board} userPlayer={userPlayer} otherPlayer={otherPlayer} children={
+                        <Board board={gameState?.board} xSize={6} ySize={4} maxPieces={2} userPlayer={userPlayer} children={
                             <>
                                 <Dice value={dice[0]}></Dice>
                                 <Dice value={dice[1]}></Dice>
