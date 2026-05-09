@@ -9,7 +9,7 @@
 }
 
 .game-card {
-    background-color: rgba(141, 49, 44, 1);
+    background-color: rgba(141, 49, 44, 0.88);
     display: flex;
     flex-direction: column;
     font-family: tangerine-bold;

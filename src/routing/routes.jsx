@@ -32,13 +32,13 @@ const routes = [
     },
      {
         path: "/login",
-        element: (<Home>
+        element: (<Home backdrop="featured">
             <LogIn></LogIn>
         </Home>)
      },
      {
         path: "/signup",
-        element: (<Home>
+        element: (<Home backdrop="featured">
             <SignUp></SignUp>
         </Home>)
      },
@@ -50,7 +50,7 @@ const routes = [
      },
      {
         path: "/music",
-        element: (<Home>
+        element: (<Home backdrop="featured">
             <MusicPage></MusicPage>
             </Home>)
      },
@@ -61,13 +61,13 @@ const routes = [
         children: [
             {
                 path: "/games/:title",
-                element: (  <Home>
+                element: (  <Home backdrop="task">
                                 <Lobby></Lobby>
                             </Home>),
             },
             {
                 path: "/games/:title/table/:instance",
-                element: (  <Home>
+                element: (  <Home backdrop="task">
                                 <Lobby></Lobby>
                             </Home>),
             },
@@ -79,13 +79,13 @@ const routes = [
             },
             {
                 path: "/profile/:instance",
-                element: (<Home>
+                element: (<Home backdrop="task">
                     <ProfilePage></ProfilePage>
                 </Home>)
             },
             {
                 path: "/profile/:instance/edit",
-                element: (<Home>
+                element: (<Home backdrop="task">
                     <ProfilePage edit={true}></ProfilePage>
                 </Home>)
             }

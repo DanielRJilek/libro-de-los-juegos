@@ -1,16 +1,13 @@
-import './Home.css'
-import Header from '../../components/Header/Header';
+import "./Home.css";
+import Header from "../../components/Header/Header";
 
-const Home = ({children}) => {
+const Home = ({ children, backdrop = "featured" }) => {
     return (
-        <div className="page" id='home-page'>
+        <div className={`page home-page home-page--${backdrop}`} id="home-page">
             <Header></Header>
-            <div id='main'>
-                
-                {children} 
-            </div>
+            <div id="main">{children}</div>
         </div>
     );
-}
+};
 
-export default Home
+export default Home;

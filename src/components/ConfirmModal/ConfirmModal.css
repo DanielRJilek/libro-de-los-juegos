@@ -7,7 +7,7 @@ dialog.confirm-modal {
   border-radius: 8px;
   box-shadow: 0 12px 40px #000a;
   color: white;
-  background-color: rgba(141, 49, 44, 1);
+  background-color: rgba(141, 49, 44, 0.88);
   animation: modal-enter var(--motion-base) var(--motion-ease);
 }
 

@@ -33,7 +33,7 @@ function ProfilePage({edit=false}) {
             toast.error(error, {});
             const timer = setTimeout(() => {
                 setError(null);
-            }, 3000);
+            }, 2000);
             return () => clearTimeout(timer);
         }
     }, [error])
@@ -189,34 +189,44 @@ function ProfilePage({edit=false}) {
     if (edit) {
         return (
             loading ? <ClipLoader color="#36d7b7" /> :
-            <div className="profile animate-fade-in-up">
-                <div className="profile-header">
-                    <div className="profile-pic-holder">
+            <div className="profile-page">
+            <div className="profile-card animate-fade-in-up">
+                <div className="profile-hero">
+                    <div className="profile-pic-holder profile-pic-holder--accent">
                         <CiEdit className="edit-profile-icon" onClick={() => toggleEditingIcon()}/>
                         <img className="profile-pic" src={'https://libro-de-los-juegos-server.onrender.com/static' + profileData?.icon} alt="icon" />
                     </div>
-                    <h1>{profileData?.username}</h1>                   
+                    <div className="profile-hero-text">
+                        <h1 className="profile-name">{profileData?.username}</h1>
+                        <span className="profile-tagline">{ownProfile ? "Your profile" : "Profile"}</span>
+                    </div>
                 </div>
                 {ownProfile &&  editIcon()}
                 <div className="profile-content">
-                    <span>Member since: {new Date(profileData?.memberSince).toLocaleDateString()}</span>
-                    {/* <span>Last online: {new Date(profileData?.lastOnline).toLocaleDateString()}</span> */}
-                    <span>Wins: {profileData?.gamesWon}</span>
-                    <span>Games played: {profileData?.gamesPlayed}</span>
+                    <div className="profile-stats">
+                        <span>Member since<br /><strong>{new Date(profileData?.memberSince).toLocaleDateString()}</strong></span>
+                        <span>Wins<br /><strong>{profileData?.gamesWon ?? 0}</strong></span>
+                        <span>Played<br /><strong>{profileData?.gamesPlayed ?? 0}</strong></span>
+                    </div>
                     {ownProfile? displayFriends() : <span>Friends: {profileData?.friendCount}</span>}
                 </div>
+            </div>
             </div>
         );
     }
 
     return (
         loading ? <ClipLoader color="#36d7b7" /> :
-        <div className="profile animate-fade-in-up">
-            <div className="profile-header">
-                <div className="profile-pic-holder">
+        <div className="profile-page">
+        <div className="profile-card animate-fade-in-up">
+            <div className="profile-hero">
+                <div className="profile-pic-holder profile-pic-holder--accent">
                     <img className="profile-pic" src={'https://libro-de-los-juegos-server.onrender.com/static' + profileData?.icon} alt="icon" />
                 </div>
-                <h1>{profileData?.username}</h1>
+                <div className="profile-hero-text">
+                    <h1 className="profile-name">{profileData?.username}</h1>
+                    <span className="profile-tagline">Profile</span>
+                </div>
             </div>
             {isFriend && (
                 <div className="profile-actions">
@@ -224,10 +234,11 @@ function ProfilePage({edit=false}) {
                 </div>
             )}
             <div className="profile-content">
-                <span>Member since: {new Date(profileData?.memberSince).toLocaleDateString()}</span>
-                {/* <span>Last online: {new Date(profileData?.lastOnline).toLocaleDateString()}</span> */}
-                <span>Wins: {profileData?.gamesWon}</span>
-                <span>Games played: {profileData?.gamesPlayed}</span>
+                <div className="profile-stats">
+                    <span>Member since<br /><strong>{new Date(profileData?.memberSince).toLocaleDateString()}</strong></span>
+                    <span>Wins<br /><strong>{profileData?.gamesWon ?? 0}</strong></span>
+                    <span>Played<br /><strong>{profileData?.gamesPlayed ?? 0}</strong></span>
+                </div>
                 {ownProfile? displayFriends() : <span>Friends: {profileData?.friendCount}</span>}
             </div>
             <ConfirmModal
@@ -241,6 +252,7 @@ function ProfilePage({edit=false}) {
                 cancelLabel="Cancel"
                 variant="danger"
             />
+        </div>
         </div>
     );
 }

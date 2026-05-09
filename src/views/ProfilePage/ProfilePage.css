@@ -1,58 +1,233 @@
-.profile {
-  width: 750px;
-  height: auto;
-  background-color: rgba(141, 49, 44, 1);
-  display: flex;
-  flex-direction: column;
-  border: 4px rgba(188, 141, 51, 1) solid;
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-soft);
-  color: white;
-  min-height: 750px;
-  transition: box-shadow var(--motion-base) var(--motion-ease), transform var(--motion-base) var(--motion-ease);
+@font-face {
+    font-family: tangerine-bold;
+    src: url(../../assets/Tangerine/Tangerine-Bold.ttf);
 }
 
-@media (max-width: 1200px) {
-  .profile {
-    width: 750px;
-  }
+@font-face {
+    font-family: tangerine;
+    src: url(../../assets/Tangerine/Tangerine-Regular.ttf);
 }
 
-.profile-header {
+/* Profile as a slim glass column — hero reads on the scenic backdrop */
+
+.profile-page {
+    width: 100%;
     display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: clamp(16px, 4vw, 48px) clamp(12px, 2vw, 24px) 56px;
+    box-sizing: border-box;
+}
+
+.profile-card {
+    width: min(680px, 100%);
+    margin: 0 auto;
+    padding: clamp(22px, 4vw, 34px);
+    border-radius: var(--radius-xl, 22px);
+    border: 3px solid rgba(188, 141, 51, 0.9);
+    background: linear-gradient(180deg, rgba(141, 49, 44, 0.96) 0%, rgba(106, 38, 34, 0.94) 100%);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    box-shadow: var(--shadow-soft);
+    color: var(--text-ivory, #fff4db);
+    box-sizing: border-box;
+    position: relative;
+}
+
+.profile-hero {
+    display: flex;
+    flex-wrap: wrap;
     align-items: center;
-    justify-content: start;
-    gap: 20px;
-    padding: 10px;
+    gap: clamp(16px, 3vw, 28px);
+    padding-bottom: clamp(16px, 2.5vw, 22px);
+    border-bottom: 1px solid rgba(188, 141, 51, 0.35);
+}
+
+.profile-hero-text {
+    flex: 1;
+    min-width: 200px;
+    text-align: left;
+}
+
+.profile-name {
+    font-family: tangerine-bold, serif;
+    font-size: clamp(2.25rem, 5vw, 3.25rem);
+    margin: 0;
+    line-height: 1.08;
+    color: #ffe6c1;
+    text-shadow: 0 2px 14px rgba(0, 0, 0, 0.45);
+}
+
+.profile-tagline {
+    display: block;
+    margin-top: 6px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(255, 227, 178, 0.66);
+}
+
+.profile-pic-holder {
+    position: relative;
+    flex-shrink: 0;
+}
+
+.profile-pic-holder--accent .profile-pic {
+    width: 92px;
+    height: 92px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid rgba(232, 184, 114, 0.72);
+    box-shadow:
+        0 8px 28px rgba(0, 0, 0, 0.35),
+        0 0 0 1px rgba(255, 248, 230, 0.12);
+}
+
+.edit-profile-icon {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    font-size: 1.35rem;
+    cursor: pointer;
+    color: #f8e6c8;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6));
+    transition: color var(--motion-base) var(--motion-ease), transform var(--motion-fast) var(--motion-ease);
+}
+
+.edit-profile-icon:hover {
+    color: #fff9e6;
+    transform: scale(1.06);
 }
 
 .profile-content {
+    padding-top: clamp(18px, 2.5vw, 26px);
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    justify-content: flex-start;
-    gap: 10px;
-    padding: 20px;
+    gap: 22px;
+    align-items: stretch;
     text-align: left;
+}
+
+.profile-content > span {
+    font-size: 0.9rem;
+    color: rgba(255, 243, 214, 0.78);
+}
+
+.profile-stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+}
+
+@media (max-width: 520px) {
+    .profile-stats {
+        grid-template-columns: 1fr;
+    }
+}
+
+.profile-stats > span {
+    padding: 14px 16px;
+    border-radius: var(--radius-lg);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    line-height: 1.45;
+    color: rgba(255, 241, 214, 0.9);
+    background: rgba(92, 31, 28, 0.72);
+    border: 1px solid rgba(188, 141, 51, 0.5);
+}
+
+.profile-stats strong {
+    display: block;
+    margin-top: 6px;
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: normal;
+    text-transform: none;
+    color: #fff4db;
 }
 
 .profile-actions {
     display: flex;
     justify-content: flex-end;
-    padding: 0 20px;
+    padding: 8px 0 0;
 }
 
-.profile-header .profile-pic-holder {
-    width: 80px;
-    height: 80px;
-    cursor: default;
+.profile-actions button {
+    border-radius: 999px;
+    padding: 0.5em 1.2em;
+    font-size: 0.9rem;
+    background: transparent;
+    border: 1px solid rgba(255, 180, 170, 0.45);
+    color: rgba(255, 220, 214, 0.95);
 }
 
-.profile-header .profile-pic-holder .profile-pic {
-    width: 80px;
-    height: 80px;
+.profile-actions button:hover {
+    background: rgba(120, 32, 32, 0.35);
+}
+
+.profile-friends {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(188, 141, 51, 0.35);
+}
+
+.profile-friends > span {
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255, 226, 178, 0.72);
+}
+
+.profile-friends ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.icon-options {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    z-index: 2;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: calc(92px + 36px);
+    border-radius: 1em;
+    padding: 10px;
+    background: linear-gradient(180deg, rgba(141, 49, 44, 0.96) 0%, rgba(106, 38, 34, 0.94) 100%);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 2px solid rgba(188, 141, 51, 0.85);
+    box-shadow: 0 14px 40px rgba(0, 0, 0, 0.35);
+    animation: icon-options-enter var(--motion-slow) var(--motion-ease);
+}
+
+.icon-options img {
+    width: 72px;
+    height: 72px;
     object-fit: cover;
-    cursor: default;
+    cursor: pointer;
+    box-sizing: border-box;
+    border-radius: 50%;
+    border: 2px solid rgba(188, 141, 51, 0.55);
+    transition: transform var(--motion-fast) var(--motion-ease), border-color var(--motion-base) var(--motion-ease), box-shadow var(--motion-base) var(--motion-ease);
+}
+
+.icon-options img:hover {
+    border-color: rgba(255, 249, 230, 0.85);
+    transform: translateY(-2px) scale(1.04);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
 }
 
 .edit-profile {
@@ -63,56 +238,7 @@
     transition: color var(--motion-base) var(--motion-ease), transform var(--motion-fast) var(--motion-ease);
 }
 
-.edit-profile-icon {
-    font-size: 1.5em;
-    cursor: pointer;
-    color: white;
-    position: absolute;
-    margin-left: 60px;
-    margin-bottom: 50px;
-    transition: color var(--motion-base) var(--motion-ease), transform var(--motion-fast) var(--motion-ease);
-}
-
-.icon-options {
-    display: flex;
-    gap: 10px;
-    margin-top: 10px;
-    z-index: 1;
-    position: absolute;
-    top: 150px;
-    border-radius: 1em;
-    padding: 5px;
-    background-color: rgba(141, 49, 44, 1);
-    border: 2px rgba(188, 141, 51, 1) solid;
-    box-shadow: 0 6px 20px #000c;
-    animation: icon-options-enter var(--motion-slow) var(--motion-ease);
-}
-
-.icon-options img {
-    width: 80px;
-    height: 80px;
-    object-fit: cover;
-    cursor: pointer;
-    box-sizing: border-box;
-    border-radius: 10em;
-    border: 2px rgba(188, 141, 51, 1) solid;
-    transition: transform var(--motion-fast) var(--motion-ease), border-color var(--motion-base) var(--motion-ease), box-shadow var(--motion-base) var(--motion-ease);
-}
-
-.icon-options img:hover {
-    border: 2px solid white;
-    border-radius: 10em;
-    transform: translateY(-2px) scale(1.04);
-    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35);
-}
-
-.profile-friends {
-    display: flex;
-    flex-direction: column;
-}
-
-.edit-profile:hover,
-.edit-profile-icon:hover {
+.edit-profile:hover {
     color: rgba(255, 235, 173, 1);
     transform: scale(1.05);
 }
@@ -120,10 +246,14 @@
 @keyframes icon-options-enter {
     from {
         opacity: 0;
-        transform: translateY(-8px);
+        transform: translateX(-50%) translateY(-8px);
     }
     to {
         opacity: 1;
-        transform: translateY(0);
+        transform: translateX(-50%) translateY(0);
     }
+}
+
+.empty-li {
+    min-height: 0.5rem;
 }

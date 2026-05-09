@@ -8,3 +8,17 @@
     src:url(../../assets/Tangerine/Tangerine-Regular.ttf);
 }
 
+.about-text {
+    font-size: clamp(1.08rem, 1.4vw, 1.4rem);
+    margin-top: 0;
+    line-height: 1.45;
+    max-width: 900px;
+}
+
+#about {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}

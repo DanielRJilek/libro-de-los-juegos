@@ -51,8 +51,16 @@ function Doblet() {
         async function onGameUpdate(value) {
             setDice(value.dice);
             await new Promise(resolve => setTimeout(resolve, 2000));
-            setGameState(value.gameState);
-            
+            setGameState((prev) => {
+                const next = value.gameState;
+                if (!next || typeof next !== 'object') return prev;
+                const merged = { ...(prev ?? {}), ...next };
+                if (!Array.isArray(merged.players) && Array.isArray(prev?.players)) {
+                    merged.players = prev.players;
+                }
+                return merged;
+            });
+
             if (value.winner || value?.gameState?.winner) {
                 setWinner(value.winner ?? value.gameState.winner);
             }
@@ -85,17 +93,15 @@ function Doblet() {
     const movePiece = (piece, newPosition) => {}
 
     const determineUserPlayer = () => {
-        console.log(gameState?.players);
-        if (gameState?.players) {
-            for (let player of gameState?.players) {
-                if (player._id == user.userID) {
-                    setUserPlayer(player.playerNumber);
-                    setOtherPlayer(player.playerNumber == 1 ? 2 : 1);
-                        break;
-                    }
-                }
+        if (!gameState?.players) return;
+        for (let player of gameState.players) {
+            if (player._id === user.userID) {
+                setUserPlayer(player.playerNumber);
+                setOtherPlayer(player.playerNumber === 1 ? 2 : 1);
+                break;
             }
-    } 
+        }
+    }; 
 
     const quit = () => {
         socket.disconnect();
@@ -159,17 +165,28 @@ function Doblet() {
         return <ClipLoader></ClipLoader>
     }
     else {
+        const players = gameState?.players;
+        const otherUser = players && otherPlayer ? players[otherPlayer - 1] : null;
+        const selfUser = players && userPlayer ? players[userPlayer - 1] : null;
+
         return (
             loading? <ClipLoader></ClipLoader> :
             <>
                 <div className="game-screen animate-fade-in-up">
-                    <div className="game-side animate-fade-in-up animate-delay-1">
-                        
+                    <div className="game-top animate-fade-in-up animate-delay-1">
+                        <div className="game-top-text">
+                            {!resolvedWinner && <h2>Current Player: {gameState?.currentPlayer?.username}</h2>}
+                            {resolvedWinner && <h2>{resolvedWinner.username} wins!</h2>}
+                        </div>
                     </div>
                     <div className="game-center animate-fade-in-up animate-delay-1">
                         <div className="player-holder">
-                            {otherPlayer && <UserItem key={otherPlayer-1} user={gameState.players[otherPlayer-1]}></UserItem>}
-                            {userPlayer && <UserItem key={userPlayer-1} user={gameState.players[userPlayer-1]}></UserItem>}
+                            {otherUser && (
+                                <UserItem key={`p-${otherPlayer}`} user={otherUser} />
+                            )}
+                            {selfUser && (
+                                <UserItem key={`p-${userPlayer}`} user={selfUser} />
+                            )}
                         </div>
                         <div className="game-board-stage">
                             <Board board={gameState?.board} xSize={6} ySize={4} maxPieces={2} userPlayer={userPlayer} children={
@@ -190,11 +207,8 @@ function Doblet() {
                         </div>
                         <div className="player-holder"></div>
                     </div>
-                    <div className="game-side animate-fade-in-up animate-delay-2">
-                        <div className="game-text">
-                            {!resolvedWinner && <h2>Current Player: {gameState?.currentPlayer.username}</h2>}
-                            {resolvedWinner && <h2>{resolvedWinner.username} wins!</h2>}
-                        </div>
+                    <div className="game-bottom animate-fade-in-up animate-delay-2">
+                        
                         <div className="button-holder">
                             {!resolvedWinner && gameState?.currentPlayer._id == user.userID && <button onClick={roll}>Roll!</button>}
                             <button onClick={() => setQuitModalOpen(true)}>Quit</button>

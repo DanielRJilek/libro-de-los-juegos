@@ -61,7 +61,7 @@ function Lobby() {
             toast.error(error, {});
             const timer = setTimeout(() => {
                 setError(null);
-            }, 3000);
+            }, 2000);
             return () => clearTimeout(timer);
         }
     }, [error])
@@ -211,13 +211,16 @@ function Lobby() {
     }
 
     return (
-        <>
+        <div id="lobby" className="lobby-page">
             {!loading ? <>
+            
                 <div className='lobby-top animate-fade-in-up'>
-                    <img src={'https://libro-de-los-juegos-server.onrender.com/static' + game?.image}></img>
-                    <div className="lobby-top-right">
+                    <div className="lobby-hero-art">
+                        <img src={'https://libro-de-los-juegos-server.onrender.com/static' + game?.image} alt="" />
+                    </div>
+                    <div className="lobby-info-column">
                         <h1 id="game-title" className="capitalize">{game?.title}</h1>
-                        <div id="game-desc">{game?.desc}</div>
+                        <div id="game-desc" className="game-desc-text">{game?.desc}</div>
                     </div>
                 </div> 
                 {!gameUnderConstruction ? <div className='lobby-bottom animate-fade-in-up animate-delay-1'>
@@ -262,8 +265,8 @@ function Lobby() {
                                     {lobby?.players?.length == 2 && <button onClick={play}>Play</button>}
                                     </>}
                             </div> 
-                        </div> : <button onClick={createGame}>Create Lobby</button>}
-                </div> : <h2 style={{textAlign: "center"}}>This game is currently under construction. Check back later!</h2>}
+                        </div> : <div className="lobby-empty"><button type="button" onClick={createGame}>Create Lobby</button></div>}
+                </div> : <h2 className="lobby-construction-msg">This game is currently under construction. Check back later!</h2>}
             </>
             : <ClipLoader className="loader"/>}
             <ConfirmModal
@@ -277,7 +280,7 @@ function Lobby() {
                 cancelLabel="Cancel"
                 variant="danger"
             />
-        </>
+        </div>
     )
 }
 

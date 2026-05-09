@@ -8,7 +8,7 @@
     src:url(../../assets/Tangerine/Tangerine-Regular.ttf);
 }
 
-.lobby-page .drop-down {
+#lobby .drop-down {
   border-radius: 10px;
   border: 1px solid transparent;
   padding: 0.6em 1.2em;
@@ -24,7 +24,7 @@
   border: 2px rgba(188, 141, 51, 1) solid;
 }
 
-.lobby-page .drop-down:hover {
+#lobby .drop-down:hover {
   filter: brightness(1.2);
 }
 
@@ -76,6 +76,17 @@
   box-shadow: var(--shadow-soft);
 }
 
+.lobby-info-column {
+  width: min(750px, 94vw);
+  height: auto;
+  background: linear-gradient(180deg, rgba(141, 49, 44, 0.96) 0%, rgba(106, 38, 34, 0.94) 100%);
+  border: 3px rgba(188, 141, 51, 0.9) solid;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  color: white;
+  transition: transform var(--motion-base) var(--motion-ease), box-shadow var(--motion-base) var(--motion-ease);
+}
+
 .lobby-bottom {
   flex: 1;
 }
@@ -92,8 +103,8 @@
 }
 
 .lobby {
-  background-color: rgba(141, 49, 44, 1);
-  border: 3px rgba(188, 141, 51, 0.9) solid;
+  background: linear-gradient(180deg, rgba(141, 49, 44, 0.98) 0%, rgba(108, 37, 33, 0.98) 100%);
+  border: 3px rgba(188, 141, 51, 0.95) solid;
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-soft);
   color: white;
@@ -152,7 +163,21 @@
 }
 
 .lobby-header button {
-  padding: 5px;
+  padding: 6px 8px;
+  border-radius: 10px;
+  border: 2px rgba(188, 141, 51, 0.9) solid;
+  background: linear-gradient(180deg, rgba(141, 49, 44, 1) 0%, rgba(112, 39, 34, 1) 100%);
+  color: #fff4db;
+}
+
+.lobby-header button:hover {
+  filter: brightness(1.12);
+}
+
+.lobby-empty button {
+  background: linear-gradient(180deg, rgba(141, 49, 44, 1) 0%, rgba(112, 39, 34, 1) 100%);
+  border: 3px rgba(188, 141, 51, 0.95) solid;
+  color: #fff4db;
 }
 
 #game-desc {

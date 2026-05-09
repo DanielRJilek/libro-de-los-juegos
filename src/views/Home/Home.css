@@ -1,11 +1,37 @@
 #home-page {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+/* Keep scenic backdrop for Welcome/About/Games hub. */
+#home-page.home-page--featured {
+    background-color: #1a1512;
     background-image: url(../../assets/images/Alhambra_view.png);
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
-    display: flex;
-    flex-direction: column;
-    position: relative;
+    background-position: center;
+}
+
+/* Warm app shell for non-protected pages. */
+#home-page.home-page--task {
+    /* background-color: #140d0b; */
+    /* background-image: url(../../assets/images/seville_alcazar.jpeg); */
+    background-image: url(../../assets/images/escutcheon.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+}
+
+#home-page.home-page--task::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(180deg, rgba(20, 12, 10, 0.14) 0%, rgba(10, 6, 5, 0.38) 100%);
+    z-index: 0;
 }
 
 #main {
@@ -17,5 +43,13 @@
     padding: 20px clamp(16px, 3vw, 42px) 36px;
     box-sizing: border-box;
     gap: 18px;
+    position: relative;
+    z-index: 1;
 }
 
+@media (prefers-reduced-motion: reduce) {
+    #home-page.home-page--featured,
+    #home-page.home-page--task {
+        background-attachment: scroll;
+    }
+}

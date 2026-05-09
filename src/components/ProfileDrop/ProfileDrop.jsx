@@ -55,7 +55,7 @@ function ProfileDrop() {
             });
             if (!response.ok) {
                 const message = await response.json();
-                toast.error(message.message, {autoClose: 3000});
+                toast.error(message.message, {autoClose: 2000});
                 return;
             }
             auth.setAccessToken(null);
@@ -64,7 +64,7 @@ function ProfileDrop() {
             navigate('/');
         } 
         catch (error) {
-            toast.error(error.message, {autoClose: 3000});
+            toast.error(error.message, {autoClose: 2000});
         }
     }
 
@@ -80,7 +80,7 @@ function ProfileDrop() {
             });
             if (!response.ok) {
                 const message = await response.json();
-                toast.error(message.message, {autoClose: 3000});
+                toast.error(message.message, {autoClose: 2000});
                 return;
             }
             toggleAddingFriend();
@@ -88,7 +88,7 @@ function ProfileDrop() {
             });
         } 
         catch (error) {
-            toast.error(error.message, {autoClose: 3000});
+            toast.error(error.message, {autoClose: 2000});
         }
     }
 
@@ -103,7 +103,7 @@ function ProfileDrop() {
             });
             if (!response.ok) {
                 const message = await response.json();
-                toast.error(message.message, {autoClose: 3000});
+                toast.error(message.message, {autoClose: 2000});
                 return;
             }
             user.fetchPrivateData();
@@ -111,7 +111,7 @@ function ProfileDrop() {
             });            
         } 
         catch (error) {
-            toast.error(error.message, {autoClose: 3000});
+            toast.error(error.message, {autoClose: 2000});
         }
     }
 
@@ -126,14 +126,14 @@ function ProfileDrop() {
             });
             if (!response.ok) {
                 const message = await response.json();
-                toast.error(message.message, {autoClose: 3000});
+                toast.error(message.message, {autoClose: 2000});
                 return;
             }
             user.fetchPrivateData();
-            toast.error("Friend Request Declined!", {autoClose: 3000});
+            toast.error("Friend Request Declined!", {autoClose: 2000});
         } 
         catch (error) {
-            toast.error(error.message, {autoClose: 3000});
+            toast.error(error.message, {autoClose: 2000});
         }
     }
 
@@ -148,7 +148,7 @@ function ProfileDrop() {
             });
             if (!response.ok) {
                 const message = await response.json();
-                toast.error(message.message, {autoClose: 3000});
+                toast.error(message.message, {autoClose: 2000});
                 return;
             }
             console.log(`navigating to ${API_URL}/games/${invite.table.title}/table/${invite.table._id}`);
@@ -156,7 +156,7 @@ function ProfileDrop() {
             navigate(`${API_URL}/games/${invite.table.title}/table/${invite.table._id}`)
         } 
         catch (error) {
-            toast.error(error.message, {autoClose: 3000});
+            toast.error(error.message, {autoClose: 2000});
         }
     }
 
@@ -170,13 +170,13 @@ function ProfileDrop() {
             });
             if (!response.ok) {
                 const message = await response.json();
-                toast.error(message.message, {autoClose: 3000});
+                toast.error(message.message, {autoClose: 2000});
                 return;
             }
             user.fetchPrivateData();
         }
         catch (error) {
-            toast.error(error.message, {autoClose: 3000});
+            toast.error(error.message, {autoClose: 2000});
         }
     }
 
