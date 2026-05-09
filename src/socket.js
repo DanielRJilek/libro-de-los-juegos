@@ -7,7 +7,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 // 'game-start'
 // 'connect'
 // 'disconnect'
-
+// 'game-ended
 
 export const socket = io(API_URL, {
   autoConnect: false

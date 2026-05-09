@@ -74,9 +74,15 @@ function Doblet() {
             setIsConnected(false);
         }
 
+        function onGameEnded(value) {
+            console.log("winner", value.winner);
+            setWinner(value.winner);            
+        }
+
         socket.on('connect', onConnect);
         socket.on('disconnect', onDisconnect);
         socket.on('game-update', onGameUpdate);
+        socket.on('game-ended', onGameEnded);
         if (!socket.connected) {
             socket.connect();
         } else {
@@ -87,6 +93,7 @@ function Doblet() {
             socket.off('connect', onConnect);
             socket.off('disconnect', onDisconnect);
             socket.off('game-update', onGameUpdate)
+            socket.off('game-ended', onGameEnded)
         };
     }, []);
 
@@ -103,7 +110,16 @@ function Doblet() {
         }
     }; 
 
-    const quit = () => {
+    const quit = async() => {
+        const response = await fetch(`${API_URL}/games/doblet/table/${tableID}/quit`, {
+            method:'POST',
+            headers: {  'Authorization': `Bearer ${auth.accessToken}`,
+                        "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
+        });
+        if (!response.ok) {
+            throw new Error("Failed");
+        }
+        const result = await response.json();
         socket.disconnect();
         setQuitModalOpen(false);
         navigate('../games/doblet') 
@@ -150,9 +166,9 @@ function Doblet() {
             }
             if (result?.board && result?.currentPlayer?.username) {
                 setGameState(result)
-                if (result.winner) {
-                    setWinner(result.winner);
-                }
+                // if (result.winner) {
+                //     setWinner(result.winner);
+                // }
                 setLoading(false)
             }
         } 
