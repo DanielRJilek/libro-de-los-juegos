@@ -1,6 +1,6 @@
 import './Header.css'
 import Logo from '../Logo/Logo';
-import Auth from '../Auth/Auth';
+import UserMenu from '../UserMenu/UserMenu';
 import { useNavigate } from 'react-router';
 import MusicDrop from '../MusicDrop/MusicDrop';
 
@@ -17,7 +17,7 @@ function Header() {
                     <span onClick={() => {navigate('/games')}}>Games</span>
                 </nav>
                 <MusicDrop></MusicDrop>
-                <Auth></Auth>
+                <UserMenu></UserMenu>
             </div>    
         </div>
     );
