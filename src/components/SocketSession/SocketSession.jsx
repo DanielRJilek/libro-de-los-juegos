@@ -14,29 +14,29 @@ function isSignedIn(userID) {
  * while the user is still signed in.
  */
 export default function SocketSession() {
-  const { userID, fetchPrivateData } = useContext(UserContext);
-  const userIDRef = useRef(userID);
-  userIDRef.current = userID;
-  const fetchPrivateDataRef = useRef(fetchPrivateData);
-  fetchPrivateDataRef.current = fetchPrivateData;
+  const user = useContext(UserContext);
 
   useEffect(() => {
-    if (!isSignedIn(userID)) {
+    if (!isSignedIn(user.userID)) {
       if (socket.connected) {
         socket.disconnect();
+      } else {
+        socket.connect();
       }
       return undefined;
+    } else {
+      socket.connect();
     }
 
     function onConnect() {
-      const id = userIDRef.current;
+      const id = user.userID;
       if (isSignedIn(id)) {
         emitJoinUser(id);
       }
     }
 
     function onDisconnect() {
-      if (isSignedIn(userIDRef.current)) {
+      if (isSignedIn(user.userID)) {
         socket.connect();
       }
     }
@@ -47,7 +47,7 @@ export default function SocketSession() {
       if (text) {
         toast.info(text);
       }
-      void fetchPrivateDataRef.current?.();
+      user.fetchPrivateData();
     }
 
     socket.on(SOCKET_IO_EVENTS.CONNECT, onConnect);
@@ -55,7 +55,7 @@ export default function SocketSession() {
     socket.on(SOCKET_EVENTS.NOTIFICATION, onNotification);
 
     if (socket.connected) {
-      emitJoinUser(userID);
+      emitJoinUser(user.userID);
     } else {
       socket.connect();
     }
@@ -65,7 +65,7 @@ export default function SocketSession() {
       socket.off(SOCKET_IO_EVENTS.DISCONNECT, onDisconnect);
       socket.off(SOCKET_EVENTS.NOTIFICATION, onNotification);
     };
-  }, [userID]);
+  }, [user.userID]);
 
   return null;
 }
