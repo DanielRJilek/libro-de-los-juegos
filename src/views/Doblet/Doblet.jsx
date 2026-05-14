@@ -1,6 +1,5 @@
 import '../Game/Game.css'
 import "./Doblet.css"
-import Header from "../../components/Header/Header"
 import Board from "../../components/Board/Board";
 import Dice from "../../components/Dice/Dice";
 import { useState, useContext, useEffect } from "react";
@@ -166,9 +165,6 @@ function Doblet() {
             }
             if (result?.board && result?.currentPlayer?.username) {
                 setGameState(result)
-                // if (result.winner) {
-                //     setWinner(result.winner);
-                // }
                 setLoading(false)
             }
         } 
@@ -227,7 +223,7 @@ function Doblet() {
                         
                         <div className="button-holder">
                             {!resolvedWinner && gameState?.currentPlayer._id == user.userID && <button onClick={roll}>Roll!</button>}
-                            <button onClick={() => setQuitModalOpen(true)}>Quit</button>
+                            {!resolvedWinner && <button onClick={() => setQuitModalOpen(true)}>Quit</button>}
                         </div>
                     </div>
                 </div>

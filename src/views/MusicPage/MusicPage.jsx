@@ -9,7 +9,6 @@ function MusicPage() {
                 <h1 className="games-title">About the Music</h1>
             </div>
             <div className="music-content"></div>
-            
         </div>
     )
 }

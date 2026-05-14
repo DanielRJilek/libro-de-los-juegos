@@ -1,9 +1,6 @@
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import "./ConfirmModal.css";
 
-/**
- * Native <dialog> confirm prompt. Uses showModal() for top-layer + ::backdrop.
- */
 function ConfirmModal({
     open,
     onClose,

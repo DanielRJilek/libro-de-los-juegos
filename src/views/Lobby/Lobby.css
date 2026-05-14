@@ -89,6 +89,8 @@
 
 .lobby-bottom {
   flex: 1;
+  display: flex;
+  justify-content: center;
 }
 
 #game-title {
@@ -108,8 +110,7 @@
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-soft);
   color: white;
-  min-width: 400px;
-  min-height: 300px;
+  width: 500px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -124,7 +125,8 @@
   margin: 25px;
 }
 
-.button-holder button {
+/* Only top-level actions (Invite / Play); nested controls use .flex-row .go-button */
+.button-holder > button {
   display: block;
   max-width: 50%;
 }

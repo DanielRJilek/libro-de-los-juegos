@@ -213,7 +213,6 @@ function Lobby() {
     return (
         <div id="lobby" className="lobby-page">
             {!loading ? <>
-            
                 <div className='lobby-top animate-fade-in-up'>
                     <div className="lobby-hero-art">
                         <img src={'https://libro-de-los-juegos-server.onrender.com/static' + game?.image} alt="" />

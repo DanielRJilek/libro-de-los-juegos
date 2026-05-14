@@ -4,7 +4,6 @@
     position: relative;
 }
 
-/* Keep scenic backdrop for Welcome/About/Games hub. */
 #home-page.home-page--featured {
     background-color: #1a1512;
     background-image: url(../../assets/images/Alhambra_view.png);
@@ -16,8 +15,6 @@
 
 /* Warm app shell for non-protected pages. */
 #home-page.home-page--task {
-    /* background-color: #140d0b; */
-    /* background-image: url(../../assets/images/seville_alcazar.jpeg); */
     background-image: url(../../assets/images/escutcheon.jpg);
     background-size: cover;
     background-repeat: no-repeat;

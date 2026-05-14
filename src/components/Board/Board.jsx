@@ -1,5 +1,4 @@
 import "./Board.css"
-import Man from "../../components/Man/Man"
 import { ClipLoader } from "react-spinners";
 import { useEffect, useState, useContext } from "react";
 import { UserContext } from "../../context/UserContext";
@@ -24,7 +23,6 @@ function Board({board, userPlayer, children, maxPieces, xSize, ySize}) {
         }
     }   
     const halfSize = Math.ceil(squares.length / 2);
-    
 
     return(
         loading ? <ClipLoader></ClipLoader> :
