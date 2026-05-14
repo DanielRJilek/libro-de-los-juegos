@@ -5,7 +5,7 @@ import { UserContext } from '../../context/UserContext';
 import { ClipLoader } from "react-spinners";
 import { IconContext } from 'react-icons';
 import { IoAlertCircle } from "react-icons/io5";
-import '../Login/LogIn.css';
+import '../../views/Login/Login.css';
 const API_URL = import.meta.env.VITE_API_URL;
 
 function SignUp() {
