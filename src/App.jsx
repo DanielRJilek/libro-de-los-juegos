@@ -2,9 +2,10 @@ import './index.css'
 import routes from './routing/routes'
 import { RouterProvider, createBrowserRouter } from 'react-router'
 import { AuthContext, AuthContextProvider } from './context/AuthContext'
-import { useContext, useState } from 'react'
 import { UserContext, UserContextProvider } from './context/UserContext'
-import { ToastContainer, toast } from 'react-toastify'
+import { useContext } from 'react'
+import SocketSession from './components/SocketSession/SocketSession'
+import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
   return (
     <AuthContextProvider value={user}>
       <UserContextProvider value={username}>
+        <SocketSession />
         <RouterProvider router={router}>
           
         </RouterProvider>

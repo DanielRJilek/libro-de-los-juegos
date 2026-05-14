@@ -2,7 +2,7 @@ import { useContext, useState, useEffect } from "react";
 import { UserContext } from "../../context/UserContext";
 import { AuthContext } from "../../context/AuthContext";
 import { useNavigate, useParams } from "react-router";
-import { socket } from "../../socket";
+import { socket, emitJoinTable, SOCKET_EVENTS, SOCKET_IO_EVENTS, TABLE_UPDATE_KIND } from "../../socket";
 import { ClipLoader } from "react-spinners";
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
@@ -29,29 +29,32 @@ function Lobby() {
     let instance = params.instance;
 
     useEffect(() => {
-        function onGameStart() {
-            navigate(`/games/${title}/table/${instance}/play`);
+        function onTableUpdate(payload) {
+            const { kind } = payload ?? {};
+            if (kind === TABLE_UPDATE_KIND.GAME_START) {
+                navigate(`/games/${title}/table/${instance}/play`);
+            } else if (kind === TABLE_UPDATE_KIND.PLAYER_JOINED) {
+                getTable();
+            }
         }
         function onConnect() {
-            socket.emit('join-table', instance, user.userID);
+            emitJoinTable(instance, user.userID);
         }
         setLoading(true);
         setLobby(null);
         getGame();
         if (instance) {
             getTable();
-            socket.on('game-start', onGameStart);
-            socket.on('connect', onConnect);
-            socket.on('player-joined', getTable);
+            socket.on(SOCKET_EVENTS.TABLE_UPDATE, onTableUpdate);
+            socket.on(SOCKET_IO_EVENTS.CONNECT, onConnect);
             if (socket.connected) {
-                socket.emit('join-table', instance, user.userID);
+                emitJoinTable(instance, user.userID);
             } else {
                 socket.connect();
             }
             return () => {
-                socket.off('connect', onConnect);
-                socket.off('game-start', onGameStart);
-                socket.off('player-joined', getTable);
+                socket.off(SOCKET_IO_EVENTS.CONNECT, onConnect);
+                socket.off(SOCKET_EVENTS.TABLE_UPDATE, onTableUpdate);
             };
         }
     }, [instance, title])
@@ -201,7 +204,6 @@ function Lobby() {
                     return;
                 }
                 user.fetchPrivateData();
-                socket.emit('start-game', lobby._id);
                 navigate(`/games/${title}/table/` + lobby._id + '/play');
             }
             catch (error) {

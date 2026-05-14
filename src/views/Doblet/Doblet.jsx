@@ -6,7 +6,7 @@ import { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { useNavigate, useParams } from "react-router";
 import { UserContext } from "../../context/UserContext";
-import { socket } from "../../socket";
+import { socket, emitJoinTable, SOCKET_EVENTS, SOCKET_IO_EVENTS, TABLE_UPDATE_KIND } from "../../socket";
 import { ClipLoader } from "react-spinners";
 import UserItem from '../../components/UserItem/UserItem';
 import ConfirmModal from '../../components/ConfirmModal/ConfirmModal';
@@ -40,14 +40,9 @@ function Doblet() {
     }, [gameState, user.userID])
 
     useEffect(() => {
-        if (!user.userID) return;
-        if (socket.connected) {
-            socket.emit('join-table', tableID, user.userID);
-        }
-    }, [user.userID]);
+        if (!tableID || !user.userID) return undefined;
 
-    useEffect(() => {
-        async function onGameUpdate(value) {
+        async function onStateUpdate(value) {
             setDice(value.dice);
             await new Promise(resolve => setTimeout(resolve, 2000));
             setGameState((prev) => {
@@ -64,8 +59,19 @@ function Doblet() {
                 setWinner(value.winner ?? value.gameState.winner);
             }
         }
+
+        function onTableUpdate(payload) {
+            const { kind } = payload ?? {};
+            if (kind === TABLE_UPDATE_KIND.STATE) {
+                onStateUpdate(payload);
+            } else if (kind === TABLE_UPDATE_KIND.GAME_ENDED) {
+                console.log("winner", payload.winner);
+                setWinner(payload.winner);
+            }
+        }
+
         function onConnect() {
-            socket.emit('join-table', tableID, user.userID);
+            emitJoinTable(tableID, user.userID);
             setIsConnected(true);
         }
 
@@ -73,28 +79,21 @@ function Doblet() {
             setIsConnected(false);
         }
 
-        function onGameEnded(value) {
-            console.log("winner", value.winner);
-            setWinner(value.winner);            
-        }
-
-        socket.on('connect', onConnect);
-        socket.on('disconnect', onDisconnect);
-        socket.on('game-update', onGameUpdate);
-        socket.on('game-ended', onGameEnded);
+        socket.on(SOCKET_IO_EVENTS.CONNECT, onConnect);
+        socket.on(SOCKET_IO_EVENTS.DISCONNECT, onDisconnect);
+        socket.on(SOCKET_EVENTS.TABLE_UPDATE, onTableUpdate);
         if (!socket.connected) {
             socket.connect();
         } else {
-            socket.emit('join-table', tableID, user.userID);
+            emitJoinTable(tableID, user.userID);
         }
 
         return () => {
-            socket.off('connect', onConnect);
-            socket.off('disconnect', onDisconnect);
-            socket.off('game-update', onGameUpdate)
-            socket.off('game-ended', onGameEnded)
+            socket.off(SOCKET_IO_EVENTS.CONNECT, onConnect);
+            socket.off(SOCKET_IO_EVENTS.DISCONNECT, onDisconnect);
+            socket.off(SOCKET_EVENTS.TABLE_UPDATE, onTableUpdate);
         };
-    }, []);
+    }, [tableID, user.userID]);
 
     const movePiece = (piece, newPosition) => {}
 
