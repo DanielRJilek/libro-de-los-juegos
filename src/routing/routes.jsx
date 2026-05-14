@@ -1,8 +1,8 @@
 import MainMenu from "../views/MainMenu/MainMenu";
 import Home from "../views/Home/Home";
-import LogIn from "../components/LogIn/LogIn";
 import Welcome from "../views/Welcome/Welcome";
-import SignUp from "../components/Signup/Signup";
+import Signup from "../views/Signup/Signup";
+import Login from "../views/Login/Login";
 import Doblet from "../views/Doblet/Doblet";
 import ProtectedRoute from "./ProtectedRoute";
 import Lobby from "../views/Lobby/Lobby";
@@ -33,13 +33,13 @@ const routes = [
      {
         path: "/login",
         element: (<Home backdrop="featured">
-            <LogIn></LogIn>
+            <Login></Login>
         </Home>)
      },
      {
         path: "/signup",
         element: (<Home backdrop="featured">
-            <SignUp></SignUp>
+            <Signup></Signup>
         </Home>)
      },
      {

@@ -1,4 +1,4 @@
-import './LogIn.css'
+import './Login.css'
 import {useNavigate} from 'react-router'
 import { AuthContext } from '../../context/AuthContext';
 import { useContext, useState } from 'react';
@@ -9,7 +9,7 @@ import { IoAlertCircle } from "react-icons/io5";
 const API_URL = import.meta.env.VITE_API_URL;
 
 
-function LogIn() {
+function Login() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState();
     const auth = useContext(AuthContext);
@@ -68,4 +68,4 @@ function LogIn() {
     }   
 }
 
-export default LogIn
+export default Login
