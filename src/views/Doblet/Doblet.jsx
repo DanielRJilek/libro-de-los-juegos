@@ -216,11 +216,10 @@ function Doblet() {
                                 </div>
                             )}
                         </div>
-                        <div className="player-holder"></div>
                     </div>
                     <div className="game-bottom animate-fade-in-up animate-delay-2">
                         
-                        <div className="button-holder">
+                        <div className="game-button-holder">
                             {!resolvedWinner && gameState?.currentPlayer._id == user.userID && <button onClick={roll}>Roll!</button>}
                             {!resolvedWinner && <button onClick={() => setQuitModalOpen(true)}>Quit</button>}
                         </div>

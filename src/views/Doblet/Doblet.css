@@ -1,9 +1,9 @@
 .game-center {
     display: grid;
-    grid-template-columns: minmax(170px, 230px) minmax(360px, 1fr);
+    grid-template-columns: minmax(150px, 200px) minmax(250px, 1fr);
     gap: clamp(12px, 2vw, 20px);
-    width: 100%;
-    padding: clamp(14px, 2.3vw, 20px);
+    /* width: 100%; */
+    /* padding: clamp(14px, 2.3vw, 20px); */
     box-sizing: border-box;
     animation: game-center-enter var(--motion-slow) var(--motion-ease);
 }
@@ -12,13 +12,6 @@
     position: relative;
     border-radius: 16px;
     overflow: hidden;
-}
-
-.player-holder {
-    display: grid;
-    align-content: start;
-    gap: 10px;
-    color: #fff4ff;
 }
 
 .player-holder .user-item {
@@ -99,9 +92,5 @@
 @media (max-width: 1120px) {
     .game-center {
         grid-template-columns: 1fr;
-    }
-
-    .player-holder {
-        grid-template-columns: 1fr 1fr;
     }
 }
