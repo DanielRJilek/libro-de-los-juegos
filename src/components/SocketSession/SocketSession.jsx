@@ -14,9 +14,11 @@ function isSignedIn(userID) {
  * while the user is still signed in.
  */
 export default function SocketSession() {
-  const { userID } = useContext(UserContext);
+  const { userID, fetchPrivateData } = useContext(UserContext);
   const userIDRef = useRef(userID);
   userIDRef.current = userID;
+  const fetchPrivateDataRef = useRef(fetchPrivateData);
+  fetchPrivateDataRef.current = fetchPrivateData;
 
   useEffect(() => {
     if (!isSignedIn(userID)) {
@@ -45,6 +47,7 @@ export default function SocketSession() {
       if (text) {
         toast.info(text);
       }
+      void fetchPrivateDataRef.current?.();
     }
 
     socket.on(SOCKET_IO_EVENTS.CONNECT, onConnect);
