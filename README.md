@@ -121,7 +121,3 @@ Protected routes (lobbies, gameplay, profile) require a valid access token.
 
 - **Frontend (this repo):** [DanielRJilek/libro-de-los-juegos](https://github.com/DanielRJilek/libro-de-los-juegos)
 - **Backend API:** [DanielRJilek/libro-de-los-juegos-server](https://github.com/DanielRJilek/libro-de-los-juegos-server)
-
-## License
-
-Private project (`"private": true` in `package.json`). Add a license file here if you intend to open-source the code.
