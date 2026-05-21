@@ -77,3 +77,4 @@ errors on profiledrop should be toasts
 - [] piece movement can be done with frontend functions (bearoff and move)
 - [] show friends when inviting?
 - [] RENAME BOOK OF GAMES????
+- [] email based signup etc
