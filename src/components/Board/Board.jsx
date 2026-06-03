@@ -70,16 +70,13 @@ function Board({pieces, userPlayer, children, xSize, ySize}) {
                 />
             </div>
         );
-    });    
-    // User should always be at the bottom    
+    });
 
     return(
         <div className={flipVertical ? "board-holder rotate-180" : "board-holder"}>
             <img className="game-board" src={`${API_URL}/static/images/board.png`} ref={boardRef}></img>
             <div className="board-pieces">{pieceList}</div>
-            
         </div>
-        
     )
 }
 export default Board

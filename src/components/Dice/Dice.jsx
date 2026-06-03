@@ -2,7 +2,7 @@ import './Dice.css'
 import { BsDice1Fill, BsDice2Fill, BsDice3Fill, BsDice4Fill, BsDice5Fill, BsDice6Fill } from "react-icons/bs";
 import { useState, useEffect, useRef } from 'react';
 
-function Dice({ value }) {
+function Dice({ value, active }) {
     const [face, setFace] = useState(value);
     const isFirstRender = useRef(true);
     const diceIcons = [<BsDice1Fill/>, 
@@ -39,7 +39,7 @@ function Dice({ value }) {
     }, [value]);
     
     return (
-        <div className='dice'>
+        <div className={`dice ${active ? 'active' : ''}`}>
             {diceIcons[face-1]}
         </div>
     )  

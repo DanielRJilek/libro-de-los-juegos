@@ -72,6 +72,7 @@ function Doblet() {
     const [quitModalOpen, setQuitModalOpen] = useState(false);
     const [pieces, setPieces] = useState([]);
     const [isAnimating, setIsAnimating] = useState(false);
+    const [activeDiceIndex, setActiveDiceIndex] = useState(null);
     const navigate = useNavigate();
     const params = useParams(); 
     const tableID = params.instance;
@@ -94,11 +95,12 @@ function Doblet() {
             setDice(value.dice);
             setIsAnimating(true);
             await new Promise(resolve => setTimeout(resolve, 3000));
-
-            for (const move of value.turnMoves??[]) {
-                setPieces(prev => movePiece(prev, move));
+            for (let i = 0; i < value.turnMoves.length; i++) {
+                setActiveDiceIndex(i);
+                setPieces(prev => movePiece(prev, value.turnMoves[i]));
                 await new Promise(resolve => setTimeout(resolve, 1000));
             }
+            setActiveDiceIndex(null);
             setGameState((prev) => {
                 const next = value.gameState;
                 if (!next || typeof next !== 'object') return prev;
@@ -192,12 +194,6 @@ function Doblet() {
         }
     }
 
-    const gameOver = () => {
-    }
-
-    const showRoll = () => {
-    }
-
     const leaveGameOverScreen = () => {
         socket.disconnect();
         navigate('../games/doblet');
@@ -256,9 +252,9 @@ function Doblet() {
                         <div className="game-board-stage">
                             <Board pieces={pieces} xSize={12} ySize={4} userPlayer={userPlayer}></Board>
                             <div className="dice-holder">
-                                <Dice value={dice[0]}></Dice>
-                                <Dice value={dice[1]}></Dice>
-                                <Dice value={dice[2]}></Dice>
+                                <Dice value={dice[0]} active={activeDiceIndex === 0}></Dice>
+                                <Dice value={dice[1]} active={activeDiceIndex === 1}></Dice>
+                                <Dice value={dice[2]} active={activeDiceIndex === 2}></Dice>
                             </div>
                             {isGameOver && (
                                 <div className="game-over-overlay animate-fade-in-up">

@@ -9,3 +9,8 @@
     height: 25px;
     width: 25px;
 }
+
+.dice.active svg{
+    filter: drop-shadow(0 0 6px rgba(255, 180, 80, 0.9));
+    animation: dice-glow var(--motion-base) var(--motion-ease);
+}
