@@ -1,47 +1,85 @@
 import "./Board.css"
 import { ClipLoader } from "react-spinners";
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext, useRef } from "react";
 import { UserContext } from "../../context/UserContext";
-import Square from "../../components/Square/Square";
+import Man from "../Man/Man";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-function Board({board, userPlayer, children, maxPieces, xSize, ySize}) {
+function Board({pieces, userPlayer, children, xSize, ySize}) {
     const user = useContext(UserContext);
-    const [loading, setLoading] = useState(true);
     const flipVertical = userPlayer == 1;
-    
-    useEffect(() => {
-        setLoading(false);
-    }, [])
+    const boardRef = useRef(null);
+    const [cellSize, setCellSize] = useState({ w: 0, h: 0 });
+    const stackInCell = {};
 
-    // User should always be at the bottom
-    const squares = [];
-    for (let y=0;y<ySize;y++) {
-        for (let x=0;x<xSize;x++) {
-            squares.push(<Square key={`${x}-${y}`} x={x} y={y} pieces={board[x][y]} maxPieces={maxPieces}></Square>);
+    useEffect(() => {
+        const el = boardRef.current;
+        if (!el) return;
+        const update = () => {
+            setCellSize({
+                w: el.clientWidth * 0.9/ xSize,
+                h: el.clientHeight / ySize,
+            });
+        };
+        update();
+        const ro = new ResizeObserver(update);
+        ro.observe(el);
+        return () => ro.disconnect();
+    }, [xSize, ySize]);
+
+    const cells = [];
+    for (let row = 0; row < ySize; row++) {
+        for (let col = 0; col < xSize; col++) {
+            cells.push(
+            <div
+                key={`${col}-${row}`}
+                className="board-cell"
+                style={{ gridArea: `${row + 1} / ${col + 1} / ${row + 2} / ${col + 2}` }}
+            />
+            );
         }
-    }   
-    const halfSize = Math.ceil(squares.length / 2);
+    }
+
+    const pieceList = pieces?.map((piece) => {
+        const cellKey = `${piece.col}-${piece.row}`;
+        const stackIndex = stackInCell[cellKey] ?? 0;
+        stackInCell[cellKey] = stackIndex + 1;
+        const x = piece.col * cellSize.w;
+        const y = piece.row * cellSize.h;
+        return (
+            <div
+                key={piece.id}
+                className="piece-slot"
+                style={{
+                    width: cellSize.w,
+                    height: cellSize.h * 0.7,
+                    transform: `translate(${x}px, ${y}px)`,
+                }}
+            >
+                <Man
+                    playerNumber={piece.player}
+                    style={{
+                        position: "absolute",
+                        width: "50%",
+                        height: "50%",
+                        left: "25%",
+                        top: stackIndex === 0 ? "20%" : "30%",
+                        zIndex: stackIndex + 1,
+                    }}
+                />
+            </div>
+        );
+    });    
+    // User should always be at the bottom    
 
     return(
-        loading ? <ClipLoader></ClipLoader> :
         <div className={flipVertical ? "board-holder rotate-180" : "board-holder"}>
-            <img className="game-board" src={`${API_URL}/static/images/board.png`}></img>
-            <div className="board-grid">
-                <div className="board-grid-quarter">{squares.slice(0,halfSize)}</div>
-                <div className="board-grid-quarter"></div>
-                <div className="board-grid-quarter"></div>
-                <div className="board-midline-filler">
-                    <div className="dice-holder">
-                        {children}
-                    </div>
-                </div>
-                <div className="board-grid-quarter">{squares.slice(halfSize)}</div>
-                <div className="board-grid-quarter"></div>
-            </div>
+            <img className="game-board" src={`${API_URL}/static/images/board.png`} ref={boardRef}></img>
+            <div className="board-pieces">{pieceList}</div>
+            
         </div>
+        
     )
 }
-
 export default Board

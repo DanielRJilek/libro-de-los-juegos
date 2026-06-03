@@ -1,10 +1,13 @@
 import './Man.css'
 
-function Man({player, position}) {
+function Man({playerNumber, style}) {
+    const gradient = playerNumber === 1
+        ? 'radial-gradient(darkred 40%, red)'
+        : 'radial-gradient(rgb(255, 217, 0) 40%, yellow)';
     return (
-        player.playerNumber==1 ? <div className='man' style={{backgroundImage: 'radial-gradient(darkred 40%, red)'}}>
-        </div> 
-        : <div className='man' style={{backgroundImage: 'radial-gradient(rgb(255, 217, 0) 40%, yellow)'}}>
+        <div className='man' style={{backgroundImage: gradient,
+            ...style
+        }}>
         </div>
     )
 }

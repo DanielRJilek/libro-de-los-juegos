@@ -13,6 +13,52 @@ import ConfirmModal from '../../components/ConfirmModal/ConfirmModal';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
+let nextPieceId = 0;
+
+const boardToPieces = (board) => {
+    if (!Array.isArray(board)) return [];
+    const pieces = [];
+    for (let col = 0; col < board.length; col++) {
+        for (let row = 0; row < board[col].length; row++) {
+            const cell = board[col][row];
+            if (!cell) continue;
+            for (let k = 0; k < (cell.p1 ?? 0); k++) {
+                pieces.push({
+                    id: `p1-${nextPieceId++}`,
+                    player: 1,
+                    col,
+                    row,
+                });
+            }
+            for (let k = 0; k < (cell.p2 ?? 0); k++) {
+                pieces.push({
+                    id: `p2-${nextPieceId++}`,
+                    player: 2,
+                    col,
+                    row,
+                });
+            }
+        }
+    }
+    return pieces;
+}
+
+const movePiece = (prev, move) => {
+    const idx = prev.findIndex(
+        (p) => p.player === move.playerNumber && p.col === move.fromCol && p.row === move.fromRow
+    );
+    if (idx === -1) {
+        console.log("piece not found");
+        return prev;
+    }
+    if (move.toCol == null || move.toRow == null) {
+        return prev.filter((_, i) => i !== idx);
+    }
+    return prev.map((p, i) =>
+        i === idx ? { ...p, col: move.toCol, row: move.toRow } : p
+    );
+}
+
 function Doblet() {
     const auth = useContext(AuthContext);
     const user = useContext(UserContext);
@@ -24,6 +70,8 @@ function Doblet() {
     const [userPlayer, setUserPlayer] = useState(null);
     const [otherPlayer, setOtherPlayer] = useState(null);
     const [quitModalOpen, setQuitModalOpen] = useState(false);
+    const [pieces, setPieces] = useState([]);
+    const [isAnimating, setIsAnimating] = useState(false);
     const navigate = useNavigate();
     const params = useParams(); 
     const tableID = params.instance;
@@ -44,7 +92,13 @@ function Doblet() {
 
         async function onStateUpdate(value) {
             setDice(value.dice);
-            await new Promise(resolve => setTimeout(resolve, 2000));
+            setIsAnimating(true);
+            await new Promise(resolve => setTimeout(resolve, 3000));
+
+            for (const move of value.turnMoves??[]) {
+                setPieces(prev => movePiece(prev, move));
+                await new Promise(resolve => setTimeout(resolve, 1000));
+            }
             setGameState((prev) => {
                 const next = value.gameState;
                 if (!next || typeof next !== 'object') return prev;
@@ -54,10 +108,10 @@ function Doblet() {
                 }
                 return merged;
             });
-
             if (value.winner || value?.gameState?.winner) {
                 setWinner(value.winner ?? value.gameState.winner);
             }
+            setIsAnimating(false);
         }
 
         function onTableUpdate(payload) {
@@ -94,8 +148,6 @@ function Doblet() {
             socket.off(SOCKET_EVENTS.TABLE_UPDATE, onTableUpdate);
         };
     }, [tableID, user.userID]);
-
-    const movePiece = (piece, newPosition) => {}
 
     const determineUserPlayer = () => {
         if (!gameState?.players) return;
@@ -164,11 +216,12 @@ function Doblet() {
             }
             if (result?.board && result?.currentPlayer?.username) {
                 setGameState(result)
+                setPieces(boardToPieces(result.board));
                 setLoading(false)
             }
         } 
         catch (error) {
-        
+            console.log(error)
         }
     }
 
@@ -179,6 +232,7 @@ function Doblet() {
         const players = gameState?.players;
         const otherUser = players && otherPlayer ? players[otherPlayer - 1] : null;
         const selfUser = players && userPlayer ? players[userPlayer - 1] : null;
+        const canRoll = !resolvedWinner && gameState?.currentPlayer?._id == user.userID && !isAnimating;
 
         return (
             loading? <ClipLoader></ClipLoader> :
@@ -200,14 +254,12 @@ function Doblet() {
                             )}
                         </div>
                         <div className="game-board-stage">
-                            <Board board={gameState?.board} xSize={6} ySize={4} maxPieces={2} userPlayer={userPlayer} children={
-                                <>
-                                    <Dice value={dice[0]}></Dice>
-                                    <Dice value={dice[1]}></Dice>
-                                    <Dice value={dice[2]}></Dice>
-                                </>
-                            }>
-                            </Board>
+                            <Board pieces={pieces} xSize={12} ySize={4} userPlayer={userPlayer}></Board>
+                            <div className="dice-holder">
+                                <Dice value={dice[0]}></Dice>
+                                <Dice value={dice[1]}></Dice>
+                                <Dice value={dice[2]}></Dice>
+                            </div>
                             {isGameOver && (
                                 <div className="game-over-overlay animate-fade-in-up">
                                     <h2>Game Over</h2>
@@ -218,10 +270,13 @@ function Doblet() {
                         </div>
                     </div>
                     <div className="game-bottom animate-fade-in-up animate-delay-2">
-                        
-                        <div className="game-button-holder">
-                            {!resolvedWinner && gameState?.currentPlayer._id == user.userID && <button onClick={roll}>Roll!</button>}
-                            {!resolvedWinner && <button onClick={() => setQuitModalOpen(true)}>Quit</button>}
+                        <div className={`game-button-holder${canRoll ? ' game-button-holder--can-roll' : ''}`}>
+                            {canRoll && (
+                                <button type="button" className="game-roll-button" onClick={roll}>Roll!</button>
+                            )}
+                            {!resolvedWinner && (
+                                <button type="button" className="game-quit-button" onClick={() => setQuitModalOpen(true)}>Quit</button>
+                            )}
                         </div>
                     </div>
                 </div>
