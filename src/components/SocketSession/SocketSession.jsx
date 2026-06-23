@@ -10,7 +10,7 @@ function isSignedIn(userID) {
 /**
  * Keeps Socket.IO aligned with the logged-in user: connects when signed in,
  * joins the per-user room for notifications, and disconnects on sign-out.
- * Reconnects after external disconnect (e.g. game views calling disconnect)
+ * Reconnects after external disconnect 
  * while the user is still signed in.
  */
 export default function SocketSession() {
@@ -20,9 +20,7 @@ export default function SocketSession() {
     if (!isSignedIn(user.userID)) {
       if (socket.connected) {
         socket.disconnect();
-      } else {
-        socket.connect();
-      }
+      } 
       return undefined;
     } else {
       socket.connect();

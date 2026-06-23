@@ -78,3 +78,14 @@ errors on profiledrop should be toasts
 - [] show friends when inviting?
 - [] RENAME BOOK OF GAMES????
 - [] email based signup etc
+
+
+- [] steal move functionality
+- [x] rules modal
+- [] valid moves on frontend
+- [] backend check if no more valid moves and/or steal
+- [] where to click to bear off
+- [] clicking userItems should bring up a drop menu of options, one of which is to actually navigate to their page
+- [x] once a piece is selected disallow selecting other pieces and only select cells
+- [] fix numbers on pieces
+- [] info overlay

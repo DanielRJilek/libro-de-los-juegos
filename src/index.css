@@ -40,16 +40,24 @@ a:hover {
   color: #535bf2;
 }
 
+html {
+  width: 100%;
+  height: 100%;
+  overflow-x: clip;
+}
+
 body {
   margin: 0;
   padding: 0;
   display: flex;
-  place-items: center;
+  flex-direction: column;
+  align-items: stretch;
   min-width: 320px;
   min-height: 100vh;
   width: 100%;
   height: 100%;
   box-sizing: border-box;
+  overflow-x: clip;
   color: var(--text-ivory);
   background:
     radial-gradient(circle at 12% 20%, rgba(255, 224, 150, 0.14), transparent 32%),
@@ -122,14 +130,10 @@ a:focus-visible {
 }
 
 #root {
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
-}
-
-#root {
     display: flex;
     flex-direction: column;
+    flex: 1;
+    width: 100%;
     min-height: 100vh;
     box-sizing: border-box;
     margin: 0;
@@ -178,8 +182,10 @@ a:focus-visible {
     border: 0;
     display: flex;
     flex-direction: column;
+    flex: 1;
     width: 100%;
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: clip;
     position: relative;
 }
 
@@ -237,7 +243,9 @@ a:focus-visible {
 }
 
 #main {
-    min-width: 100vw;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
     display: flex;
     flex-direction: column;
     flex: 1;

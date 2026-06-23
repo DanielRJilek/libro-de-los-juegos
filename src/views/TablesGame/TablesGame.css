@@ -1,0 +1,31 @@
+.game-page {
+    position: relative;
+    background-color: #140d0b;
+    background-image:
+        url(../../assets/images/escutcheon.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+}
+
+.game-page::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(180deg, rgba(27, 15, 11, 0.18) 0%, rgba(13, 8, 6, 0.42) 100%);
+}
+
+.game-page #header {
+    overflow: visible;
+}
+
+.game-page #main {
+    position: relative;
+    overflow-x: auto;
+    display: flex;
+    justify-content: center;
+    padding: 20px clamp(12px, 2vw, 28px) 32px;
+    box-sizing: border-box;
+}

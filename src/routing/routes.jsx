@@ -3,31 +3,26 @@ import Home from "../views/Home/Home";
 import Welcome from "../views/Welcome/Welcome";
 import Signup from "../views/Signup/Signup";
 import Login from "../views/Login/Login";
-import Doblet from "../views/Doblet/Doblet";
 import ProtectedRoute from "./ProtectedRoute";
 import Lobby from "../views/Lobby/Lobby";
 import About from "../views/About/About";
 import Title from "../components/Title/Title";
-import Game from "../views/Game/Game";
 import ProfilePage from "../views/ProfilePage/ProfilePage";
 import MusicPage from "../views/MusicPage/MusicPage";
+import TablesGame from "../views/TablesGame/TablesGame";
  
 const routes = [
     {
         path: "/",
         element: (<Home>
-            
             <Title></Title>
             <Welcome></Welcome>
-            
         </Home>),
     },
     {
         path: "/games",
         element: (<Home>
-            
-            <MainMenu></MainMenu>
-            
+            <MainMenu></MainMenu>            
         </Home>)
     },
      {
@@ -73,9 +68,7 @@ const routes = [
             },
             {
                 path: "/games/:title/table/:instance/play",
-                element: (<Game>
-                    <Doblet></Doblet>
-                </Game>)
+                element: (<TablesGame></TablesGame>)
             },
             {
                 path: "/profile/:instance",

@@ -2,9 +2,8 @@ import './About.css';
 import Slideshow from '../../components/Slideshow/Slideshow';
 
 function About() {
-    const about_text = "Inspired by the medieval Spanish book describing popular board and table games of the time period, " +
-        "called the Libro de los Juegos. Create an account to challenge your friends online to " + 
-        "a variety of multiplayer games. All for free.";
+    const about_text = "Inspired by the medieval Spanish book Libro de los Juegos, Spanish for book of games, play popular board and table games of the era. Libro de los Juegos was commissioned by the King of Spain himself, Alfonso X, a board game enthusiast and amateur musician. The artwork present on this site comes from the illustrations present in the original manuscript. " +
+        "Create an account to challenge your friends online to a variety of authentic medieval games. All for free.";
     const about_header = "Welcome to the World of Medieval Gaming";
 
     return (

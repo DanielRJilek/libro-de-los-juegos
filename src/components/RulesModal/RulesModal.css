@@ -1,0 +1,90 @@
+@font-face {
+    font-family: tangerine-bold;
+    src: url(../../assets/Tangerine/Tangerine-Bold.ttf);
+}
+
+@font-face {
+    font-family: tangerine;
+    src: url(../../assets/Tangerine/Tangerine-Regular.ttf);
+}
+
+dialog.rules-modal {
+    max-width: 560px;
+    width: calc(100vw - 2rem);
+    margin: auto;
+    padding: 1.5rem 1.5rem 1.25rem;
+    border: 4px solid rgba(188, 141, 51, 1);
+    border-radius: 8px;
+    box-shadow: 0 12px 40px #000a;
+    color: white;
+    background-color: rgba(141, 49, 44, 0.88);
+    animation: rules-modal-enter var(--motion-base) var(--motion-ease);
+}
+
+dialog.rules-modal::backdrop {
+    background-color: rgba(0, 0, 0, 0.55);
+}
+
+.rules-modal-title {
+    font-family: tangerine-bold, tangerine, serif;
+    font-size: clamp(2.4rem, 5vw, 3.4rem);
+    font-weight: 700;
+    line-height: 1;
+    margin: 0 0 0.75rem;
+    padding: 0;
+    text-align: center;
+}
+
+.rules-modal-text {
+    margin: 0 0 1.25rem;
+    line-height: 1.5;
+    opacity: 0.95;
+    text-align: left;
+    white-space: pre-wrap;
+}
+
+.rules-modal-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.rules-modal-actions form {
+    display: inline;
+    margin: 0;
+}
+
+.rules-modal-button {
+    border-radius: 8px;
+    padding: 0.55em 1.1em;
+    font-size: 1em;
+    font-family: inherit;
+    font-weight: 500;
+    cursor: pointer;
+    border: 2px solid rgba(188, 141, 51, 1);
+    background-color: rgba(90, 40, 36, 1);
+    color: white;
+    transition:
+        filter var(--motion-base) var(--motion-ease),
+        transform var(--motion-fast) var(--motion-ease),
+        box-shadow var(--motion-base) var(--motion-ease);
+}
+
+.rules-modal-button:hover {
+    filter: brightness(1.12);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+}
+
+@keyframes rules-modal-enter {
+    from {
+        opacity: 0;
+        transform: translateY(10px) scale(0.98);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}

@@ -37,4 +37,5 @@
 .game-card span {
     color: white;
     border-top: 4px rgba(188, 141, 51, 1) solid;
+    text-align: center;
 }

@@ -9,9 +9,10 @@ import 'react-toastify/dist/ReactToastify.css';
 import './Lobby.css'
 import UserItem from "../../components/UserItem/UserItem";
 import ConfirmModal from "../../components/ConfirmModal/ConfirmModal";
-import { IoTrashOutline } from "react-icons/io5";
+import { IoTrashOutline, IoPlay, IoPersonAddOutline } from "react-icons/io5";
 
 const API_URL = import.meta.env.VITE_API_URL;
+const MAX_PLAYERS = 2;
 
 function Lobby() {
     const params = useParams();
@@ -21,12 +22,28 @@ function Lobby() {
     const auth = useContext(AuthContext);
     const [lobby, setLobby] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [game,setGame] = useState("");
+    const [game, setGame] = useState("");
     const [error, setError] = useState(null);
     const [addingPlayer, setAddingPlayer] = useState(false);
     const [gameUnderConstruction, setGameUnderConstruction] = useState(false);
     const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+    const [showRules, setShowRules] = useState(false);
     let instance = params.instance;
+
+    const isOwner = lobby?.owner?._id == user.userID;
+    const playerCount = lobby?.players?.length ?? 0;
+    const inviteCount = lobby?.invites?.length ?? 0;
+    const tableReady = playerCount === MAX_PLAYERS;
+
+    const tableStatus = !lobby
+        ? null
+        : tableReady
+            ? isOwner
+                ? "Both players seated — you may begin."
+                : "Both players seated — waiting for the host to start."
+            : inviteCount > 0
+                ? `Waiting for a player to accept (${playerCount}/${MAX_PLAYERS} seated).`
+                : `Waiting for an opponent (${playerCount}/${MAX_PLAYERS} seated).`;
 
     useEffect(() => {
         function onTableUpdate(payload) {
@@ -85,7 +102,7 @@ function Lobby() {
                 setGameUnderConstruction(true);
             }
             setLoading(false);
-        } 
+        }
         catch (error) {
             console.log(error)
         }
@@ -135,7 +152,7 @@ function Lobby() {
             await getTable();
             setLoading(false);
             user.fetchPrivateData();
-        } 
+        }
         catch (error) {
             setError(error.message);
             console.log(error)
@@ -183,14 +200,12 @@ function Lobby() {
             getTable();
             toggleAddingPlayer();
             toast.success("Invite Sent!", {});
-        } 
+        }
         catch (error) {
             setError(error.message);
         }
     }
 
-    // should add a field in db for number of players per game in case there are games that allow more than 2 players
-    // also add single player mode to play against computer
     const play = async () => {
         if (lobby?.players?.length == 2 && lobby?.owner._id == user.userID) {
             try {
@@ -212,64 +227,171 @@ function Lobby() {
         }
     }
 
+    const seats = Array.from({ length: MAX_PLAYERS }, (_, index) => lobby?.players?.[index] ?? null);
+
     return (
-        <div id="lobby" className="lobby-page">
-            {!loading ? <>
-                <div className='lobby-top animate-fade-in-up'>
-                    <div className="lobby-hero-art">
-                        <img src={'https://libro-de-los-juegos-server.onrender.com/static' + game?.image} alt="" />
-                    </div>
-                    <div className="lobby-info-column">
-                        <h1 id="game-title" className="capitalize">{game?.title}</h1>
-                        <div id="game-desc" className="game-desc-text">{game?.desc}</div>
-                    </div>
-                </div> 
-                {!gameUnderConstruction ? <div className='lobby-bottom animate-fade-in-up animate-delay-1'>
-                    {lobby? <div className="lobby animate-fade-in-up animate-delay-2"> 
-                        <div className="lobby-header">
-                            <span className="lobby-header-spacer" aria-hidden="true" />
-                            <h2>Players: {lobby?.players?.length}</h2>
-                            <div className="lobby-header-actions">
-                                {lobby?.owner?._id == user.userID && (
-                                    <button
-                                        type="button"
-                                        onClick={() => setDeleteModalOpen(true)}
-                                        aria-label="Delete lobby"
-                                    >
-                                        <IoTrashOutline />
-                                    </button>
-                                )}
-                            </div>
+        <div className="lobby-page">
+            {loading ? (
+                <ClipLoader className="lobby-loader" />
+            ) : gameUnderConstruction ? (
+                <div className="lobby-construction animate-fade-in-up">
+                    <h2>This game is currently under construction.</h2>
+                    <p>Check back later!</p>
+                </div>
+            ) : (
+                <div className="lobby-shell animate-fade-in-up">
+                    <aside className="lobby-showcase animate-fade-in-up">
+                        <div className="lobby-cover-frame">
+                            <img
+                                className="lobby-cover-image"
+                                src={'https://libro-de-los-juegos-server.onrender.com/static' + game?.image}
+                                alt=""
+                            />
                         </div>
-                            <ul>
-                                {lobby.players.map((player) => {
-                                    return (<UserItem  key={player._id} user={player}>
-                                    </UserItem>)
-                                })}
-                            </ul>
-                            <ul>
-                                {lobby?.invites?.length > 0 ? lobby.invites.map((invite) => {
-                                    return <UserItem className='invite-list-item' key={invite._id} user={invite}></UserItem>
-                                }) : <li className='empty-li'></li>}
-                            </ul>
-                            <div className="button-holder">
-                                {addingPlayer
-                                    &&  <form className='flex-row' onSubmit={invitePlayer}>
-                                            <label for="username"></label>
-                                            <input type="text" id="username" name="username"></input>
-                                            <button className='go-button'>Go</button>
-                                        </form>}
-                                {lobby?.players?.length < 2 &&
-                                <button onClick={toggleAddingPlayer} className='drop-down'>Invite Player</button>}
-                                {lobby?.owner?._id == user.userID && <>
-                                    
-                                    {lobby?.players?.length == 2 && <button onClick={play}>Play</button>}
-                                    </>}
-                            </div> 
-                        </div> : <div className="lobby-empty"><button type="button" onClick={createGame}>Create Lobby</button></div>}
-                </div> : <h2 className="lobby-construction-msg">This game is currently under construction. Check back later!</h2>}
-            </>
-            : <ClipLoader className="loader"/>}
+                        <div className="lobby-showcase-body">
+                            <p className="lobby-eyebrow">Table game</p>
+                            <h1 id="game-title" className="lobby-game-title capitalize">{game?.title}</h1>
+                            {game?.desc && (
+                                <p id="game-desc" className="lobby-game-desc">{game.desc}</p>
+                            )}
+                        </div>
+                    </aside>
+
+                    <div className="lobby-sidebar animate-fade-in-up animate-delay-1">
+                        <section className="lobby-table-panel">
+                            {!lobby ? (
+                                <div className="lobby-empty-state">
+                                    <p className="lobby-panel-label">Your table</p>
+                                    <h2 className="lobby-panel-title">No lobby open</h2>
+                                    <p className="lobby-panel-copy">
+                                        Create a table, then invite a friend to join before you play.
+                                    </p>
+                                    <button type="button" className="lobby-primary-btn" onClick={createGame}>
+                                        Create Lobby
+                                    </button>
+                                </div>
+                            ) : (
+                                <>
+                                    <header className="lobby-table-header">
+                                        <div className="lobby-table-heading">
+                                            <p className="lobby-panel-label">Your table</p>
+                                            <h2 className="lobby-panel-title">Players</h2>
+                                            <p className="lobby-table-status">{tableStatus}</p>
+                                        </div>
+                                        <div className="lobby-table-meta">
+                                            <span className={`lobby-status-pill${tableReady ? " lobby-status-pill--ready" : ""}`}>
+                                                {playerCount}/{MAX_PLAYERS}
+                                            </span>
+                                            {isOwner && (
+                                                <button
+                                                    type="button"
+                                                    className="lobby-icon-btn"
+                                                    onClick={() => setDeleteModalOpen(true)}
+                                                    aria-label="Delete lobby"
+                                                >
+                                                    <IoTrashOutline />
+                                                </button>
+                                            )}
+                                        </div>
+                                    </header>
+
+                                    <div className="lobby-seats" aria-label="Table seats">
+                                        {seats.map((player, index) => (
+                                            <div
+                                                key={player?._id ?? `seat-${index}`}
+                                                className={`lobby-seat${player ? " lobby-seat--filled" : " lobby-seat--empty"}`}
+                                            >
+                                                <span className="lobby-seat-label">Seat {index + 1}</span>
+                                                {player ? (
+                                                    <div className="lobby-seat-player">
+                                                        <UserItem user={player} />
+                                                        {player._id === lobby.owner?._id && (
+                                                            <span className="lobby-host-badge">Host</span>
+                                                        )}
+                                                    </div>
+                                                ) : (
+                                                    <p className="lobby-seat-empty">Waiting for a player…</p>
+                                                )}
+                                            </div>
+                                        ))}
+                                    </div>
+
+                                    {inviteCount > 0 && (
+                                        <div className="lobby-pending">
+                                            <h3 className="lobby-pending-title">Pending invites</h3>
+                                            <div className="lobby-roster">
+                                                {lobby.invites.map((invite) => (
+                                                    <UserItem
+                                                        className="invite-list-item"
+                                                        key={invite._id}
+                                                        user={invite}
+                                                    />
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    <footer className="lobby-actions">
+                                        {addingPlayer && (
+                                            <form className="lobby-invite-form" onSubmit={invitePlayer}>
+                                                <label className="visually-hidden" htmlFor="lobby-invite-username">
+                                                    Friend username
+                                                </label>
+                                                <input
+                                                    type="text"
+                                                    id="lobby-invite-username"
+                                                    name="username"
+                                                    placeholder="Friend's username"
+                                                    autoComplete="off"
+                                                />
+                                                <button type="submit" className="lobby-invite-submit">Send</button>
+                                            </form>
+                                        )}
+
+                                        {playerCount < MAX_PLAYERS && (
+                                            <button
+                                                type="button"
+                                                className="lobby-secondary-btn"
+                                                onClick={toggleAddingPlayer}
+                                            >
+                                                <IoPersonAddOutline aria-hidden="true" />
+                                                {addingPlayer ? "Cancel invite" : "Invite player"}
+                                            </button>
+                                        )}
+
+                                        {isOwner && tableReady && (
+                                            <button type="button" className="lobby-primary-btn lobby-play-btn" onClick={play}>
+                                                <IoPlay aria-hidden="true" />
+                                                Begin game
+                                            </button>
+                                        )}
+                                    </footer>
+                                </>
+                            )}
+                        </section>
+
+                        <section className="lobby-rules-panel animate-fade-in-up animate-delay-2">
+                            <div className="lobby-rules-header">
+                                <h2 className="lobby-rules-heading">Rules</h2>
+                                <button
+                                    type="button"
+                                    className="lobby-rules-toggle"
+                                    aria-expanded={showRules}
+                                    onClick={() => setShowRules((open) => !open)}
+                                >
+                                    {showRules ? "Hide" : "Show"}
+                                </button>
+                            </div>
+                            <div
+                                id="game-rules"
+                                className={`lobby-rules-text${showRules ? " lobby-rules-text--open" : ""}`}
+                            >
+                                {game?.rules}
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            )}
             <ConfirmModal
                 open={deleteModalOpen}
                 onClose={() => setDeleteModalOpen(false)}

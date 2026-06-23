@@ -1,4 +1,4 @@
-.man {
+.piece {
     border-radius: 50%;
     border: 3px solid black;
     transition:
@@ -6,9 +6,19 @@
         box-shadow var(--motion-base) var(--motion-ease),
         border-color var(--motion-base) var(--motion-ease);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+    position: absolute;
+    cursor: pointer;
+    pointer-events: auto;
+    box-sizing: border-box;
 }
 
-.man:hover {
+.piece:hover {
+    transform: translateY(-1px) scale(1.03);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+    border-color: rgba(188, 141, 51, 1);
+}
+
+.piece--selected {
     transform: translateY(-1px) scale(1.03);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
     border-color: rgba(188, 141, 51, 1);
