@@ -84,8 +84,11 @@ errors on profiledrop should be toasts
 - [x] rules modal
 - [] valid moves on frontend
 - [] backend check if no more valid moves and/or steal
-- [] where to click to bear off
+- [] where to click to bear off!!!!!!!!!!!!
 - [] clicking userItems should bring up a drop menu of options, one of which is to actually navigate to their page
 - [x] once a piece is selected disallow selecting other pieces and only select cells
-- [] fix numbers on pieces
+- [x] fix numbers on pieces
 - [] info overlay
+- [] music
+- [] email based signup
+- [] add redirect when token expires/ request fails

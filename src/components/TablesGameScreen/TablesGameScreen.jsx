@@ -21,6 +21,12 @@ function TablesGameScreen({ session }) {
             ? `Waiting for ${currentPlayer?.username ?? 'opponent'}…`
             : null;
 
+    const dice = session.dice.map((die) => 
+        <div key={die.id}>
+            <Dice value={die.value} active={session.activeDiceIndex} />
+        </div>
+    );
+    
     return (
         <div className="tables-game-screen animate-fade-in-up">
             <h1 className="tables-game-title capitalize">{session.gameTitle}</h1>
@@ -113,8 +119,9 @@ function TablesGameScreen({ session }) {
                 <aside className="tables-game-controls" aria-label="Game controls">
                     <p className="tables-game-controls-label">Dice</p>
                     <div className="tables-game-dice-tray">
-                        <Dice value={session.dice[0].value} active={session.activeDiceIndex === 0} />
-                        <Dice value={session.dice[1].value} active={session.activeDiceIndex === 1} />
+                        {/* <Dice value={session.dice[0].value} active={session.activeDiceIndex === 0} />
+                        <Dice value={session.dice[1].value} active={session.activeDiceIndex === 1} /> */}
+                        {dice}
                     </div>
 
                     {phaseHint && <p className="tables-game-phase-hint">{phaseHint}</p>}
