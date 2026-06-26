@@ -1,7 +1,8 @@
-import { useContext, useEffect, useRef } from 'react';
+import { useContext, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { UserContext } from '../../context/UserContext';
-import { socket, emitJoinUser, SOCKET_EVENTS, SOCKET_IO_EVENTS } from '../../socket';
+import { socket, emitJoinUser, SOCKET_EVENTS, SOCKET_IO_EVENTS, NOTIFICATION_TYPE } from '../../socket';
+import Invite from '../Invite/Invite';
 
 function isSignedIn(userID) {
   return Boolean(userID && userID !== '');
@@ -39,12 +40,39 @@ export default function SocketSession() {
       }
     }
 
-    function onNotification(payload) {
-      const { title, body } = payload ?? {};
-      const text = [title, body].filter(Boolean).join(' — ');
-      if (text) {
-        toast.info(text);
+    function metaToInvite(type, meta) {
+      if (type === NOTIFICATION_TYPE.FRIEND_REQUEST) {
+        return { _id: meta.fromUserId, username: meta.fromUsername };
       }
+      if (type === NOTIFICATION_TYPE.GAME_INVITE) {
+        return {
+          table: { _id: meta.tableId, title: meta.title },
+          sender: { username: meta.senderUsername },
+        };
+      }
+      return meta;
+    }
+
+    function onNotification(payload) {
+      const { type, title, body, meta = {} } = payload ?? {};
+      const text = [title, body].filter(Boolean).join(' — ');
+      if (!text) return;
+      const isActionable =
+        type === NOTIFICATION_TYPE.FRIEND_REQUEST ||
+        type === NOTIFICATION_TYPE.GAME_INVITE;
+      if (!isActionable) {
+        toast.info(text);
+        return;
+      }
+      const invite = metaToInvite(type, meta);
+      const toastId = toast.info(
+        <Invite
+          invite={invite}
+          type={type}
+          onDone={() => toast.dismiss(toastId)}
+        />,
+        { autoClose: false }
+      );
       user.fetchPrivateData();
     }
 

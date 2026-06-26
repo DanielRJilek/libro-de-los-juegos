@@ -4,87 +4,120 @@ import Welcome from "../views/Welcome/Welcome";
 import Signup from "../views/Signup/Signup";
 import Login from "../views/Login/Login";
 import ProtectedRoute from "./ProtectedRoute";
-import Lobby from "../views/Lobby/Lobby";
+import LobbyPage from "../views/LobbyPage/LobbyPage";
 import About from "../views/About/About";
 import Title from "../components/Title/Title";
 import ProfilePage from "../views/ProfilePage/ProfilePage";
 import MusicPage from "../views/MusicPage/MusicPage";
 import TablesGame from "../views/TablesGame/TablesGame";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { Outlet } from "react-router";
  
+function RootLayout() {
+    return (
+      <>
+        <Outlet />
+        <ToastContainer />
+      </>
+    );
+}
+
 const routes = [
     {
-        path: "/",
-        element: (<Home>
-            <Title></Title>
-            <Welcome></Welcome>
-        </Home>),
-    },
-    {
-        path: "/games",
-        element: (<Home>
-            <MainMenu></MainMenu>            
-        </Home>)
-    },
-     {
-        path: "/login",
-        element: (<Home backdrop="featured">
-            <Login></Login>
-        </Home>)
-     },
-     {
-        path: "/signup",
-        element: (<Home backdrop="featured">
-            <Signup></Signup>
-        </Home>)
-     },
-     {
-        path: "/about",
-        element: (<Home>
-            <About></About>
-            </Home>)
-     },
-     {
-        path: "/music",
-        element: (<Home backdrop="featured">
-            <MusicPage></MusicPage>
-            </Home>)
-     },
-     {
-        element: (
-            <ProtectedRoute/>
-        ),
+        element: <RootLayout />,
         children: [
             {
-                path: "/games/:title",
-                element: (  <Home backdrop="task">
-                                <Lobby></Lobby>
-                            </Home>),
+                path: "/",
+                element: (
+                <Home>
+                    <Title></Title>
+                    <Welcome></Welcome>
+                </Home>
+                ),
             },
             {
-                path: "/games/:title/table/:instance",
-                element: (  <Home backdrop="task">
-                                <Lobby></Lobby>
-                            </Home>),
+                path: "/games",
+                element: (
+                <Home>
+                    <MainMenu></MainMenu>
+                </Home>
+                ),
             },
             {
-                path: "/games/:title/table/:instance/play",
-                element: (<TablesGame></TablesGame>)
+                path: "/login",
+                element: (
+                <Home backdrop="featured">
+                    <Login></Login>
+                </Home>
+                ),
             },
             {
-                path: "/profile/:instance",
-                element: (<Home backdrop="task">
-                    <ProfilePage></ProfilePage>
-                </Home>)
+                path: "/signup",
+                element: (
+                <Home backdrop="featured">
+                    <Signup></Signup>
+                </Home>
+                ),
             },
             {
-                path: "/profile/:instance/edit",
-                element: (<Home backdrop="task">
-                    <ProfilePage edit={true}></ProfilePage>
-                </Home>)
-            }
-        ]
-     }
-]
-
-
-export default routes
+                path: "/about",
+                element: (
+                <Home>
+                    <About></About>
+                </Home>
+                ),
+            },
+            {
+                path: "/music",
+                element: (
+                <Home backdrop="featured">
+                    <MusicPage></MusicPage>
+                </Home>
+                ),
+            },
+            {
+                element: <ProtectedRoute />,
+                children: [
+                    {
+                        path: "/games/:title",
+                        element: (
+                        <Home backdrop="task">
+                            <LobbyPage></LobbyPage>
+                        </Home>
+                        ),
+                    },
+                    {
+                        path: "/games/:title/table/:instance",
+                        element: (
+                        <Home backdrop="task">
+                            <LobbyPage></LobbyPage>
+                        </Home>
+                        ),
+                    },
+                    {
+                        path: "/games/:title/table/:instance/play",
+                        element: <TablesGame></TablesGame>,
+                    },
+                    {
+                        path: "/profile/:instance",
+                        element: (
+                        <Home backdrop="task">
+                            <ProfilePage></ProfilePage>
+                        </Home>
+                        ),
+                    },
+                    {
+                        path: "/profile/:instance/edit",
+                        element: (
+                        <Home backdrop="task">
+                            <ProfilePage edit={true}></ProfilePage>
+                        </Home>
+                        ),
+                    },
+                ],
+            },
+        ],
+    },
+];
+export default routes;

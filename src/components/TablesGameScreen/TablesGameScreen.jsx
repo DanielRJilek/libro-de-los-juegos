@@ -2,7 +2,8 @@ import UserItem from '../UserItem/UserItem';
 import TablesBoard from '../TablesBoard/TablesBoard';
 import Dice from '../Dice/Dice';
 import RulesModal from '../RulesModal/RulesModal';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { displayToServer } from '../../utils/pieceUtils';
 import './TablesGameScreen.css';
 
 function TablesGameScreen({ session }) {
@@ -12,6 +13,14 @@ function TablesGameScreen({ session }) {
     const isMyTurn = session.gameState?.currentPlayerNumber === session.userPlayerNumber;
     const turnStage = session.gameState?.turnStage;
     const [rulesModalOpen, setRulesModalOpen] = useState(false);
+    const [selectedPiece, setSelectedPiece] = useState(null);
+    const [selectedCell, setSelectedCell] = useState(null);
+    const [selectedDice, setSelectedDice] = useState(null);
+    const [errorMessage, setErrorMessage] = useState(session.errorMessage);
+    const board = session.gameState?.board;
+    const is2D = Array.isArray(board?.[0]);
+    const xSize = 12;
+    const ySize = is2D ? board[0].length * 2 : 2;
 
     const phaseHint = !session.isGameOver && isMyTurn
         ? turnStage === 'roll'
@@ -21,15 +30,40 @@ function TablesGameScreen({ session }) {
             ? `Waiting for ${currentPlayer?.username ?? 'opponent'}…`
             : null;
 
+    useEffect(() => {
+        if (session.errorMessage) {
+            setErrorMessage(session.errorMessage);
+            setTimeout(() => {
+                setErrorMessage(null);
+            }, 3000);
+        } else {
+            setErrorMessage(null);
+        }
+    }, [session.errorMessage]);
+
+    const handleDiceClick = (dice) => {
+        if (!selectedPiece || !selectedCell) return;
+        console.log("selected piece", selectedPiece);
+        const {col: fromCol, row: fromRow} = displayToServer(selectedPiece.col, selectedPiece.row, board);
+        const {col: toCol, row: toRow} = displayToServer(selectedCell.col, selectedCell.row, board);
+        if (session.dice?.some((d) => !d.used && d.value === dice.value)) {
+            console.log("submitting move", fromCol, toCol, fromRow, toRow, dice.value);
+            session.submitMove({ fromCol: fromCol, toCol: toCol, 
+                fromRow: fromRow, toRow: toRow, diceValue: dice.value });
+        }
+    }
+
     const dice = session.dice.map((die) => 
         <div key={die.id}>
-            <Dice value={die.value} active={session.activeDiceIndex} />
+            <Dice value={die.value} active={session.activeDiceIndex} onClick={() => handleDiceClick(die)} />
         </div>
     );
-    
+
     return (
         <div className="tables-game-screen animate-fade-in-up">
-            <h1 className="tables-game-title capitalize">{session.gameTitle}</h1>
+            <h1 className="tables-game-title capitalize">
+                {session.gameTitle.replace(/-/g, ' ')}
+            </h1>
             <header className="tables-game-status animate-fade-in-up animate-delay-1">
                 <div className="tables-game-status-text">
                     {!session.isGameOver && (
@@ -70,7 +104,7 @@ function TablesGameScreen({ session }) {
                             <UserItem key={`p-${session.otherPlayerNumber}`} user={session.otherUser}>
                                 <div
                                     className={`tables-game-piece-symbol ${
-                                        session.otherPlayerNumber === 1 ? 'black' : 'white'
+                                        session.otherPlayerNumber === 1 ? 'white' : 'black'
                                     }`}
                                 />
                             </UserItem>
@@ -82,7 +116,7 @@ function TablesGameScreen({ session }) {
                             <UserItem key={`p-${session.userPlayerNumber}`} user={session.selfUser}>
                                 <div
                                     className={`tables-game-piece-symbol ${
-                                        session.userPlayerNumber === 1 ? 'black' : 'white'
+                                        session.userPlayerNumber === 1 ? 'white' : 'black'
                                     }`}
                                 />
                             </UserItem>
@@ -93,12 +127,16 @@ function TablesGameScreen({ session }) {
                 <div className="tables-game-board-column">
                     <div className="tables-game-board-stage">
                         <TablesBoard
-                            xSize={12}
-                            ySize={2}
+                            xSize={xSize}
+                            ySize={ySize}
                             userPlayerNumber={session.userPlayerNumber}
                             session={session}
                             lastMove={session.lastMove}
                             isGameOver={session.isGameOver}
+                            selectedPiece={selectedPiece}
+                            setSelectedPiece={setSelectedPiece}
+                            selectedCell={selectedCell}
+                            setSelectedCell={setSelectedCell}
                         />
                         {session.isGameOver && (
                             <div className="tables-game-over-overlay animate-fade-in-up">
@@ -119,12 +157,11 @@ function TablesGameScreen({ session }) {
                 <aside className="tables-game-controls" aria-label="Game controls">
                     <p className="tables-game-controls-label">Dice</p>
                     <div className="tables-game-dice-tray">
-                        {/* <Dice value={session.dice[0].value} active={session.activeDiceIndex === 0} />
-                        <Dice value={session.dice[1].value} active={session.activeDiceIndex === 1} /> */}
                         {dice}
                     </div>
 
                     {phaseHint && <p className="tables-game-phase-hint">{phaseHint}</p>}
+                    {errorMessage && <p className="tables-game-error-message">{errorMessage}</p>}
 
                     <div className="tables-game-actions">
                         {session.canRoll && (
@@ -135,6 +172,16 @@ function TablesGameScreen({ session }) {
                                 disabled={session.isGameOver}
                             >
                                 Roll!
+                            </button>
+                        )}
+                        {session.selfUser?.phase == 2 && session.canMove && selectedPiece && (
+                            <button
+                                type="button"
+                                onClick={() => session.submitMove({ fromCol: selectedPiece.col, 
+                                    toCol: null, diceValue: null })}
+                                disabled={session.isGameOver}
+                            >
+                                Bear Off
                             </button>
                         )}
                         {!session.isGameOver && (

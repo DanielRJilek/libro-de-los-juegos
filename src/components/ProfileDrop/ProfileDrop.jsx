@@ -3,8 +3,8 @@ import UserItem from '../UserItem/UserItem';
 import { IconContext } from 'react-icons';
 import { TbLogout2 } from "react-icons/tb";
 import { CiEdit } from "react-icons/ci";
-import { GoPeople, GoCheck } from "react-icons/go";
-import { IoPersonAddOutline, IoPlayOutline, IoAlertCircle, IoClose } from "react-icons/io5";
+import { GoPeople } from "react-icons/go";
+import { IoPersonAddOutline, IoPlayOutline, IoAlertCircle } from "react-icons/io5";
 import { PiCheckerboardFill } from "react-icons/pi";
 import { useState, useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
@@ -12,6 +12,8 @@ import { UserContext } from '../../context/UserContext';
 import { useNavigate } from 'react-router';
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import Invite from '../Invite/Invite';
+import { NOTIFICATION_TYPE } from '../../socket';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -90,95 +92,7 @@ function ProfileDrop() {
         catch (error) {
             toast.error(error.message, {autoClose: 2000});
         }
-    }
-
-    const acceptFriendRequest = async (id) => {
-        const friendID = id;
-        try {
-            const response = await fetch(`${API_URL}/users/${user.userID}/friends/`, {
-                method:'POST',
-                headers: {  'Authorization': `Bearer ${auth.accessToken}`,
-                            "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
-                body: JSON.stringify({friendID}),
-            });
-            if (!response.ok) {
-                const message = await response.json();
-                toast.error(message.message, {autoClose: 2000});
-                return;
-            }
-            user.fetchPrivateData();
-            toast.success("Friend Request Accepted!", {
-            });            
-        } 
-        catch (error) {
-            toast.error(error.message, {autoClose: 2000});
-        }
-    }
-
-    const declineFriendRequest = async (id) => {
-        const friendID = id;
-        try {
-            const response = await fetch(`${API_URL}/users/${user.userID}/friends/requests`, {
-                method:'DELETE',
-                headers: {  'Authorization': `Bearer ${auth.accessToken}`,
-                            "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
-                body: JSON.stringify({friendID}),
-            });
-            if (!response.ok) {
-                const message = await response.json();
-                toast.error(message.message, {autoClose: 2000});
-                return;
-            }
-            user.fetchPrivateData();
-            toast.error("Friend Request Declined!", {autoClose: 2000});
-        } 
-        catch (error) {
-            toast.error(error.message, {autoClose: 2000});
-        }
-    }
-
-    const acceptInvite = async (invite) => {
-        try {
-            console.log(invite);
-            const response = await fetch(`${API_URL}/games/${invite.table.title}/table/${invite.table._id}/players`, {
-                method:'POST',
-                headers: {  'Authorization': `Bearer ${auth.accessToken}`,
-                            "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
-                body: JSON.stringify({username: user.userData.username}),
-            });
-            if (!response.ok) {
-                const message = await response.json();
-                toast.error(message.message, {autoClose: 2000});
-                return;
-            }
-            console.log(`navigating to ${API_URL}/games/${invite.table.title}/table/${invite.table._id}`);
-            user.fetchPrivateData();
-            navigate(`${API_URL}/games/${invite.table.title}/table/${invite.table._id}`)
-        } 
-        catch (error) {
-            toast.error(error.message, {autoClose: 2000});
-        }
-    }
-
-    const declineInvite = async (id) => {
-        try {
-            const response = await fetch(`${API_URL}/users/${user.userID}/friends/invites`, {
-                method:'DELETE',
-                headers: {  'Authorization': `Bearer ${auth.accessToken}`,
-                            "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
-                body: JSON.stringify({inviteID: id}),
-            });
-            if (!response.ok) {
-                const message = await response.json();
-                toast.error(message.message, {autoClose: 2000});
-                return;
-            }
-            user.fetchPrivateData();
-        }
-        catch (error) {
-            toast.error(error.message, {autoClose: 2000});
-        }
-    }
+    }    
 
     const displayActiveGame = (game) => {
         if (game.started) {
@@ -215,22 +129,7 @@ function ProfileDrop() {
                 {user?.userData?.invites?.length > 0 && <IoAlertCircle id='profile-alert'></IoAlertCircle>}
                 {viewingInvites && <ul>
                     {user?.userData?.invites?.length > 0 ? user?.userData.invites.map((invite) => {
-                        console.log(invite);
-                    return <li className='user-item' key={invite.id}> 
-                        <span className='capitalize'>{invite.sender.username} invites you to play {invite.table.title}</span>
-                        <div className='accept-decline-holder'>
-                            <div className='accept-button'>
-                                <GoCheck onClick={() => 
-                                {acceptInvite(invite)}}></GoCheck>
-                            </div>
-                            
-                            <div className='decline-button'>
-                                <IoClose onClick={() => 
-                                {declineInvite(invite)}}>
-                                </IoClose>
-                            </div>
-                        </div>
-                    </li>
+                    return <Invite invite={invite} type={NOTIFICATION_TYPE.GAME_INVITE} onDone={() => {}}/>
                 }): <li className='empty-li'></li>}
                 </ul>}
             </span>
@@ -300,20 +199,7 @@ function ProfileDrop() {
                     {user?.userData?.friendRequests?.length > 0 && <IoAlertCircle id='profile-alert'></IoAlertCircle>}
                     {viewingFriendRequests && <ul>
                         {user?.userData?.friendRequests?.length > 0 ? user?.userData.friendRequests.map((friendRequest) => {
-                        return <UserItem key={friendRequest.username} user={friendRequest}>  
-                        <div className='accept-decline-holder'>
-                            <div className='accept-button'>
-                                <GoCheck onClick={() => 
-                                {acceptFriendRequest(friendRequest._id)}}>
-                                </GoCheck>
-                            </div>
-                            <div className='decline-button'>
-                                <IoClose onClick={() => 
-                                {declineFriendRequest(friendRequest._id)}}>
-                                </IoClose>
-                            </div>
-                        </div>
-                        </UserItem>
+                        return <Invite invite={friendRequest} type={NOTIFICATION_TYPE.FRIEND_REQUEST} onDone={() => {}}/>
                     }): <li className='empty-li'></li>}
                     </ul>}
                 </span>

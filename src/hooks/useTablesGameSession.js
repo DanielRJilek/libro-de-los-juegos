@@ -3,6 +3,7 @@ import { AuthContext } from "../context/AuthContext";
 import { useNavigate, useParams } from "react-router";
 import { UserContext } from "../context/UserContext";
 import { socket, emitJoinTable, SOCKET_EVENTS, SOCKET_IO_EVENTS, TABLE_UPDATE_KIND } from "../socket";
+import { getGameConfig } from "../games";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -12,6 +13,7 @@ export function useTablesGameSession() {
     const navigate = useNavigate();
     const params = useParams();
     const title = params.title;
+    const config = getGameConfig(title);
     const tableID = params.instance;
     const [activeDiceIndex, setActiveDiceIndex] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -24,6 +26,7 @@ export function useTablesGameSession() {
     const [isConnected, setIsConnected] = useState(false);
     const [lastMove, setLastMove] = useState(null);
     const [gameInfo, setGameInfo] = useState(null);
+    const [errorMessage, setErrorMessage] = useState(null);
     const resolvedWinner = gameState?.winner ?? null;
     const isGameOver = Boolean(resolvedWinner);
     const didCurrentUserWin = resolvedWinner?._id == user.userID;
@@ -45,8 +48,8 @@ export function useTablesGameSession() {
             && gameState?.turnStage === 'move';
     }
 
-    const submitMove = async ({ fromCol, toCol, diceValue }) => {
-        console.log(fromCol, toCol, diceValue);
+    const submitMove = async ({ fromCol, toCol, fromRow, toRow, diceValue }) => {
+        console.log(fromCol, toCol, fromRow, toRow, diceValue);
         try {
             const response = await fetch(
                 `${API_URL}/games/${title}/table/${tableID}/play`,
@@ -58,7 +61,9 @@ export function useTablesGameSession() {
                     },
                     body: JSON.stringify({
                         fromCol,
+                        fromRow,
                         toCol,
+                        toRow,
                         diceValue,
                         playerNumber: userPlayerNumber,
                     }),
@@ -66,8 +71,8 @@ export function useTablesGameSession() {
             );
             if (!response.ok) throw new Error("Invalid move");
             } catch (err) {
-                console.log(err);
-                setSelectedPoint(null);
+                setErrorMessage(null);
+                setErrorMessage(err.message);
             }
     };
 
@@ -84,7 +89,8 @@ export function useTablesGameSession() {
             const result = await response.json();
         } 
         catch (error) {
-            console.log(error)
+            setErrorMessage(null);
+            setErrorMessage(error.message);
         }
     }
 
@@ -117,7 +123,8 @@ export function useTablesGameSession() {
             const result = await response.json();
             setGameInfo(result);
         } catch (error) {
-            console.log(error);
+            setErrorMessage(null);
+            setErrorMessage(error.message);
         }
     };
 
@@ -139,7 +146,8 @@ export function useTablesGameSession() {
             }
         } 
         catch (error) {
-            console.log(error)
+            setErrorMessage(null);
+            setErrorMessage(error.message);
         }
     }
 
@@ -264,6 +272,8 @@ export function useTablesGameSession() {
         quit,
         roll,
         leaveGameOverScreen,
+        config,
+        errorMessage,
     }
 
     return session;

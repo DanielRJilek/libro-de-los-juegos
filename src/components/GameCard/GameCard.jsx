@@ -8,7 +8,7 @@ function GameCard({game}) {
     return (
         <div className='game-card animate-fade-in-up' onClick={() => {navigate('/games/' + game.title.toLowerCase())}}>
             <img src={'https://libro-de-los-juegos-server.onrender.com/static' + game.image} alt="" />
-            <span className='capitalize'>{game?.title.charAt(0).toUpperCase() + game?.title.slice(1)}</span>
+            <span className='capitalize'>{game?.title.replace(/-/g, ' ')}</span>
         </div>
     )
 }
