@@ -104,6 +104,10 @@ function TablesBoard({userPlayerNumber, xSize, ySize, session, lastMove,
 
     const handleCellClick = (col, row) => {
         console.log("cell", col, row);
+        if (selectedCell?.col === col && selectedCell?.row === row) {
+            setSelectedCell(null);
+            return;
+        }
         setSelectedCell({ col, row });  
     }
 
@@ -111,7 +115,7 @@ function TablesBoard({userPlayerNumber, xSize, ySize, session, lastMove,
     for (let row = 0; row < ySize; row++) {
         for (let col = 0; col < xSize; col++) {
             const {col: point, row: dRow} = displayToServer(col, row, session.gameState?.board);
-            const isSelected = selectedPiece === point;
+            const isSelected = selectedCell?.col === col && selectedCell?.row === row;
             // const isValidTarget = validToPoints.includes(point);
             const gridCol = toGridCol(col);
             const gridRow = row < ySize/2 ? row + 1 : row + ySize/2 + 1;

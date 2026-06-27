@@ -25,7 +25,7 @@ function TablesGameScreen({ session }) {
     const phaseHint = !session.isGameOver && isMyTurn
         ? turnStage === 'roll'
             ? 'Roll the dice to begin your turn.'
-            : 'Select a piece, then tap a destination.'
+            : 'Select a piece, then tap a destination and a dice.'
         : !session.isGameOver
             ? `Waiting for ${currentPlayer?.username ?? 'opponent'}…`
             : null;
@@ -41,21 +41,29 @@ function TablesGameScreen({ session }) {
         }
     }, [session.errorMessage]);
 
-    const handleDiceClick = (dice) => {
-        if (!selectedPiece || !selectedCell) return;
-        console.log("selected piece", selectedPiece);
+    const handleDiceClick = (die) => {
+        console.log("dice", die);
+        if (die === selectedDice) {
+            setSelectedDice(null);
+            return;
+        }
+        setSelectedDice(die);   
+    }
+
+    const handleSubmitMove = () => {
+        console.log(selectedPiece, selectedCell, selectedDice);
         const {col: fromCol, row: fromRow} = displayToServer(selectedPiece.col, selectedPiece.row, board);
         const {col: toCol, row: toRow} = displayToServer(selectedCell.col, selectedCell.row, board);
-        if (session.dice?.some((d) => !d.used && d.value === dice.value)) {
-            console.log("submitting move", fromCol, toCol, fromRow, toRow, dice.value);
+        if (session.dice?.some((d) => !d.used && d.value === selectedDice.value)) {
             session.submitMove({ fromCol: fromCol, toCol: toCol, 
-                fromRow: fromRow, toRow: toRow, diceValue: dice.value });
+                fromRow: fromRow, toRow: toRow, diceValue: selectedDice.value });
         }
     }
 
-    const dice = session.dice.map((die) => 
-        <div key={die.id}>
-            <Dice value={die.value} active={session.activeDiceIndex} onClick={() => handleDiceClick(die)} />
+    const dice = session.dice.map((die, index) => 
+        <div key={index}>
+            <Dice value={die.value} selected={die === selectedDice} used={die.used} 
+            onClick={() => handleDiceClick(die)} />
         </div>
     );
 
@@ -172,6 +180,15 @@ function TablesGameScreen({ session }) {
                                 disabled={session.isGameOver}
                             >
                                 Roll!
+                            </button>
+                        )}
+                        {selectedDice && selectedPiece && selectedCell && (
+                            <button
+                                type="button"
+                                onClick={handleSubmitMove}
+                                disabled={session.isGameOver}
+                            >
+                                Move
                             </button>
                         )}
                         {session.selfUser?.phase == 2 && session.canMove && selectedPiece && (
