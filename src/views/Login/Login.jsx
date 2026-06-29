@@ -6,8 +6,7 @@ import { UserContext } from '../../context/UserContext';
 import { ClipLoader } from "react-spinners";
 import { IconContext } from 'react-icons';
 import { IoAlertCircle } from "react-icons/io5";
-const API_URL = import.meta.env.VITE_API_URL;
-
+import { apiFetch } from '../../api/client';
 
 function Login() {
     const [loading, setLoading] = useState(false);
@@ -21,26 +20,16 @@ function Login() {
         const password = e.target[1].value;
         setLoading(true);
         try {
-            const response = await fetch(`${API_URL}/auth/login`, {
-                method:'POST',
-                headers: { "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
-                body: JSON.stringify({username, password}),
-            });
-            setLoading(false);
-            if (!response.ok) {
-                const message = await response.json();
-                setError(message.message);
-            }
-            else {
-                const {id, token} = await response.json();
-                user.setUsername(username);
-                user.setUserID(id.toString());
-                auth.setAccessToken(token);
-                navigate('/games');
-            } 
+            const {id, token} = await apiFetch('/auth/login', {method: 'POST', body: {username, password}});
+            user.setUsername(username);
+            user.setUserID(id.toString());
+            auth.setAccessToken(token);
+            navigate('/games');
         } 
         catch (error) {
-            console.log(error)
+            setError(error.message);
+        } finally {
+            setLoading(false);
         }
     }
     if (loading) {

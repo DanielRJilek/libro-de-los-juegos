@@ -51,7 +51,6 @@ function TablesGameScreen({ session }) {
     }
 
     const handleSubmitMove = () => {
-        console.log(selectedPiece, selectedCell, selectedDice);
         const {col: fromCol, row: fromRow} = displayToServer(selectedPiece.col, selectedPiece.row, board);
         const {col: toCol, row: toRow} = displayToServer(selectedCell.col, selectedCell.row, board);
         if (session.dice?.some((d) => !d.used && d.value === selectedDice.value)) {

@@ -8,8 +8,7 @@ function Piece({playerNumber, style, point, onClick, selected}) {
         <div className={`piece${selected ? ' piece--selected' : ''}`} 
             onClick={() => onClick(point)} style={{backgroundImage: gradient,
             ...style
-        }}>
-            {/* <div className='piece-number'>{point}</div> */}
+            }}>
         </div>
     )
 }

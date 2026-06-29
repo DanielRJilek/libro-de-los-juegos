@@ -1,27 +1,24 @@
 import './index.css'
 import routes from './routing/routes'
 import { RouterProvider, createBrowserRouter } from 'react-router'
-import { AuthContext, AuthContextProvider } from './context/AuthContext'
-import { UserContext, UserContextProvider } from './context/UserContext'
-import { useContext } from 'react'
+import { AuthContextProvider } from './context/AuthContext'
+import { UserContextProvider } from './context/UserContext'
+import { ServerStatusProvider } from './context/ServerStatusContext'
 import SocketSession from './components/SocketSession/SocketSession'
 
+const router = createBrowserRouter(routes);
+
 function App() {
-  const user = useContext(AuthContext);
-  const username = useContext(UserContext)
-  
-  const router = createBrowserRouter(routes);
   return (
-    <AuthContextProvider value={user}>
-      <UserContextProvider value={username}>
-        <SocketSession />
-        <RouterProvider router={router}>
-          
-        </RouterProvider>
-      </UserContextProvider>
+    <AuthContextProvider>
+      <ServerStatusProvider>
+        <UserContextProvider>
+          <SocketSession />
+          <RouterProvider router={router} />
+        </UserContextProvider>
+      </ServerStatusProvider>
     </AuthContextProvider>
   )
 }
 
 export default App
-

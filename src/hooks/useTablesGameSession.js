@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router";
 import { UserContext } from "../context/UserContext";
 import { socket, emitJoinTable, SOCKET_EVENTS, SOCKET_IO_EVENTS, TABLE_UPDATE_KIND } from "../socket";
 import { getGameConfig } from "../games";
+import { apiFetch } from "../api/client";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -51,42 +52,22 @@ export function useTablesGameSession() {
     const submitMove = async ({ fromCol, toCol, fromRow, toRow, diceValue }) => {
         console.log(fromCol, toCol, fromRow, toRow, diceValue);
         try {
-            const response = await fetch(
-                `${API_URL}/games/${title}/table/${tableID}/play`,
-                {
-                    method: "POST",
-                    headers: {
-                        Authorization: `Bearer ${auth.accessToken}`,
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        fromCol,
-                        fromRow,
-                        toCol,
-                        toRow,
-                        diceValue,
-                        playerNumber: userPlayerNumber,
-                    }),
-                }
-            );
-            if (!response.ok) throw new Error("Invalid move");
-            } catch (err) {
-                setErrorMessage(null);
-                setErrorMessage(err.message);
-            }
+            await apiFetch(`/games/${title}/table/${tableID}/play`, {
+                token: auth.accessToken, 
+                method: 'POST', 
+                body: {fromCol, fromRow, toCol, toRow, diceValue, playerNumber: userPlayerNumber}});
+        } catch (error) {
+            setErrorMessage(null);
+            setErrorMessage(error.message);
+        }
     };
 
     const roll = async() => {
         try {
-            const response = await fetch(`${API_URL}/games/${title}/table/${tableID}/roll`, {
-                method:'POST',
-                headers: {  'Authorization': `Bearer ${auth.accessToken}`,
-                            "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
+            await apiFetch(`/games/${title}/table/${tableID}/roll`, {
+                token: auth.accessToken,
+                method: 'POST',
             });
-            if (!response.ok) {
-                throw new Error("Failed");
-            }
-            const result = await response.json();
         } 
         catch (error) {
             setErrorMessage(null);
@@ -100,15 +81,10 @@ export function useTablesGameSession() {
     }
 
     const quit = async() => {
-        const response = await fetch(`${API_URL}/games/${title}/table/${tableID}/quit`, {
-            method:'POST',
-            headers: {  'Authorization': `Bearer ${auth.accessToken}`,
-                        "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
+        await apiFetch(`/games/${title}/table/${tableID}/quit`, {
+            token: auth.accessToken,
+            method: 'POST',
         });
-        if (!response.ok) {
-            throw new Error("Failed");
-        }
-        const result = await response.json();
         socket.disconnect();
         setQuitModalOpen(false);
         navigate(`../games/${title}`) 

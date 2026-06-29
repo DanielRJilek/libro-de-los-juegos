@@ -1,6 +1,6 @@
-import { createContext, useEffect, useState, useContext, use } from "react";
+import { createContext, useEffect, useState, useContext } from "react";
 import { AuthContext } from '../context/AuthContext';
-const API_URL = import.meta.env.VITE_API_URL;
+import { apiFetch } from '../api/client';
 
 export const UserContext = createContext();
 // private and public data separation may not be necessary
@@ -14,14 +14,7 @@ export const UserContextProvider = ({children}) => {
 
     const fetchPrivateData = async () => {
         try {
-            const response = await fetch(`${API_URL}/users/${userID}/private`, {
-                headers: {  'Authorization': `Bearer ${auth.accessToken}`,
-                            "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
-            });
-            if (!response.ok) {
-                throw new Error("Failed");
-            }
-            const data = await response.json();
+            const data = await apiFetch(`/users/${userID}/private`, {token: auth.accessToken, method: 'GET'});
             setUserData(data);
         }
         catch (error) {
@@ -43,16 +36,7 @@ export const UserContextProvider = ({children}) => {
     useEffect(() => {
         async function fetchData() {
             try {
-                const response = await fetch(`${API_URL}/users/`, {
-                    // mode: "cors",
-                    method:'GET',
-                    headers: {  'Authorization': `Bearer ${localStorage.getItem("token")}`,
-                                "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" }, 
-                });
-                if (!response.ok) {
-                    throw new Error("Failed");
-                }
-                const {_id, username} = await response.json();
+                const {_id, username} = await apiFetch('/users', {token: auth.accessToken, method: 'GET'});
                 setUsername(username);
                 setUserID(_id);
             } 

@@ -1,12 +1,7 @@
 import { useEffect, useId, useRef } from "react";
 import "./RulesModal.css";
 
-function RulesModal({
-    open,
-    onClose,
-    title,
-    rules,
-}) {
+function RulesModal({open, onClose, title, rules}) {
     const dialogRef = useRef(null);
     const titleId = useId();
 

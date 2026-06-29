@@ -6,7 +6,7 @@ import { ClipLoader } from "react-spinners";
 import { IconContext } from 'react-icons';
 import { IoAlertCircle } from "react-icons/io5";
 import '../../views/Login/Login.css';
-const API_URL = import.meta.env.VITE_API_URL;
+import { apiFetch } from '../../api/client';
 
 function SignUp() {
     const navigate = useNavigate();
@@ -20,41 +20,27 @@ function SignUp() {
         const username = e.target[0].value;
         const password1 = e.target[1].value;
         const password2 = e.target[2].value;
-        console.log(username, password1, password2);
         setLoading(true);
         try {
-            const response = await fetch(`${API_URL}/users`, {
-                method:'POST',
-                headers: { "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
-                body: JSON.stringify({username, password1, password2}),
-            });
-            if (!response.ok) {
-                const message = await response.json();
-                setError(message.message);
-                return;
-            }
-
-            const response2 = await fetch(`${API_URL}/auth/login`, {
-                method:'POST',
-                headers: { "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
-                body: JSON.stringify({username, password: password1}),
-            });
-            if (!response2.ok) {
-                const message = await response2.json();
-                setError(message.message)
-            }
-            const {id, token} = await response2.json();
+            await apiFetch('/users', {method: 'POST', body: {username, password1, password2}});
+            const {id, token} = await apiFetch('/auth/login', {method: 'POST', body: {username, password: password1}});
             user.setUsername(username);
             user.setUserID(id.toString());
             auth.setAccessToken(token);             
             navigate('/games');
         } 
         catch (error) {
-            console.log(error)
+            setError(error.message);
+        } finally {
+            setLoading(false);
         }
     }
 
-    return (
+    if (loading) {
+        return (<ClipLoader></ClipLoader>)
+    }
+    else {
+        return (
         <form className='login-form animate-fade-in-up' onSubmit={handleSubmit}>
             <label for="username">Username</label>
             <input className='login-input' type="text" id="username" name="username"></input>
@@ -76,7 +62,8 @@ function SignUp() {
                 : ''}
             </div>
         </form>
-    )
+        )
+    }
 }
 
 export default SignUp
