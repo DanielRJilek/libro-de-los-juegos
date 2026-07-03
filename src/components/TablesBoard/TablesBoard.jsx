@@ -16,6 +16,14 @@ function toGridCol(col) {
 }
 
 function cellPosition(col, row, { w, h, colGap, rowGap }, pieceW, pieceH, ySize) {
+    if (col === -1) {
+        const cellX = COL_SPLIT * w;
+        const cellY = row * h + (row >= ySize/2 ? rowGap : 0);
+        return {
+            x: cellX + (w - pieceW) / 2,
+            y: row < ySize/2 ? cellY + h : cellY - h - pieceH,
+        };
+    }
     const cellX = col * w + (col >= COL_SPLIT ? colGap : 0);
     const cellY = row * h + (row >= ySize/2 ? rowGap : 0);
 
@@ -60,10 +68,14 @@ function TablesBoard({userPlayerNumber, xSize, ySize, session, lastMove,
     }, [xSize, ySize]);
     
     useEffect(() => {
-        if (lastMove) {
-            movePiece(lastMove);
-        }
-    }, [lastMove]);
+        if (!lastMove) return;
+        movePiece(lastMove);
+        const board = session.gameState?.board;
+        const t = setTimeout(() => {
+            setPieceList(boardToPieces(board));
+        }, 300); 
+        return () => clearTimeout(t);
+    }, [lastMove, session.gameState?.board]);
 
     const movePiece = (move) => {
         setPieceList((prev) => {
@@ -131,7 +143,7 @@ function TablesBoard({userPlayerNumber, xSize, ySize, session, lastMove,
         }
     }
     const pieces = pieceList?.map((piece) => {
-        const pointCount = pieceList.filter((p) => p.point === piece.point).length;
+        const pointCount = pieceList.filter((p) => p.point === piece.point && p.player === piece.player).length;
         const cellKey = `${piece.col}-${piece.row}`;
         const stackIndex = stackInCell[cellKey] ?? 0;
         stackInCell[cellKey] = stackIndex + 1;

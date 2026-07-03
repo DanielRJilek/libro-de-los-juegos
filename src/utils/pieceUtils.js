@@ -1,9 +1,10 @@
 const DISPLAY_COLS = 12;
+const BAR_COL = Math.floor(DISPLAY_COLS / 2);
 
 const serverToDisplay = (serverCol, serverRow, board, colOffset = 0) => {
+    if (serverCol == 0) return { col: 0, row: 0 };
     serverCol += colOffset;
     serverCol -= 1;
-
     if (serverCol < DISPLAY_COLS) {
         return { col: serverCol, row: 1 };
     }
@@ -23,7 +24,25 @@ const displayToServer = (displayCol, displayRow, board, colOffset = 0) => {
 const boardToPieces = (board, colOffset = 0) => {
     if (!Array.isArray(board)) return [];
     const pieces = [];
-    for (let point = 1; point < board.length + 1; point++) {
+    for (let i = 0; i < board[0].p1?.length; i++) {
+        pieces.push({
+            id: `p1-0-${i}`,
+            player: 1,
+            point: 0,
+            col: -1,
+            row: 1,
+        });
+    }
+    for (let i = 0; i < board[0].p2?.length; i++) {
+        pieces.push({
+            id: `p2-0-${i}`,
+            player: 2,
+            point: 0,
+            col: -1,
+            row: 0,
+        });
+    }
+    for (let point = 1; point < board.length; point++) {
         const cell = board[point];
         const { col, row } = serverToDisplay(point, 0, board, colOffset);
         if (!cell) continue;

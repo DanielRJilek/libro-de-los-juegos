@@ -54,7 +54,7 @@ function TablesGameScreen({ session }) {
         const {col: fromCol, row: fromRow} = displayToServer(selectedPiece.col, selectedPiece.row, board);
         const {col: toCol, row: toRow} = displayToServer(selectedCell.col, selectedCell.row, board);
         if (session.dice?.some((d) => !d.used && d.value === selectedDice.value)) {
-            session.submitMove({ fromCol: fromCol, toCol: toCol, 
+            session.submitMove({ fromCol: selectedPiece.point, toCol: toCol, 
                 fromRow: fromRow, toRow: toRow, diceValue: selectedDice.value });
         }
     }
