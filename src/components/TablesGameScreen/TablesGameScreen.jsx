@@ -65,7 +65,6 @@ function TablesGameScreen({ session }) {
             onClick={() => handleDiceClick(die)} />
         </div>
     );
-
     return (
         <div className="tables-game-screen animate-fade-in-up">
             <h1 className="tables-game-title capitalize">
@@ -190,11 +189,11 @@ function TablesGameScreen({ session }) {
                                 Move
                             </button>
                         )}
-                        {session.selfUser?.phase == 2 && session.canMove && selectedPiece && (
+                        {session.selfUser?.phase == 2 && session.canMove && selectedPiece && selectedDice && (
                             <button
                                 type="button"
-                                onClick={() => session.submitMove({ fromCol: selectedPiece.col, 
-                                    toCol: null, diceValue: null })}
+                                onClick={() => session.submitMove({ fromCol: selectedPiece.point, 
+                                    toCol: null, diceValue: selectedDice.value })}
                                 disabled={session.isGameOver}
                             >
                                 Bear Off

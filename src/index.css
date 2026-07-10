@@ -268,6 +268,55 @@ ul {
   list-style-type: none;
 }
 
+/* Reusable dimmed image hero banner with overlaid title */
+.hero-banner {
+  position: relative;
+  align-self: stretch;
+  width: 100%;
+  border-radius: var(--radius-lg, 14px);
+  overflow: hidden;
+  box-sizing: border-box;
+  border: 3px solid rgba(188, 141, 51, 0.85);
+  box-shadow: var(--shadow-soft);
+}
+
+.hero-banner-images {
+  display: flex;
+  width: 100%;
+  height: clamp(150px, 24vw, 240px);
+}
+
+.hero-banner-images img {
+  flex: 1 1 0;
+  min-width: 0;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: brightness(0.5) saturate(1.05);
+}
+
+.hero-banner::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(20, 8, 6, 0.35) 0%, rgba(20, 8, 6, 0.62) 100%);
+}
+
+.hero-banner .hero-banner-title {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0 1rem;
+  font-size: clamp(2.6rem, 6vw, 4.5rem);
+  line-height: 1;
+}
+
 /* Reusable medieval parchment block */
 .parchment-panel {
   position: relative;
